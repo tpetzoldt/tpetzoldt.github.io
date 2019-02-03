@@ -17,8 +17,8 @@ The following packages and code snippets were written in the **R** programming l
 
 ... provides a collection of methods to determine growth rates from experimental data, in particular from batch experiments and microwell plate reader trials.
 
-* [Documentation](growthrates/doc)
-* [Examples](growthrates/examples)
+* [Introduction](growthrates/doc/Introduction.html)
+* [User-defined models](growthrates/doc/User_models.html)
 * Repository: https://github.com/tpetzoldt/growthrates
 * Release version: https://cran.r-project.org/package=growthrates
 
