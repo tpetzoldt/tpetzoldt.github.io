@@ -1,4 +1,4 @@
-# Documentation and examples of R package `growthrates`
+## Documentation and examples of R package `growthrates`
 
 * [documentation](doc)
 * [examples](examples)

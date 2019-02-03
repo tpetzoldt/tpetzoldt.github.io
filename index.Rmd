@@ -15,16 +15,18 @@ The following packages and code snippets were written in the **R** programming l
 
 ## R package growthrates
 
-provides a collection of methods to determine growth rates from experimental data, in particular from batch experiments and microwell plate reader trials.
+... provides a collection of methods to determine growth rates from experimental data, in particular from batch experiments and microwell plate reader trials.
 
-Repository: https://github.com/tpetzoldt/growthrates
-Release version: https://cran.r-project.org/package=growthrates
+* [Documentation](growthrates/doc)
+* [Examples](growthrates/examples)
+* Repository: https://github.com/tpetzoldt/growthrates
+* Release version: https://cran.r-project.org/package=growthrates
 
 ## R package antibioticR
 
-is an R package to estimate antibiotic resistance cutoff values from ZD and MIC distributions of environmental samples.
+... is an R package to estimate antibiotic resistance cutoff values from ZD and MIC distributions of environmental samples.
 
-Repository: https://github.com/tpetzoldt/antibioticR
+* Repository: https://github.com/tpetzoldt/antibioticR
 
 ## Dynamic simulation models in R
 
@@ -35,7 +37,7 @@ Repository: https://github.com/tpetzoldt/dynamic-R-models
 ### Chemostat
 
 * Ordinary differential equation model of a chemostat: [**chemostat-ode**](chemostat/chemostat-ode.html)
-* Individual-based approach: *will follow soon*
+* Individual-based approach: [**chemostat-ibm**](chemostat/chemostat-ibm.html)
 
 ## About the author
 
