@@ -1,5 +1,5 @@
 ---
-title: "Github projects of [tpetzoldt](https://github.com/tpetzoldt)"
+title: "Github projects of tpetzoldt"
 output:
   html_document:
     toc: true
