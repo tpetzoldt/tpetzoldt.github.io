@@ -1,5 +1,5 @@
 ---
-title: "Github projects of tpetzoldt"
+title: "Selected Github projects of tpetzoldt"
 output:
   html_document:
     toc: true
@@ -9,38 +9,38 @@ output:
 
 
 This page serves additional documentation of some of my Github projects, 
-see https://github.com/tpetzoldt?tab=repositories for a complete list of my repositories.
+see https://github.com/tpetzoldt?tab=repositories for a complete list of my repositories. The packages and code snippets were written in the [**R** programming language](https://www.r-project.org) for statistical computing.
 
-The following packages and code snippets were written in the **R** programming language for statistical computing, see https://www.r-project.org for details.
 
-## R package growthrates
+## Overview
 
-... provides a collection of methods to determine growth rates from experimental data, in particular from batch experiments and microwell plate reader trials.
+| Repository | Type | Release | Author/(Maintainer) | Documentation |
+|:--------------------------------------------------------|---------|------|--------|:--------------|
+| [antibioticR](https://github.com/tpetzoldt/antibioticR) |R package | -    |[tpetzoldt](https://github.com/tpetzoldt)|               |
+| [growthrates](https://github.com/tpetzoldt/growthrates) |R package | [CRAN](https://cran.r-project.org/package=growthrates) | [tpetzoldt](https://github.com/tpetzoldt)|  [01 Introduction](growthrates/doc/Introduction.html), [02 User-defined models](growthrates/doc/User_models.html)|
+| [dynamic-R-models](https://github.com/tpetzoldt/dynamic-R-models) |code snippets | -    |[tpetzoldt](https://github.com/tpetzoldt)|               |
+| - chemostat-ODE | code snippets | | | [chemostat-ode](chemostat/chemostat-ode.html) |
+| - chemostat-IBM | code snippets | | | [chemostat-ibm](chemostat/chemostat-ibm.html) |
+| [FAmle](https://github.com/tpetzoldt/FAmle) |R package | [CRAN](https://cran.r-project.org/package=FAmle) | F.Acoin / ([tpetzoldt](https://github.com/tpetzoldt))| [CRAN](https://cran.r-project.org/package=FAmle) |
+| [FAdist](https://github.com/tpetzoldt/FAdist) |R package | [CRAN](https://cran.r-project.org/package=FAdist) | F.Acoin / ([tpetzoldt](https://github.com/tpetzoldt))| [CRAN](https://cran.r-project.org/package=FAmle) |
+| | | | | |
 
-* [Introduction](growthrates/doc/Introduction.html)
-* [User-defined models](growthrates/doc/User_models.html)
-* Repository: https://github.com/tpetzoldt/growthrates
-* Release version: https://cran.r-project.org/package=growthrates
+## Related work
 
-## R package antibioticR
+**Note:** some of my other collaborative **R** projects are hosted on [R-Forge](https://r-forge.r-project.org/users/petzoldt/). 
 
-... is an R package to estimate antibiotic resistance cutoff values from ZD and MIC distributions of environmental samples.
+| Package | Author | Release | Source Code | More |
+|---------|---------|---------|----------|-------------|
+| simecol | Petzoldt        | [CRAN](https://cran.r-project.org/package=simecol) | [R-Forge](https://r-forge.r-project.org/projects/simecol/) | [Homepage](http://simecol.r-forge.r-project.org) |
+| deSolve | Soetaert et al. | [CRAN](https://cran.r-project.org/package=deSolve) | [R-Forge](https://r-forge.r-project.org/projects/desolve/) | [Homepage](http://desolve.r-forge.r-project.org) |
+| FME     | Soetaert et al. | [CRAN](https://cran.r-project.org/package=FME) | [R-Forge](https://r-forge.r-project.org/projects/fme/) | [Docs](https://cran.r-project.org/package=FME) |
+| marelac | Soetaert et al. | [CRAN](https://cran.r-project.org/package=marelac) | [R-Forge](https://r-forge.r-project.org/projects/marelac/) | [Docs](https://cran.r-project.org/package=marelac) |
+| qualV   | Jachner et al.  | [CRAN](https://cran.r-project.org/package=qualV)   | [R-Forge](https://r-forge.r-project.org/projects/qualv/) | [Docs](https://cran.r-project.org/package=qualV) |
+| rLimnoLab | Petzoldt        |                                                  | [R-Forge](https://r-forge.r-project.org/projects/rlimnolab/) | [Homepage](http://rlimnolab.r-forge.r-project.org) |
 
-* Repository: https://github.com/tpetzoldt/antibioticR
-
-## Dynamic simulation models in R
-
-This repository is intended as a place to share code snippets and ideas for different collaborative research and teaching activities.
-
-Repository: https://github.com/tpetzoldt/dynamic-R-models
-
-### Chemostat
-
-* Ordinary differential equation model of a chemostat: [**chemostat-ode**](chemostat/chemostat-ode.html)
-* Individual-based approach: [**chemostat-ibm**](chemostat/chemostat-ibm.html)
 
 ## About the author
 
 * Homepage of the author: https://tu-dresden.de/Members/thomas.petzoldt
 * ResearchGate profile: https://www.researchgate.net/profile/Thomas_Petzoldt
-* **Note:** most of my R related projects are hosted on [R-Forge](https://r-forge.r-project.org/users/petzoldt/)
+
