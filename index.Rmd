@@ -1,46 +1,44 @@
 ---
-title: "Selected Github projects of tpetzoldt"
+title: "Selected source code projects of tpetzoldt"
 output:
-  html_document:
-    toc: true
-    toc_float:
-      collapsed: false
+  html_document
 ---
 
 
-This page serves additional documentation of some of my Github projects, 
-see https://github.com/tpetzoldt?tab=repositories for a complete list of my repositories. The packages and code snippets were written in the [**R** programming language](https://www.r-project.org) for statistical computing.
+This page serves additional documentation of some of my Github and other source code projects. The packages and code snippets were written in the [**R** programming language](https://www.r-project.org) for statistical computing.
 
 
-## Overview
+## Github Projects
 
 | Repository | Type | Release | Author/(Maintainer) | Documentation |
 |:--------------------------------------------------------|---------|------|--------|:--------------|
-| [antibioticR](https://github.com/tpetzoldt/antibioticR) |R package | -    |[tpetzoldt](https://github.com/tpetzoldt)|               |
+| [antibioticR](https://github.com/tpetzoldt/antibioticR) |R package | under development  |[tpetzoldt](https://github.com/tpetzoldt)| [Introduction](antibioticR/doc/Introduction.html)|
 | [growthrates](https://github.com/tpetzoldt/growthrates) |R package | [CRAN](https://cran.r-project.org/package=growthrates) | [tpetzoldt](https://github.com/tpetzoldt)|  [01 Introduction](growthrates/doc/Introduction.html), [02 User-defined models](growthrates/doc/User_models.html)|
-| [dynamic-R-models](https://github.com/tpetzoldt/dynamic-R-models) |code snippets | -    |[tpetzoldt](https://github.com/tpetzoldt)|               |
-| - chemostat-ODE | code snippets | | | [chemostat-ode](chemostat/chemostat-ode.html) |
-| - chemostat-IBM | code snippets | | | [chemostat-ibm](chemostat/chemostat-ibm.html) |
 | [FAmle](https://github.com/tpetzoldt/FAmle) |R package | [CRAN](https://cran.r-project.org/package=FAmle) | F.Acoin / ([tpetzoldt](https://github.com/tpetzoldt))| [CRAN](https://cran.r-project.org/package=FAmle) |
 | [FAdist](https://github.com/tpetzoldt/FAdist) |R package | [CRAN](https://cran.r-project.org/package=FAdist) | F.Acoin / ([tpetzoldt](https://github.com/tpetzoldt))| [CRAN](https://cran.r-project.org/package=FAmle) |
+| [dynamic-R-models](https://github.com/tpetzoldt/dynamic-R-models) |code snippets | [Github](https://github.com/tpetzoldt/dynamic-R-models)    |[tpetzoldt](https://github.com/tpetzoldt)|               |
+| - chemostat-ODE | code snippets | | | [chemostat-ode](chemostat/chemostat-ode.html) |
+| - chemostat-IBM | code snippets | | | [chemostat-ibm](chemostat/chemostat-ibm.html) |
 | | | | | |
 
-## Related work
+## Other Repositories
 
 **Note:** some of my other collaborative **R** projects are hosted on [R-Forge](https://r-forge.r-project.org/users/petzoldt/). 
 
-| Package | Author | Release | Source Code | More |
+| R package | Author | Release | Source Code | More |
 |---------|---------|---------|----------|-------------|
 | simecol | Petzoldt        | [CRAN](https://cran.r-project.org/package=simecol) | [R-Forge](https://r-forge.r-project.org/projects/simecol/) | [Homepage](http://simecol.r-forge.r-project.org) |
 | deSolve | Soetaert et al. | [CRAN](https://cran.r-project.org/package=deSolve) | [R-Forge](https://r-forge.r-project.org/projects/desolve/) | [Homepage](http://desolve.r-forge.r-project.org) |
 | FME     | Soetaert et al. | [CRAN](https://cran.r-project.org/package=FME) | [R-Forge](https://r-forge.r-project.org/projects/fme/) | [Docs](https://cran.r-project.org/package=FME) |
 | marelac | Soetaert et al. | [CRAN](https://cran.r-project.org/package=marelac) | [R-Forge](https://r-forge.r-project.org/projects/marelac/) | [Docs](https://cran.r-project.org/package=marelac) |
 | qualV   | Jachner et al.  | [CRAN](https://cran.r-project.org/package=qualV)   | [R-Forge](https://r-forge.r-project.org/projects/qualv/) | [Docs](https://cran.r-project.org/package=qualV) |
-| rLimnoLab | Petzoldt        |                                                  | [R-Forge](https://r-forge.r-project.org/projects/rlimnolab/) | [Homepage](http://rlimnolab.r-forge.r-project.org) |
+| cardidates   | Rolinski et al.  | [CRAN](https://cran.r-project.org/package=cardidates)   | [R-Forge](https://r-forge.r-project.org/projects/cardidates/) | [Docs](https://cran.r-project.org/package=cardidates) |
+| rLimnoLab | Petzoldt        |        pre-alpha                                   | [R-Forge](https://r-forge.r-project.org/projects/rlimnolab/) | [Homepage](http://rlimnolab.r-forge.r-project.org) |
 
 
 ## About the author
 
-* Homepage of the author: https://tu-dresden.de/Members/thomas.petzoldt
+* List of all my Github repositories see https://github.com/tpetzoldt?tab=repositories
+* List of all my R-Forge repositories see https://r-forge.r-project.org/users/petzoldt/
 * ResearchGate profile: https://www.researchgate.net/profile/Thomas_Petzoldt
-
+* Homepage of the author: https://tu-dresden.de/Members/thomas.petzoldt
