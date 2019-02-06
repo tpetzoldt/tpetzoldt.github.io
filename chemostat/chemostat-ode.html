@@ -11,6 +11,7 @@
 
 <meta name="author" content="Thomas Petzoldt" />
 
+<meta name="date" content="2019-02-06" />
 
 <title>Differential Equation Model of a Chemostat</title>
 
@@ -186,18 +187,18 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Differential Equation Model of a Chemostat</h1>
 <h4 class="author"><em>Thomas Petzoldt</em></h4>
-<h4 class="date"><em>February 2, 2019</em></h4>
+<h4 class="date"><em>2019-02-06</em></h4>
 
 </div>
 
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>The example shows a chemostat model by example of autotrophic organisms (Algae, <span class="math inline">\(X\)</span>), where growth is limited by a single nutrient (phosphorus, <span class="math inline">\(P\)</span>) via a Monod equation.</p>
+<p>The example shows a chemostat model <span class="citation">(cf. Novick and Szilard 1950; Herbert, Elsworth, and Telling 1956)</span> by example of heterotrophic or autotrophic organisms (bacteria, algae, <span class="math inline">\(X\)</span>), where growth is limited by a single nutrient (e.g. phosphorus, <span class="math inline">\(P\)</span>) via a Monod equation.</p>
 </div>
 <div id="implementation" class="section level2">
 <h2>Implementation</h2>
-<p>The system is solved numerically with solvers from package <strong>deSolve</strong> <span class="citation">@Soetaert2010</span>, while equilibria at infinite time are estimated with package <strong>rootSolve</strong> <span class="citation">@Soetaert2009</span>. The implementation follows the standard formulation of these packages, see package vignette and <span class="citation">@Soetaert_rjournal</span> for details.</p>
+<p>The system is solved numerically with solvers from package <strong>deSolve</strong> <span class="citation">(Soetaert, Petzoldt, and Setzer 2010b)</span>, while equilibria at infinite time are estimated with package <strong>rootSolve</strong> <span class="citation">(Soetaert 2009)</span>. The implementation follows the standard formulation of these packages, see package documentation of <strong>deSolve</strong> and <strong>rootSolve</strong>, and <span class="citation">Soetaert, Petzoldt, and Setzer (2010b)</span> or <span class="citation">Soetaert, Petzoldt, and Setzer (2010a)</span> for details. The code is written in the <strong>R</strong> programming language for statistical computing <span class="citation">(R Core Team 2018)</span>.</p>
 <pre class="r"><code>library(&quot;deSolve&quot;)
 library(&quot;rootSolve&quot;)
 
@@ -281,6 +282,31 @@ plot(D, X*P, type=&quot;l&quot;)</code></pre>
 <div id="outlook" class="section level2">
 <h2>Outlook</h2>
 <p>The chemostat equations can serve as a starting point for further extensions, e.g. the production of specific substances in bioreactors, or additional trophical levels. The equations are the fundamental for the description of other technical or non-technical flow-through systems, up to waste water treatment plants, or lakes.</p>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<div id="refs">
+<div id="ref-Herbert1956">
+<p>Herbert, Denis, R Elsworth, and RC Telling. 1956. “The Continuous Culture of Bacteria; a Theoretical and Experimental Study.” <em>Microbiology</em> 14 (3). Microbiology Society: 601–22.</p>
+</div>
+<div id="ref-Novick1950">
+<p>Novick, Aaron, and Leo Szilard. 1950. “Description of the Chemostat.” <em>Science</em> 112 (2920). American Association for the Advancement of Science: 715–16.</p>
+</div>
+<div id="ref-RCore2018">
+<p>R Core Team. 2018. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/" class="uri">https://www.R-project.org/</a>.</p>
+</div>
+<div id="ref-Soetaert2009">
+<p>Soetaert, Karline. 2009. <em>rootSolve: Nonlinear Root Finding, Equilibrium and Steady-State Analysis of Ordinary Differential Equations. R Package 1.6</em>. <a href="https://cran.r-project.org/package=rootSolve" class="uri">https://cran.r-project.org/package=rootSolve</a>.</p>
+</div>
+<div id="ref-Soetaert2010c">
+<p>Soetaert, Karline, Thomas Petzoldt, and R. Woodrow Setzer. 2010a. “Solving Differential Equations in R.” <em>The R Journal</em> 2 (2): 5–15. <a href="https://journal.r-project.org/archive/2010-2/RJournal_2010-2_Soetaert~et~al.pdf" class="uri">https://journal.r-project.org/archive/2010-2/RJournal_2010-2_Soetaert~et~al.pdf</a>.</p>
+</div>
+<div id="ref-Soetaert2010a">
+<p>———. 2010b. “Solving Differential Equations in R: Package deSolve.” <em>Journal of Statistical Software</em> 33 (9): 1–25. doi:<a href="https://doi.org/10.18637/jss.v033.i09">10.18637/jss.v033.i09</a>.</p>
+</div>
+</div>
+<hr />
+<p><strong>Copyright and original author:</strong> <a href="https://github.com/tpetzoldt">tpetzoldt</a>, 2019-02-06</p>
 </div>
 
 
