@@ -20,6 +20,7 @@ This page serves additional documentation of some of my Github and other source 
 | - chemostat-ODE | code snippets | | | - [chemostat-ode](chemostat/chemostat-ode.html) |
 | - chemostat-IBM | code snippets | | | - [chemostat-ibm](chemostat/chemostat-ibm.html) |
 | - dynamic models with shiny | code snippets | | | - [deSolve-shiny](deSolve-shiny/deSolve-shiny.html) |
+| - stoichiometry-matrix ODE models with rodeo | code snippets | | | - [deSolve-rodeo](deSolve-rodeo/rodeo-lv3.html) |
 | | | | | |
 
 ## Other repositories
