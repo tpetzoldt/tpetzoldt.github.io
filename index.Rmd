@@ -1,5 +1,5 @@
 ---
-title: "tpetzoldt's open source projects"
+title: "[tpetzoldt](https://github.com/tpetzoldt)'s open source projects"
 output:
   html_document
 ---
@@ -35,12 +35,16 @@ This page serves additional documentation of some of my Github and other source 
 | marelac | Soetaert et al. | [CRAN](https://cran.r-project.org/package=marelac) | [R-Forge](https://r-forge.r-project.org/projects/marelac/) | [Docs](https://cran.r-project.org/package=marelac) |
 | qualV   | van den Boogaart, Rost and Petzoldt  | [CRAN](https://cran.r-project.org/package=qualV)   | [R-Forge](https://r-forge.r-project.org/projects/qualv/) | [Docs](https://cran.r-project.org/package=qualV) |
 | cardidates   | Rolinski, Sachse and Petzoldt  | [CRAN](https://cran.r-project.org/package=cardidates)   | [R-Forge](https://r-forge.r-project.org/projects/cardidates/) | [Docs](https://cran.r-project.org/package=cardidates) |
-| rLimnoLab | Petzoldt et al.      |        pre-alpha                                   | [R-Forge](https://r-forge.r-project.org/projects/rlimnolab/) | [Homepage](http://rlimnolab.r-forge.r-project.org) |
+| rLimnoLab | Petzoldt et al.      |        alpha                                   | [R-Forge](https://r-forge.r-project.org/projects/rlimnolab/) | [Homepage](http://rlimnolab.r-forge.r-project.org) |
 
 
 ## About the author
 
-* List of all my Github repositories see https://github.com/tpetzoldt?tab=repositories
-* List of all my R-Forge repositories see https://r-forge.r-project.org/users/petzoldt/
+* List of my Github repositories see https://github.com/tpetzoldt?tab=repositories
+* List of my R-Forge repositories see https://r-forge.r-project.org/users/petzoldt/
 * ResearchGate profile: https://www.researchgate.net/profile/Thomas_Petzoldt
 * Homepage of the author: https://tu-dresden.de/Members/thomas.petzoldt
+
+----
+
+**Copyright and original author:** [tpetzoldt](https://github.com/tpetzoldt), `r Sys.Date()`
