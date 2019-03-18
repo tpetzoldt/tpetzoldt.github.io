@@ -2,7 +2,7 @@
 
 
 This repository serves documentation and didactic examples for my other repositories. 
-The HTML and PDF files are usually generated with markdown (or R-Markdown). To avoid redundancies, 
+The HTML and PDF files are usually generated with markdown (or R-Markdown). To avoid inconsistencies, 
 the original .md and .Rmd files remain together with related software in their source repositories.
 
 More: https://tpetzoldt.github.io
