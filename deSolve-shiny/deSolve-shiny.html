@@ -1630,7 +1630,7 @@ div.tocify {
 </div>
 
 
-<p><span style="color:red">Under construction: the embedded shiny apps often don’t show up on Github.</span> Please use <a href="https://weblab.hydro.tu-dresden.de/tutorials/deSolve-shiny.html"><strong>this link</strong></a> as a temporary work around.</p>
+<p><span style="color:red">Note: sometimes, the embedded shiny apps don’t show up on Github.</span> Please use <a href="https://weblab.hydro.tu-dresden.de/tutorials/deSolve-shiny.html"><strong>this link</strong></a> as a temporary work around in such cases.</p>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>The following examples show how to control dynamic models implemented in the <a href="https://www.r-project.org"><strong>R</strong></a> language interactively from a web interface. We use a technically simple ordinary differential equation (ODE) model as an example, then we will see how to add GUI elements and finally how we can make it faster by using compiled code.</p>
@@ -1823,7 +1823,7 @@ shinyApp(ui = ui, server = server)</code></pre>
 <div id="generalization" class="section level3">
 <h3>Generalization</h3>
 <p><strong>R</strong> is a programming language, so why not creating the user interface directly from information found already in the initial values and parameters of the model? This would allow us to save stupid typing (and copy and paste!) and to adapt the user interface ``automagically’’ if we change something in the model.</p>
-<p>The solution is, to construct lists of lists beforehand, in our case one for the parameters <code>L_parms</code> and one for the initial values <code>L_y0</code>. Each element of the top level list contains all the parameters needed by a call to <code>numericInput</code>, including some constant optional values like the <code>witdh</code> of the input field. The templates stored in these lists are then expanded with <code>lapply</code> and <code>do.call</code>. The result is exacly the same as befors, compare: <a href="https://weblab.hydro.tu-dresden.de/apps/bruss03" class="uri">https://weblab.hydro.tu-dresden.de/apps/bruss03</a></p>
+<p>The solution is, to construct lists of lists beforehand, in our case one for the parameters <code>L_parms</code> and one for the initial values <code>L_y0</code>. Each element of the top level list contains all the parameters needed by a call to <code>numericInput</code>, including some constant optional values like the <code>witdh</code> of the input field. The templates stored in these lists are then expanded with <code>lapply</code> and <code>do.call</code>. The result is exacly the same as before, compare: <a href="https://weblab.hydro.tu-dresden.de/apps/bruss03" class="uri">https://weblab.hydro.tu-dresden.de/apps/bruss03</a></p>
 <!---
 
 ```r
