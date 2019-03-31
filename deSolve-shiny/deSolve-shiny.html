@@ -1630,7 +1630,7 @@ div.tocify {
 </div>
 
 
-<p><span style="color:red">Under construction: the embedded shiny apps often don’t show up on Github.</span> Please use <a href="https://weblab01.hydro.tu-dresden.de/tutorials/deSolve-shiny.html"><strong>this link</strong></a> as a temporary work around.</p>
+<p><span style="color:red">Under construction: the embedded shiny apps often don’t show up on Github.</span> Please use <a href="https://weblab.hydro.tu-dresden.de/tutorials/deSolve-shiny.html"><strong>this link</strong></a> as a temporary work around.</p>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>The following examples show how to control dynamic models implemented in the <a href="https://www.r-project.org"><strong>R</strong></a> language interactively from a web interface. We use a technically simple ordinary differential equation (ODE) model as an example, then we will see how to add GUI elements and finally how we can make it faster by using compiled code.</p>
@@ -1718,7 +1718,7 @@ shinyApp(ui = ui, server = server)</code></pre>
 <p>Now let’s combine the shiny ui/server environment with our Brusselator model. We start with a very simple application that allows to change two parameters <code>A</code> and <code>B</code> (essentially the start concentrations of substances <code>A</code> and <code>B</code>) and then plots the time series of the model.</p>
 <div id="a-first-approach" class="section level3">
 <h3>A first approach</h3>
-<iframe src="https://weblab01.hydro.tu-dresden.de/apps/bruss01/" style="border: none; width: 75%; height: 500px"></iframe>
+<iframe src="https://weblab.hydro.tu-dresden.de/apps/bruss01/" style="border: none; width: 75%; height: 500px"></iframe>
 <p>The code is stunningly simple, consisting of three parts:</p>
 <ol style="list-style-type: decimal">
 <li>The model from above (without any modifications).</li>
@@ -1755,7 +1755,7 @@ shinyApp(ui=ui, server=server)</code></pre>
 <h3>Improvments</h3>
 <p>Now, we can start to adapt the app to our needs: change the layout, unlock more parameters of the model, add a second figure and so on. An especially convenient layout is the <code>sidebarLayout</code> that separates the control elements (<code>sidebarPane</code> left or top) and output of the app (<code>mainPanel</code> right or bottom).</p>
 <p>HTML tags like <code>h2</code>, <code>h3</code>, or <code>p</code> can be used to annotate the app, see help pages for more.</p>
-<iframe src="https://weblab01.hydro.tu-dresden.de/apps/bruss02/" style="border: none; width: 100%; height: 800px"></iframe>
+<iframe src="https://weblab.hydro.tu-dresden.de/apps/bruss02/" style="border: none; width: 100%; height: 800px"></iframe>
 <pre class="r"><code>library(&quot;deSolve&quot;)
 
 brusselator &lt;- function(t, y, p) {
@@ -1823,14 +1823,14 @@ shinyApp(ui = ui, server = server)</code></pre>
 <div id="generalization" class="section level3">
 <h3>Generalization</h3>
 <p><strong>R</strong> is a programming language, so why not creating the user interface directly from information found already in the initial values and parameters of the model? This would allow us to save stupid typing (and copy and paste!) and to adapt the user interface ``automagically’’ if we change something in the model.</p>
-<p>The solution is, to construct lists of lists beforehand, in our case one for the parameters <code>L_parms</code> and one for the initial values <code>L_y0</code>. Each element of the top level list contains all the parameters needed by a call to <code>numericInput</code>, including some constant optional values like the <code>witdh</code> of the input field. The templates stored in these lists are then expanded with <code>lapply</code> and <code>do.call</code>. The result is exacly the same as befors, compare: <a href="https://weblab01.hydro.tu-dresden.de/apps/bruss03" class="uri">https://weblab01.hydro.tu-dresden.de/apps/bruss03</a></p>
+<p>The solution is, to construct lists of lists beforehand, in our case one for the parameters <code>L_parms</code> and one for the initial values <code>L_y0</code>. Each element of the top level list contains all the parameters needed by a call to <code>numericInput</code>, including some constant optional values like the <code>witdh</code> of the input field. The templates stored in these lists are then expanded with <code>lapply</code> and <code>do.call</code>. The result is exacly the same as befors, compare: <a href="https://weblab.hydro.tu-dresden.de/apps/bruss03" class="uri">https://weblab.hydro.tu-dresden.de/apps/bruss03</a></p>
 <!---
 
 ```r
-cat('<iframe src="https://weblab01.hydro.tu-dresden.de/apps/bruss03/" style="border: none; width: 1024px; height: 800px" />\n')
+cat('<iframe src="https://weblab.hydro.tu-dresden.de/apps/bruss03/" style="border: none; width: 1024px; height: 800px" />\n')
 ```
 
-<iframe src="https://weblab01.hydro.tu-dresden.de/apps/bruss03/" style="border: none; width: 1024px; height: 800px" />
+<iframe src="https://weblab.hydro.tu-dresden.de/apps/bruss03/" style="border: none; width: 1024px; height: 800px" />
 --->
 <pre class="r"><code>library(&quot;deSolve&quot;)
 
@@ -2000,7 +2000,7 @@ ui &lt;- fluidPage(
 
 shinyApp(ui = ui, server = server)</code></pre>
 <p>The result looks identical as before, just a little bit faster.</p>
-<iframe src="https://weblab01.hydro.tu-dresden.de/apps/bruss04/" style="border: none; width: 100%; height: 800px"></iframe>
+<iframe src="https://weblab.hydro.tu-dresden.de/apps/bruss04/" style="border: none; width: 100%; height: 800px"></iframe>
 <p>If you want to see the C code: <a href="https://github.com/tpetzoldt/dynamic-R-models/tree/master/11-deSolve-shiny/bruss04">here is it</a></p>
 </div>
 </div>
