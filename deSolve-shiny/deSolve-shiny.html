@@ -1897,7 +1897,7 @@ shinyApp(ui = ui, server = server)</code></pre>
 <p>Package <strong>deSolve</strong> supports models in <em>compiled code</em> provided by a <code>.dll</code> / <code>.so</code> directly. It allows the solver to communicate directly with the model, and without any overhead of a back-call to <strong>R</strong>. Our experience shows, that this can then be 2 … 200 times faster, depending on the type of model.</p>
 <p>Several approaches were developed, depending on model complexity and your skills:</p>
 <ul>
-<li>write it your model ``by hand’’ in Fortran or C</li>
+<li>write your model ``by hand’’ in Fortran or C</li>
 <li>use a code generator:
 <ul>
 <li>package <strong>ccSolve</strong> from Karline Soetaert (from Github)</li>
