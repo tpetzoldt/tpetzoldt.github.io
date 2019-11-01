@@ -5,7 +5,7 @@ output:
 ---
 
 
-This page serves additional documentation of some of my Github and other source code projects. The packages and code snippets were written in the [**R** programming language](https://www.r-project.org) for statistical computing.
+This page serves additional documentation of some of my Github and other source code projects. Most of the packages and code snippets were written in the [**R** programming language](https://www.r-project.org) for statistical computing.
 
 
 ## Github projects
@@ -23,6 +23,7 @@ This page serves additional documentation of some of my Github and other source 
 | - dynamic models in compiled code | code snippets | | | - [deSolve-compiled](deSolve-compiled/deSolve-compiled.html) |
 | - dynamic models with shiny | code snippets | | | - [deSolve-shiny](deSolve-shiny/deSolve-shiny.html) |
 | - stoichiometry-matrix ODE models with rodeo | code snippets | | | - [deSolve-rodeo](deSolve-rodeo/rodeo-lv3.html) |
+| [R Basics](https://tpetzoldt.github.io/RBasics) |teaching | alpha  |[tpetzoldt](https://github.com/tpetzoldt)| [R Basics (Slides)](RBasics)|
 | [growthlab](https://github.com/tpetzoldt/growthlab) |teaching | alpha  |[tpetzoldt](https://github.com/tpetzoldt)| [Blink LED-Strip](growthlab/doc/blink.html), [Wachstumsversuch](growthlab/doc/versuchsaufbau.html)|
 | | | | | |
 
