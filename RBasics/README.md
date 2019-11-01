@@ -16,4 +16,4 @@ here only for limited time.
 * [Graphics](https://tpetzoldt.github.io/RBasics/Graphics.html)
 
 
-**Copyright and original author:** [tpetzoldt](https://github.com/tpetzoldt), `r Sys.Date()`
+**Copyright and original author:** [tpetzoldt](https://github.com/tpetzoldt), 2019-11-01
