@@ -1,0 +1,500 @@
+Graphics in R
+===================================
+author: Thomas Petzoldt
+date: 2015-03-06
+width: 1024
+height: 768
+css: Graphics.css
+
+```{r setup, include=FALSE}
+opts_chunk$set(cache=TRUE)
+```
+
+
+Overview
+===================================
+
+1. The easy way
+2. Customizing graphics
+3. Multiple grapics on one page
+4. Saving and exporting graphics
+5. Lattice
+6. grid and gridbase
+7. ggplot2
+
+
+Prerequisites
+=============
+
+The examples were tested with R 3.x
+
+The data sets of this presentation are available:
+* as built-in data in R or
+* can be downloaded from xxx xxx xxx
+
+
+The `radiation.txt' data set contains *derived* data from the German Weather
+Service (<http://www.dwd.de>), station Dresden. Missing data were interpolated.
+
+
+
+The Easy Way
+===================================================================
+
+
+```{r}
+plot(iris)
+```
+
+---
+
+
+**R** contains many graphics functions with convenient defaults.
+
+`iris` is a built-in data set in **R** (see next slide)
+
+`plot`is a so-called *generic function* that automatically decides how to plot.
+
+
+The iris data set
+===============================
+
+![iris-annotated](img/iris-annotated.jpg)
+
+The famous (Fisher's or Anderson's) `iris` data set gives the measurements in centimeters of the variables sepal length and width and petal length and width, respectively, for 50 flowers from each of 3 species of iris. The species are Iris setosa, versicolor, and virginica. (from the **R** Helpfile)
+
+* see `?iris` in **R**'s online help.
+* or: https://en.wikipedia.org/wiki/Iris_flower_data_set
+
+Plotting colums of a data frame
+===============================
+
+
+```{r}
+plot(iris$Sepal.Length, iris$Petal.Length)
+```
+
+----
+
+```{r}
+plot(iris$Sepal.Length, iris$Petal.Length, col=iris$Species)
+```
+
+Using `with` saves dollars
+===============================
+
+
+```{r}
+plot(iris$Sepal.Length, iris$Petal.Length, col=iris$Species)
+```
+
+----
+
+```{r}
+with(iris, plot(Sepal.Length, Petal.Length, col=Species))
+```
+
+Colors and plotting symbols in R
+================================
+
+**R** allows to change style and color of plotting symbols:
+
+* `col` = color, can be one of 8 default colors or a user-defined color
+* `pch` = plotting character, can be one of 25 symbols or a quoted letter
+* `cex` = character extension: size of a plotting character
+
+
+```{r,fig.width=14,fig.height=4}
+plot(1:25, col=1:25, pch=1:15, cex=2)
+```
+
+
+
+Colors and plotting symbols in R
+================================
+
+* symbols 21..25 have an optional background color
+* `lwd` specifies the border width of the symbol
+
+```{r,fig.width=14,fig.height=4}
+plot(21:25, col="darkred", pch=21:25, cex=2, bg="green", lwd=2)
+```
+
+
+R as function plotter
+=====================
+
+```{r, fig.width=12,fig.height=4}
+x <- seq(0, 20, length.out=100)
+y1 <- sin(x)
+y2 <- cos(x)
+plot(x, y1, type="l", col="red")
+lines(x, y2, col="blue")
+```
+
+* <small>type: "p": points, "l": lines, "b": both, points and lines, "c": empty points joined by lines, "o": overplotted points and lines, "s" and "S": stair steps, "h" histogram-like vertical lines, "n": no points or lines.</small>
+
+Line styles
+=====================
+
+```{r, fig.width=12,fig.height=4}
+x <- seq(0, 20, length.out=100)
+plot(x, sin(x), type="l", col="red", lwd=3, lty="dotted")
+lines(x, cos(x), col="blue", lwd=2, lty="dashed")
+```
+<small>
+
+* `lty` line type ("blank", "solid", "dashed", "dotted", "dotdash", "longdash", "twodash") or a number from 1...7,
+   or a string with up to 8 numbers for drawing and skipping (e.g. "4224").
+* `lwd` line width (a number, defaults to 1)
+
+</small>
+
+
+Coordinate axes and annotations
+===============================
+
+```{r, fig.width=12,fig.height=4}
+plot(iris$Sepal.Length, iris$Petal.Length, xlim=c(0, 8), ylim=c(2,8),
+     col=iris$Species, pch=16,
+     xlab="Sepal Length (cm)", ylab="Petal Length (cm)", main="Iris Data",
+     las = 1)
+```
+
+* `col=iris$Species` works because `Species` is a factor
+* `las=1` numbers on y-axis upright (try: 0, 1, 2 or 3)
+* `log` may be used to transform axes (e.g. log="x", log="y", log="xy")
+
+
+Adding a legend
+===============================
+
+```{r, fig.width=12,fig.height=4}
+mycolors <- c("blue", "red", "cyan")
+plot(iris$Sepal.Length, iris$Petal.Length, xlim=c(0, 8), ylim=c(2,8),
+     col=mycolors[iris$Species], pch = 16,
+     xlab="Sepal Length (cm)", ylab="Petal Length (cm)", main="Iris Data",
+     las = 1)
+legend("topleft", legend=c("Iris setosa", "Iris versicolor", "Iris virginica"),
+  col=mycolors, pch=16)
+```
+
+<small>
+
+* see ?legend for more options (e.g. line styles, position of the legend)
+* use `locator(1)` instead of `"topright"` for positioning the legend with the mouse
+
+</small>
+
+
+Global parameters, font size, margins, ...
+================
+
+* Many figure options can be specified globally with `par()`, see ?par
+* `par(lwd=2)` all lines have double width
+* `par(mfrow=c(2,2))` subdivides the graphics area in 2 x 2 fields
+* `par(las=1)`  numbers at y axis upright
+* `par(mar=c(5, 5, 0.5, 0.5))` changes figure margins (bottom, left, top, right)
+* `par(cex=2)` increase font size
+* $\rightarrow$ sometimes it is better to leave font size as is and change size
+  of the figure instead
+
+
+Example
+===========================
+
+```{r}
+plot(iris$Sepal.Length, iris$Petal.Length, col=iris$Species)
+```
+
+-----
+
+```{r}
+opar <- par(cex=1.5, mar=c(4,4,0.2,1), las=1)
+plot(iris$Sepal.Length, iris$Petal.Length, col=iris$Species)
+par(opar)
+
+```
+
+
+Saving and exporting figures
+============================
+
+Easiest way ist to use the RStudio's **Export --> Save as Image** (or copy to clipboard)
+
+**Important:** Select correct image format and image size!
+
+|Format       | Type   | Usage                         | Notes                                                |
+|-------------|--------|-------------------------------|------------------------------------------------------|
+| PNG         | bitmap | general purpose               | fixed size, use at least 300 pixels per inch         |
+| JPEG        | bitmap | photographs                   | not good for R images                                |
+| TIFF        | bitmap | PNG is easier                 | required by some journals                            |
+| BMP         | bitmap | not recommended               | needs huge memory                                    |
+| Metafile    | vector | Windows standard format       | easy to use, quality varies                          |
+| SVG         | vector | can be edited                 | allows editing graphics with Inkscape                |
+| EPS         | vector | PDF is easier                 | required by some journals                            |
+| PDF         | vector | best quality                  | perfect for LaTex, MS Office requires conversion     |
+
+
+Writing figures directly to PDF
+===============================
+
+```{r, eval=FALSE}
+pdf("myfile.pdf", width=8, height=6)
+par(las=1)
+plot(iris$Sepal.Length, iris$Petal.Length, col=iris$Species)
+dev.off()
+```
+
+* width and height in inch (1 inch = 2.54cm)
+* professional quality, size can be changed without quality loss
+* conversion to PNG can be done later with free programs (e.g. Inkscape, SumatraPDF or ImageMagick)
+
+
+Writing figures directly to PNG
+===============================
+
+
+```{r, eval=FALSE}
+png("myfile.png", width=1600, height=1200, res=300)  # good for Word
+#png("myfile.png", width=800, height=600, res=150)   # good for Powerpoint
+par(las=1)
+par(mar=c(5, 5, 1, 1))
+plot(iris$Sepal.Length, iris$Petal.Length)
+dev.off()
+```
+
+
+* width and height given in pixels
+* **Hint:** play with `res` to change nominal resolution and font size
+* use at least 300 dpi (dots per inch, i.e. number of pixels = 300/2.54 * width in cm)
+* professionals use 600 or even 1200 pixels per inch, but then .docx and .pptx files will dramatically increase
+* 1600 x 1200px is good for 13.3 x 10 cm size in the printed document
+
+
+
+Example: Global Radiation Data at Dresden
+===================
+
+
+```{r}
+radiation <- read.table("data/radiation.txt", sep="\t", header=TRUE)
+radiation$Date <- as.Date(radiation$date)
+```
+
+
+```{r,fig.width=10,fig.height=5,fig.align='center'}
+plot(radiation$Date, radiation$rad)
+```
+
+Note: The data set contains *derived* data from the German Weather Service (<http://www.dwd.de>), station Dresden. Missing data were interpolated.
+
+
+More About Date and Time
+===================================================================
+type: prompt
+
+* `date and time classes in R:
+  - `as.Date`
+  - `as.POSIXct`
+* `format` and `strptime`
+* extract day, month, year, Julian day
+* time series objects `tseries`and `zoo`
+
+
+format and strptime
+===================================================================
+
+```{r,eval=FALSE}
+format(x, format = "", tz = "", usetz = FALSE, ...)
+```
+
+|           |                                   |
+----------- | ----------------------------------
+ %Y         | year with century
+ %m         | month as decimal number
+ %d         | day of the month
+ %H         | hours as decimal number (00-23)
+ %M         | minute as decimal number (00-59)
+ %S         | second as decimal number (00-59)
+ %j         | day of year (001-366)
+ %u         | weekday, Monday is 1
+
+```{r}
+as.Date("11.03.2015", format="%d.%m.%Y")
+```
+
+Date conversion for the Radiation data set
+==========================================
+
+```{r}
+radiation$year <- format(radiation$Date, "%Y")
+radiation$month <- format(radiation$Date, "%m")
+radiation$doy <- format(radiation$Date, "%j")
+radiation$weekday <- format(radiation$Date, "%u")
+
+```
+
+
+
+aggregate
+===================================================================
+
+**Syntax**
+
+```{r,eval=FALSE}
+aggregate(x, by, FUN, ..., simplify = TRUE)
+
+```
+
+**Example**
+
+```{r}
+yearmax <- aggregate(
+  list(rad = radiation$rad),
+  list(year = radiation$year),
+  max)
+
+monmean <- aggregate(
+  list(radiation = radiation$rad),
+  list(year = radiation$year, month = radiation$month),
+  mean)
+```
+
+* aggregate is essentially a wrapper to `apply`
+
+
+Plot aggregated radiation data
+===============================
+
+```{r, fig.width=10, fig.height=4}
+par(mfrow=c(1,2), las=1)
+boxplot(rad ~ year, data=radiation)
+boxplot(rad ~ month, data=radiation)
+```
+
+Most functions that support a formula argument (containing `~`) allow to specify
+the data frame with a `data` argument.
+
+
+
+More about Plotting
+===================================================================
+type: prompt
+
+* **base graphics**
+* package **lattice**
+* package **ggplot2**
+
+* set size and fonts; save plots to disk
+* use pdf, svg or png -- not jpg - except for photographs
+
+* Related software
+  - edit/convert svg (and pdf) with **Inkscape**
+  - convert images with **ImageMagick**
+
+
+Base Graphics
+===================================================================
+
+```{r,eval=FALSE}
+x <- rnorm(100)
+par(mfrow=c(2,2))
+plot(x)
+hist(x)
+qqnorm(x)
+boxplot(x)
+```
+
+***
+
+```{r,echo=FALSE}
+x <- rnorm(100)
+par(mfrow=c(2,2))
+plot(x)
+hist(x)
+qqnorm(x)
+boxplot(x)
+```
+
+
+grid and gridBase
+===================================================================
+
+* complete freedom to organise plotting area
+* interface relatively raw
+* basis of other plotting packages
+![gridBase image](img/gridbase.png)
+
+
+Lattice Graphics
+===================================================================
+
+```{r, fig.width=10,fig.height=4,fig.align="center"}
+require(lattice)
+data(iris)
+xyplot(Sepal.Length ~ Sepal.Width|Species, data=iris, layout=c(3,1))
+```
+
+ggplot2
+===================================================================
+
+* Implements the "Grammar of Graphics"
+  - Leland Wilkinson (2005) The Grammar of Graphics. 2nd edn. Springer
+  - Hadley Wickham (2009) ggplot2: Elegant Graphics for Data Analysis. Springer.
+
+
+===================================================================
+title: FALSE
+
+```{r,fig.width=12,fig.height=6,fig.align="right"}
+library(ggplot2)
+data(iris)
+ggplot(iris, aes(Sepal.Length, Sepal.Width, color=factor(Species))) + geom_point() + stat_smooth(method="lm")
+
+```
+
+
+Save Images to Disk
+===================================================================
+
+* Simple: use of RStudio's graphics export
+* Better:
+
+```{r,eval=FALSE}
+pdf(file="figure.pdf",width=8,height=6) # open
+plot(rnorm(100))                        # plotting
+dev.off()                               # close
+```
+
+* other graphics formats: `png()`, `svg()`, ...
+* pdf allows several plots in one file (until dev.off)
+* special formats possible,
+  e.g. `width=100, height=10` (useful for `hclust`)
+* in case of error: repeated `dev.off()` to close all files.
+
+
+
+Vector vs. Bitmap Graphics
+===================================================================
+
+**Bitmap formats**
+
+* jpg, png, tiff
+* fixed resolution, cannot be magnified without loss
+* retouching possible, but not editing
+* well suited for pictures or plots with huge number of data (color maps)
+* cannot be converted to vector without complications and quality loss
+
+**Vector formats**
+
+* svg, pdf, [wmf, emf]
+* can be up- and downscaled and edited
+* well suited drawings and diagrams (except if huge amount of data)
+* can always be converted to bitmap
+
+
+
+
+
+
