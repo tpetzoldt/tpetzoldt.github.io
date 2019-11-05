@@ -1,9 +1,4 @@
----
-title: "Untitled"
-output:
-  html_document:
-  mathjax:"https://cdn.mathjax.org/mathjax/latest/MathJax.js"
----
+
 
 Some Basics of the R Language
 ========================================================
