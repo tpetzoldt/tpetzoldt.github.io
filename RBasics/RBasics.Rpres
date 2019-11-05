@@ -1,9 +1,11 @@
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 
 
 Some Basics of the R Language
 ========================================================
 author: Thomas Petzoldt
-date: 2017-11-01
+date: 2019-11-05
 width: 1024
 height: 768
 

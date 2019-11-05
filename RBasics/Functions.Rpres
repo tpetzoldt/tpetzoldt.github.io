@@ -1,7 +1,11 @@
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
 Functions Everywhere
 ========================================================
 author: Thomas Petzoldt
-date: 2017-11-01
+date: 2019-11-05
 width: 1024
 height: 768
 css: RBasics.css
@@ -189,7 +193,7 @@ Oxygen saturation in fresh and sea water
 ========================================================
 
 $$
-c_{O_2, 100\%} =
+c_{O_2, 100\%} = ... ?
 $$
 
 ```{r}
