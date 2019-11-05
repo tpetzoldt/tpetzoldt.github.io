@@ -1,3 +1,10 @@
+---
+title: "Untitled"
+output:
+  html_document:
+  mathjax:"https://cdn.mathjax.org/mathjax/latest/MathJax.js"
+---
+
 Some Basics of the R Language
 ========================================================
 author: Thomas Petzoldt
@@ -5,7 +12,6 @@ date: 2017-11-01
 width: 1024
 height: 768
 
-<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 
 Prerequisites
 ========================================================
