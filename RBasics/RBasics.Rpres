@@ -4,8 +4,8 @@
 
 Some Basics of the R Language
 ========================================================
-author: Thomas Petzoldt
-date: 2019-11-05
+author: tpetzoldt
+date: 2019-11-06
 width: 1024
 height: 768
 
@@ -169,7 +169,8 @@ type: prompt
 
 **R** supports different classes of data objects.
 
-Data objects can contain single values, vectors, matrices, tables, numbers, text and even maps, sound, images or video sequences.
+Data objects can contain single values, vectors, matrices, tables, numbers,
+text and even maps, sound, images or video sequences.
 
 We start with vectors, matrices and arrays, and data frames.
 

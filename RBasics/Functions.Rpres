@@ -131,8 +131,10 @@ plot(x, y = NULL, type = "p",  xlim = NULL, ylim = NULL,
 
 
 
-The Monod function
+A simple user-defined function
 ========================================================
+
+The Monod functioin describes substrate dependence of biochemical turnover. It is widely used in biochemistry and in ecological models.
 
 $$
 v = \frac{v_{max} \cdot S}{k_S + S}
@@ -149,9 +151,7 @@ plot(S, monod(S, 2, 2), type="l")
 
 # names of caller and function can be different
 kP <- 5; mumax <- 1.2; P <- seq(0, 20, 0.1)
-
 plot(P, monod(S=P, vmax=mumax, ks=kP)) # named arguments
-
 plot(P, monod(P, mumax, kP))           # argument position
 ```
 
