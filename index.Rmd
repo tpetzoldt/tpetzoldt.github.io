@@ -14,8 +14,8 @@ This page serves additional documentation of some of my Github and other source 
 |:--------------------------------------------------------|---------|------|--------|:--------------|
 | [antibioticR](https://github.com/tpetzoldt/antibioticR) |R package | alpha  |[tpetzoldt](https://github.com/tpetzoldt)| [Introduction](antibioticR/articles/Introduction.html)|
 | [growthrates](https://github.com/tpetzoldt/growthrates) |R package | [CRAN](https://cran.r-project.org/package=growthrates) | [tpetzoldt](https://github.com/tpetzoldt)|  [01 Introduction](growthrates/doc/Introduction.html), [02 User-defined models](growthrates/doc/User_models.html)|
-| [FAmle](https://github.com/tpetzoldt/FAmle) |R package | [CRAN](https://cran.r-project.org/package=FAmle) | F.Acoin / ([tpetzoldt](https://github.com/tpetzoldt))| [CRAN](https://cran.r-project.org/package=FAmle) |
-| [FAdist](https://github.com/tpetzoldt/FAdist) |R package | [CRAN](https://cran.r-project.org/package=FAdist) | F.Acoin / ([tpetzoldt](https://github.com/tpetzoldt))| [CRAN](https://cran.r-project.org/package=FAmle) |
+| [FAmle](https://github.com/tpetzoldt/FAmle) |R package | [CRAN](https://cran.r-project.org/package=FAmle) | F.Aucoin / ([tpetzoldt](https://github.com/tpetzoldt))| [CRAN](https://cran.r-project.org/package=FAmle) |
+| [FAdist](https://github.com/tpetzoldt/FAdist) |R package | [CRAN](https://cran.r-project.org/package=FAdist) | F.Aucoin / ([tpetzoldt](https://github.com/tpetzoldt))| [CRAN](https://cran.r-project.org/package=FAmle) |
 | [dynamic-R-models](https://github.com/tpetzoldt/dynamic-R-models) |code snippets | [Github](https://github.com/tpetzoldt/dynamic-R-models)    |[tpetzoldt](https://github.com/tpetzoldt)| [Github](https://github.com/tpetzoldt/dynamic-R-models)  |
 | - chemostat-ODE | code snippets | | | - [chemostat-ode](chemostat/chemostat-ode.html) |
 | - chemostat-IBM | code snippets | | | - [chemostat-ibm](chemostat/chemostat-ibm.html) |
