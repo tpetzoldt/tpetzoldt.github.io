@@ -218,16 +218,17 @@ consult `?gas_O2sat` for citations.
 Local and global variables
 ========================================================
 
-* Variables in a function are **local**:
- - not visible from outside.
- - no collisions with existing variables in the calling environment
+Variables in a function are **local**:
 
-* Scoping
- - functions can see variables of the calling function
- - useful for interactive work
- - dangerous for package functions
+- not visible from outside.
+- no collisions with existing variables in the calling environment
 
- <small>(except in special cases, e.g. for functions within fucntions)</small>
+Lexical Scoping
+
+- functions can see variables of the calling function
+- useful for interactive work
+- dangerous for (exported) functions in packages
+- except in special cases, e.g. for functions within functions
 
 
 Local and global variables
