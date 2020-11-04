@@ -5,7 +5,7 @@
 Some Basics of the R Language
 ========================================================
 author: tpetzoldt
-date: 2019-11-06
+date: 2020-11-04
 width: 1024
 height: 768
 
@@ -13,13 +13,17 @@ height: 768
 Prerequisites
 ========================================================
 
-- R 3.x is installed
-- Recent version of RStudio
+- R 4.x is installed:
+    * https://cloud.r-project.org/
+- Recent version of RStudio is installed
+    * https://rstudio.com/products/rstudio/download/#download
+- Install **R** first and **RStudio** second
+- works on Linux, Windows and MacOS
 
 ***
 
 - Basic intuitive experience with R
-- vectors, arithmetics
+- vectors, matrices, arithmetics
 - basic plotting
 - function arguments
 
@@ -33,7 +37,7 @@ Expression
 1 - pi + exp(1.7)
 ````
 
-- is printed to the screen
+- result is printed to the screen
 - the [1] indicates that the value shown at the beginning of the line is the first (and here the only) element
 
 ***
@@ -46,15 +50,15 @@ a <- 1 - pi + exp(1.7)
 - The expression on the left hand side is assigned to the variable on the right.
 - The arrow is spelled as
   "a gets ..."
-
+- To avoid confusion: use `<--` for assignment and let `=` for parameter matching
 Assignments
 ========================================================
 
-Assignment of a constant and a variable
+* Assignment of constants and a variable to a variable
 ```{r}
-x <- 1.3
-y <- "hello"
-a <- x
+x <- 1.3      # numeric constant
+y <- "hello"  # character constant
+a <- x        # a and x both variables
 ```
 
 * Assignment in opposite direction (rarely used)
@@ -74,7 +78,7 @@ x <- a <- b
 x = a
 ```
 
-* Super Assignment (for special cases)
+* Super Assignment (for programmers and special cases only)
 ```{r}
 x <<- 2
 ```
@@ -97,22 +101,28 @@ A short classification of R's language elemnts:
 Objects, constants, variables
 ========================================================
 
-Everything stored in R's memory is an **object**. Objects are specialized data structures that can be simple or very complex.
-
-Objects can be constant or variable.
+* Everything stored in R's memory is an **object**. Objects are specialized data structures that can be simple or very complex.
+* Objects can be constants or variables.
 
 **constants**: 1, 123, 5.6, 5e7, "hello"
 
 **variables**: can change their value are referenced by variable names (symbols)
 
+```{r}
 x <- 2 # x is a variable, 2 a constant
+```
 
-Valid variable names: A syntactically valid name consists of letters,
-numbers and the dot or underline characters and starts with a letter or the dot not followed by a number.
+
+A syntactically valid variable name consists of:
+
+- letters, numbers and the dot or underline characters
+- starts with a letter or the dot
+- if starting with the dot, not followed by a number
 
 Special characters, except _ and . (underscore and dot) are not allowed.
 
 International characters (e.g German umlauts &auml;, &ouml;, &uuml;, ...) are possible, but not recommended.
+
 
 Allowed and disallowed variable names
 ========================================================
@@ -131,31 +141,33 @@ reserved words cannot be used as variable names:
 - TRUE, FALSE, NULL, Inf, NaN, NA, NA\_integer\_, NA\_real\_, NA\_complex\_, NA\_character\_,
 - ..., ..1, ..2
 
-**Note:** R is case sensitive, x and X, value and Value are different.
+**Note:** R is case sensitive, `x` and `X`, `value` and `Value` are different.
 
 Operators
 ========================================================
 
 ![operators](img/operators.png)
 
+... and more
+
 Functions
 ========================================================
 
 Pre-defined functions:
 - have a return value or a side effect
-- examples with return value: sin(x), log(x)
-- examples side effect: plot(x), print(x)
-- both return value and side efect: hist(x)
+- examples with return value: `sin(x)`, `log(x)`
+- examples side effect: `plot(x)`, `print(x)`
+- both return value and side efect: `hist(x)`
 
 Arguments: mandatory or optional, un-named or named
-- plot(1:4, c(3,4,3,6), type="l", col="red")
-- if argument names are used (with the "=" sigh), then argument order does not matter
+- `plot(1:4, c(3, 4, 3, 6), type = "l", col = "red")`
+- if named argument matching is used (with the "=" sign), then argument order does not matter
 
 User-defined functions:
 - can be used to extend R
 - will be discussed later
 
-Functions have a name that is followed by arguments in round parentheses.
+Functions have always a name that is followed by arguments in round parentheses.
 
 Parentheses
 ========================================================
@@ -167,10 +179,10 @@ Data objects
 ========================================================
 type: prompt
 
-**R** supports different classes of data objects.
+**R** supports different classes of data objects:
 
-Data objects can contain single values, vectors, matrices, tables, numbers,
-text and even maps, sound, images or video sequences.
+* Data objects can contain single values, vectors, matrices, tables, numbers, ...
+* text and even maps, sound, images or video sequences.
 
 We start with vectors, matrices and arrays, and data frames.
 
@@ -178,16 +190,16 @@ We start with vectors, matrices and arrays, and data frames.
 Vectors, matrices and arrays
 ========================================================
 
-- vectors = 1D, matrices = 2D and arrays = n-D
+- vectors = 1D, matrices = 2D and arrays = n-dimensional
 - data are arranged into rows, columns, layers, etc.
 - data filled in column-wise, but structure can always be changed
 
 ```{r}
 x <- 1:20
 x
-y <- matrix(x, nrow=5, ncol=4)
+y <- matrix(x, nrow = 5, ncol = 4)
 y
-as.vector(y)
+as.vector(y) # flattens the matrix to a vector
 ```
 
 
@@ -208,7 +220,7 @@ x
 
 - **row-wise** creation of a matrix
 ```{r}
-x <- matrix(1:20, nrow=5, ncol=4, byrow=TRUE)
+x <- matrix(1:20, nrow = 5, ncol = 4, byrow = TRUE)
 x
 ```
 
@@ -226,7 +238,7 @@ Accessing array elements
 - sub-matrices (slices)
 
 ```{r}
-x <- array(1:24, dim=c(3,4,2))
+x <- array(1:24, dim=c(3, 4, 2))
 x
 ```
 
@@ -247,7 +259,7 @@ Reordering and indirect indexing
 Original matrix
 
 ```{r}
-(x <- matrix(1:20, nrow=4))
+(x <- matrix(1:20, nrow = 4))
 ```
 
 Inverted row order
@@ -259,7 +271,7 @@ x[4:1, ]
 
 Indirect index
 ```{r}
-x[c(1,2,1,2), c(1,3,2,5,4)]
+x[c(1, 2, 1, 2), c(1, 3, 2, 5, 4)]
 ```
 
 Logical selection
@@ -269,7 +281,7 @@ x[c(FALSE, TRUE, FALSE, TRUE), ]
 
 Surprise?
 ```{r}
-x[c(0,1,0,1), ]
+x[c(0, 1, 0, 1), ]
 ```
 
 Matrix algebra
@@ -278,7 +290,7 @@ Matrix algebra
 Matrix
 
 ```{r}
-(x <- matrix(1:4,   nrow=2))
+(x <- matrix(1:4,   nrow = 2))
 
 ```
 
@@ -318,8 +330,8 @@ Transpose and inverse
 
 Matrix
 ```{r}
-x <- matrix(c(1,2,3,4,3,2,5,4,6),
-            nrow=3)
+x <- matrix(c(1, 2, 3, 4, 3, 2, 5, 4, 6),
+            nrow = 3)
 x
 ```
 
@@ -398,7 +410,7 @@ Several options are available, depending on **RStudio**'s version.
 
 * "From text (base)" uses the classical R functions
 * "From text (readr)" is more modern and uses an add-on package
-* "From Excel"" can read Excel files if (and only if) they have a clear tabular structure
+* "From Excel" can read Excel files if (and only if) they have a clear tabular structure
 
 **Note:** The examples in this course are best tested with "From text (base)"**!!!**
 
@@ -776,14 +788,19 @@ This returns a special object, that can be used like a normal vector.
 Further Reading
 ===============
 
-More about this can be found in the official R manuals, especially in **An Introduction to R**.
+Follow-up presentations:
 
-* see: https://cran.r-project.org  $\longrightarrow$ Manuals
+* [Functions everywhere](Functions.html)
+* [Graphics in R](Graphics.html)
 
+More details in the official R manuals, especially in [**An Introduction to R**](https://cran.r-project.org/doc/manuals/r-release/R-intro.html)
 
-This tutorial was made with R-Presentations of **RStudio**
-* see: https://www.rstudio.org
+Many videos can be found on [Youtube](https://www.youtube.com), on [Rstudio](https://rstudio.com/resources/webinars/) and somewhere else
 
-Author: https://www.tu-dresden.de/Members/thomas.petzoldt
+This tutorial was made with R-Presentations of [RStudio](https://www.rstudio.org)
+
+Author: tpetzoldt +++
+[Homepage](https://www.tu-dresden.de/Members/thomas.petzoldt) +++
+[Github page](https://tpetzoldt.github.io)
 
 
