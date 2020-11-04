@@ -519,6 +519,24 @@ Vector vs. Bitmap Graphics
 * can always be converted to bitmap
 
 
+Further Reading
+===============
+
+More presentations:
+
+* [R Basics](RBasics.html)
+* [Functions everywhere](Functions.html)
+
+
+More details in the official R manuals, especially in [**An Introduction to R**](https://cran.r-project.org/doc/manuals/r-release/R-intro.html)
+
+Many videos can be found on [Youtube](https://www.youtube.com), on [Rstudio](https://rstudio.com/resources/webinars/) and somewhere else
+
+This tutorial was made with R-Presentations of [RStudio](https://www.rstudio.org)
+
+Author: tpetzoldt +++
+[Homepage](https://www.tu-dresden.de/Members/thomas.petzoldt) +++
+[Github page](https://tpetzoldt.github.io)
 
 
 

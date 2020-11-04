@@ -5,7 +5,7 @@
 Functions Everywhere
 ========================================================
 author: Thomas Petzoldt
-date: 2019-11-05
+date: 2020-11-04
 width: 1024
 height: 768
 css: RBasics.css
@@ -306,3 +306,21 @@ $b$      | exponent $>1$
 
 * Write a function for each functional reponse type and plot it.
 * Write a universal function for all types.
+
+Further Reading
+===============
+
+More presentations:
+
+* [R Basics](RBasics.html)
+* [Graphics in R](Graphics.html)
+
+More details in the official R manuals, especially in [**An Introduction to R**](https://cran.r-project.org/doc/manuals/r-release/R-intro.html)
+
+Many videos can be found on [Youtube](https://www.youtube.com), on [Rstudio](https://rstudio.com/resources/webinars/) and somewhere else
+
+This tutorial was made with R-Presentations of [RStudio](https://www.rstudio.org)
+
+Author: tpetzoldt +++
+[Homepage](https://www.tu-dresden.de/Members/thomas.petzoldt) +++
+[Github page](https://tpetzoldt.github.io)
