@@ -5,7 +5,7 @@
 Some Basics of the R Language
 ========================================================
 author: tpetzoldt
-date: 2020-11-04
+date: 2020-11-05
 width: 1024
 height: 768
 
@@ -13,19 +13,20 @@ height: 768
 Prerequisites
 ========================================================
 
-- R 4.x is installed:
-    * https://cloud.r-project.org/
-- Recent version of RStudio is installed
-    * https://rstudio.com/products/rstudio/download/#download
+- R 4.x is installed<br>
+      https://cloud.r-project.org/
+- Recent version of RStudio is installed<br>
+      https://rstudio.com/products/rstudio/download/#download
 - Install **R** first and **RStudio** second
-- works on Linux, Windows and MacOS
 
-***
+R and RStudio are available for Linux, Windows and MacOS
 
-- Basic intuitive experience with R
-- vectors, matrices, arithmetics
-- basic plotting
-- function arguments
+Outline
+========================================================
+1. Basic intuitive experience with R
+2. vectors, matrices, calculations
+3. basic plotting
+4. functions and function arguments
 
 
 Expressions and Assignments
