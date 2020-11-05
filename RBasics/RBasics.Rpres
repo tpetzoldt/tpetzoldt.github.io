@@ -23,10 +23,16 @@ R and RStudio are available for Linux, Windows and MacOS
 
 Outline
 ========================================================
-1. Basic intuitive experience with R
-2. vectors, matrices, calculations
-3. basic plotting
-4. functions and function arguments
+
+Goal: Basic intuitive experience with R
+
+1. Expressions and assignments
+2. Elements of the R language
+3. Data objects: vectors, matrices, algebra
+4. Data import
+5. Lists
+6. Loops and conditional execution
+7. Further reading
 
 
 Expressions and Assignments
@@ -388,6 +394,11 @@ $$
 ```{r}
 solve(A) %*% b
 ```
+
+Data frames and data import
+========================================================
+type: prompt
+
 
 Data frames
 ========================================================

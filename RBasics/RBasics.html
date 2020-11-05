@@ -607,7 +607,7 @@ body {
 
 
 .reveal table {
-  border-width: 0px;
+  border-width: 0;
   border-spacing: 2px;
   border-style: dotted;
   border-color: gray;
@@ -617,7 +617,7 @@ body {
 }
 
 .reveal table th {
-  border-width: 0px;
+  border-width: 0;
   padding-left: 10px;
   padding-right: 25px;
   font-weight: bold;
@@ -626,7 +626,7 @@ body {
 }
 
 .reveal table td {
-  border-width: 0px;
+  border-width: 0;
   padding-left: 10px;
   padding-right: 25px;
   border-style: dotted;
@@ -678,15 +678,6 @@ body {
   color: #1D355B;
 }
 
-li {
-  padding-left: 1em;
-  text-indent: -0.7em;
-}
-
-li:before {
-    content: "• ";
-    color: #EB8B38;
-}
 
 .reveal h3, {
   color: #0059A3;
@@ -698,12 +689,6 @@ li:before {
     padding-bottom: 10px;
     /*font-family: Impact, sans-serif;*/
 }
-
-/*
-.reveal li {
-  color: #0F0;
-}
-*/
 
 
 .reveal pre code {
@@ -993,7 +978,7 @@ hljs.initHighlightingOnLoad();
   <div class="slides">
 
 <section data-state="section" data-transition="linear" data-transition-speed="default">
-<h1>Some Basics of the R Language</h1><p>tpetzoldt<br/>2020-11-04</p>
+<h1>Some Basics of the R Language</h1><p>tpetzoldt<br/>2020-11-05</p>
 
 <div class="slideContent" >
 
@@ -1002,34 +987,34 @@ hljs.initHighlightingOnLoad();
 </section>
 <section data-transition="linear" data-transition-speed="default">
 <h3>Prerequisites</h3>
-<div class="column column1 slideContent" >
+<div class="slideContent" >
 <ul>
-<li>R 4.x is installed:
-
-<ul>
-<li><a href="https://cloud.r-project.org/">https://cloud.r-project.org/</a></li>
-</ul></li>
-<li>Recent version of RStudio is installed
-
-<ul>
-<li><a href="https://rstudio.com/products/rstudio/download/#download">https://rstudio.com/products/rstudio/download/#download</a></li>
-</ul></li>
+<li>R 4.x is installed<br>
+  <a href="https://cloud.r-project.org/">https://cloud.r-project.org/</a></li>
+<li>Recent version of RStudio is installed<br>
+  <a href="https://rstudio.com/products/rstudio/download/#download">https://rstudio.com/products/rstudio/download/#download</a></li>
 <li>Install <strong>R</strong> first and <strong>RStudio</strong> second</li>
-<li>works on Linux, Windows and MacOS</li>
 </ul>
 
+<p>R and RStudio are available for Linux, Windows and MacOS</p>
 
 </div>
 
-<div class="column column2 slideContent" >
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>Outline</h3>
+<div class="slideContent" >
+<p>Goal: Basic intuitive experience with R</p>
 
-
-<ul>
-<li>Basic intuitive experience with R</li>
-<li>vectors, matrices, arithmetics</li>
-<li>basic plotting</li>
-<li>function arguments</li>
-</ul>
+<ol>
+<li>Expressions and assignments</li>
+<li>Elements of the R language</li>
+<li>Data objects: vectors, matrices, algebra</li>
+<li>Data import</li>
+<li>Lists</li>
+<li>Loops and conditional execution</li>
+<li>Further reading</li>
+</ol>
 
 </div>
 
@@ -1675,6 +1660,13 @@ x  &= A^{-1}b
 [2,]   -2
 [3,]   -2
 </code></pre>
+
+</div>
+
+</section>
+<section data-state="prompt" data-transition="linear" data-transition-speed="default">
+<h3>Data frames and data import</h3>
+<div class="slideContent" >
 
 </div>
 

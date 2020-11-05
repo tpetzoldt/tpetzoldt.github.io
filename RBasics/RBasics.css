@@ -45,7 +45,7 @@
 
 
 .reveal table {
-  border-width: 0px;
+  border-width: 0;
   border-spacing: 2px;
   border-style: dotted;
   border-color: gray;
@@ -55,7 +55,7 @@
 }
 
 .reveal table th {
-  border-width: 0px;
+  border-width: 0;
   padding-left: 10px;
   padding-right: 25px;
   font-weight: bold;
@@ -64,7 +64,7 @@
 }
 
 .reveal table td {
-  border-width: 0px;
+  border-width: 0;
   padding-left: 10px;
   padding-right: 25px;
   border-style: dotted;
@@ -116,15 +116,6 @@
   color: #1D355B;
 }
 
-li {
-  padding-left: 1em;
-  text-indent: -0.7em;
-}
-
-li:before {
-    content: "• ";
-    color: #EB8B38;
-}
 
 .reveal h3, {
   color: #0059A3;
@@ -136,12 +127,6 @@ li:before {
     padding-bottom: 10px;
     /*font-family: Impact, sans-serif;*/
 }
-
-/*
-.reveal li {
-  color: #0F0;
-}
-*/
 
 
 .reveal pre code {
