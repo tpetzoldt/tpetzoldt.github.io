@@ -1,0 +1,1147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Thomas Petzoldt" />
+  <meta name="date" content="2020-12-14" />
+  <title>Basic one and two-way ANOVA with R</title>
+  <style type="text/css">
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+            code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode { white-space: pre; position: relative; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    code.sourceCode { white-space: pre-wrap; }
+    code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+          </style>
+  <style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="slides-anova_files/jquery-1.11.3/jquery.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="slides-anova_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="slides-anova_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+  <script src="slides-anova_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+  <script src="slides-anova_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+  <link href="slides-anova_files/slidy-2/styles/slidy.css" rel="stylesheet" />
+  <script src="slides-anova_files/slidy-2/scripts/slidy.js"></script>
+  <script src="slides-anova_files/slidy_shiny-1/slidy_shiny.js"></script>
+  <script src="slides-anova_files/kePrint-0.0.1/kePrint.js"></script>
+  <link href="slides-anova_files/lightable-0.0.1/lightable.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" media="screen, projection, print"
+   href="tp_slidy.css" />
+</head>
+<body>
+<div class="slide titlepage">
+  <h1 class="title">Basic one and two-way ANOVA with R</h1>
+  <p class="author">
+Thomas Petzoldt
+  </p>
+  <p class="date">2020-12-14</p>
+</div>
+<div class="slide section level2">
+
+<style>
+ h2, h3 {
+   color: #009de0;
+   font-size: 40px;
+}
+
+div.vbox {
+  float: left;
+  height: 40%; width: 50%;
+  margin-top: -220px;
+}
+div.hbox {
+  width:60%;  margin-top: 0;
+  margin-left:auto; margin-right:auto;
+  height: 60%;
+  border:1px solid silver;
+  // background:#F0F0F0;
+  overflow:auto;
+  text-align:left;
+  clear:both;
+}
+.math {
+  font-size: 95%;
+  padding-right: 1ex;
+}
+li::marker {
+  color: orange;
+}
+</style>
+</div>
+<div id="anova-analysis-of-variances" class="slide section level2 bigger">
+<h1>ANOVA – Analysis of variances</h1>
+<ul>
+<li>Testing of complex hypothesis as a whole, e.g.:
+<ul>
+<li>more than two samples (multiple test problem),</li>
+<li>several multiple factors (multiway ANOVA)</li>
+<li>elimination of covariates (ANCOVA)</li>
+<li>fixed and/or random effects (variance decomposition methods, mixed effects models)</li>
+</ul></li>
+<li>Different application scenarios:
+<ul>
+<li>explorative use: Which influence factors are important?</li>
+<li>descriptive use: Fitting of models for process description and forecasting.</li>
+<li>significance tests.</li>
+</ul></li>
+<li>ANOVA methods are (in most cases) based on linear models.</li>
+</ul>
+</div>
+<div id="a-practical-example" class="slide section level2">
+<h1>A practical example</h1>
+<p><img src="img/ansaetze.jpg" /></p>
+<h3 id="scientific-question">Scientific question</h3>
+<p>Find a suitable medium for growth experiments with green algae:</p>
+<ul>
+<li>Cheap, easy to handle</li>
+<li>Suitable for students courses and classroom experiments</li>
+</ul>
+<h3 id="idea">Idea</h3>
+<ul>
+<li>Use a commercial fertilizer with the main nutrients N and P</li>
+<li>Mineral water with trace elements</li>
+<li>Does non-sparkling mineral water contain enough <span class="math inline">\(\mathrm{HCO_3^-}\)</span>?</li>
+<li>Test how to improve (<span class="math inline">\(\mathrm{CO_2}\)</span>) availability for photosynthesis</li>
+</ul>
+</div>
+<div id="application" class="slide section level2 bigger">
+<h1>Application</h1>
+<h3 id="different-treatments">7 Different treatments</h3>
+<ul>
+<li>Fertilizer solution in closed bottles</li>
+<li>Fertilizer solution in open bottles (<span class="math inline">\(\mathrm{CO_2}\)</span> from air)</li>
+<li>Fertilizer + Sugar (organic C source)</li>
+<li>Fertilizer + additional <span class="math inline">\(\mathrm{HCO_3^-}\)</span> (add <span class="math inline">\(\mathrm{CaCO_3}\)</span> to sparkling mineral water)</li>
+<li>A standard algae growth medium (“Basal medium”) for comparison</li>
+<li>Deionized (“destilled”) water and tap water for comparison</li>
+</ul>
+</div>
+<div id="experimental-design" class="slide section level2">
+<h1>Experimental design</h1>
+<div align="center">
+<p><img src="img/ruettler.jpg" height=600></p>
+</div>
+<div style="padding-left: 10ex;">
+<ul>
+<li>each treatment with 3 replicates</li>
+<li>randomized experiment on a shaker</li>
+<li>16:8 light:dark-cycle</li>
+</ul>
+<p>Measurement directly in the bottles using a self-made turbidity meter</p>
+</div>
+</div>
+<div id="results" class="slide section level2">
+<h1>Results</h1>
+<div class="vbox">
+
+</div>
+<div class="hbox">
+<p><img src="img/ansaetze2.jpg" /> Fertilizer – Open Bottle – F. + Sugar – F. + CaCO3 – Basal medium – A. dest – Tap water</p>
+</div>
+</div>
+<div id="the-data-set" class="slide section level2">
+<h1>The data set</h1>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Data set: Growth from day 2 to day 6 (in relative units)
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+treat
+</th>
+<th style="text-align:right;">
+replicate 1
+</th>
+<th style="text-align:right;">
+replicate 2
+</th>
+<th style="text-align:right;">
+replicate 3
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Fertilizer
+</td>
+<td style="text-align:right;">
+0.020
+</td>
+<td style="text-align:right;">
+-0.217
+</td>
+<td style="text-align:right;">
+-0.273
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F. open
+</td>
+<td style="text-align:right;">
+0.940
+</td>
+<td style="text-align:right;">
+0.780
+</td>
+<td style="text-align:right;">
+0.555
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F.+sugar
+</td>
+<td style="text-align:right;">
+0.188
+</td>
+<td style="text-align:right;">
+-0.100
+</td>
+<td style="text-align:right;">
+0.020
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F.+CaCO3
+</td>
+<td style="text-align:right;">
+0.245
+</td>
+<td style="text-align:right;">
+0.236
+</td>
+<td style="text-align:right;">
+0.456
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bas.med.
+</td>
+<td style="text-align:right;">
+0.699
+</td>
+<td style="text-align:right;">
+0.727
+</td>
+<td style="text-align:right;">
+0.656
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A.dest
+</td>
+<td style="text-align:right;">
+-0.010
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+-0.010
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tap water
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+<td style="text-align:right;">
+-0.070
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>NA means “not available”, i.e. a missing value</li>
+<li>The crosstable structure is compact and nice for a slide, but not suitable for data analysis</li>
+<li>therefore, we use the long table format instead</li>
+</ul>
+</div>
+<div id="data-in-long-format" class="slide section level2">
+<h1>Data in long format</h1>
+<div class="left" style="float:left;width:48%">
+<p style="padding-bottom: 30ex">
+ 
+</p>
+<h2 id="advantages">Advantages</h2>
+<ul>
+<li>looks “stupid” but is better for data analysis</li>
+<li>dependend <strong>growth</strong> and explanation variable <strong>treat</strong> clearly visible</li>
+<li>easily extensible to <span class="math inline">\(&gt;1\)</span> explanation variable</li>
+</ul>
+</div>
+<div class='right' style='float:left;width:48%'>
+
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Data set: Growth from day 2 to day 6 (in relative units)
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+treat
+</th>
+<th style="text-align:right;">
+rep
+</th>
+<th style="text-align:right;">
+growth
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Fertilizer
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.020
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fertilizer
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+-0.217
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fertilizer
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+-0.273
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F. open
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.940
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F. open
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0.780
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F. open
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.555
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F.+sugar
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.188
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F.+sugar
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+-0.100
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F.+sugar
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.020
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F.+CaCO3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.245
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F.+CaCO3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0.236
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F.+CaCO3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.456
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bas.med.
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.699
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bas.med.
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0.727
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Bas.med.
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+0.656
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A.dest
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+-0.010
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A.dest
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A.dest
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+-0.010
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tap water
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0.030
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tap water
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+-0.070
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="the-data-in-r" class="slide section level2">
+<h1>The data in R</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>dat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb1-2"><a href="#cb1-2"></a>  <span class="dt">treat  =</span> <span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;Fertilizer&quot;</span>, <span class="st">&quot;Fertilizer&quot;</span>, <span class="st">&quot;Fertilizer&quot;</span>, </span>
+<span id="cb1-3"><a href="#cb1-3"></a>             <span class="st">&quot;F. open&quot;</span>, <span class="st">&quot;F. open&quot;</span>, <span class="st">&quot;F. open&quot;</span>, </span>
+<span id="cb1-4"><a href="#cb1-4"></a>             <span class="st">&quot;F.+sugar&quot;</span>, <span class="st">&quot;F.+sugar&quot;</span>, <span class="st">&quot;F.+sugar&quot;</span>, </span>
+<span id="cb1-5"><a href="#cb1-5"></a>             <span class="st">&quot;F.+CaCO3&quot;</span>, <span class="st">&quot;F.+CaCO3&quot;</span>, <span class="st">&quot;F.+CaCO3&quot;</span>, </span>
+<span id="cb1-6"><a href="#cb1-6"></a>             <span class="st">&quot;Bas.med.&quot;</span>, <span class="st">&quot;Bas.med.&quot;</span>, <span class="st">&quot;Bas.med.&quot;</span>, </span>
+<span id="cb1-7"><a href="#cb1-7"></a>             <span class="st">&quot;A.dest&quot;</span>, <span class="st">&quot;A.dest&quot;</span>, <span class="st">&quot;A.dest&quot;</span>, </span>
+<span id="cb1-8"><a href="#cb1-8"></a>             <span class="st">&quot;Tap water&quot;</span>, <span class="st">&quot;Tap water&quot;</span>),</span>
+<span id="cb1-9"><a href="#cb1-9"></a>             <span class="dt">levels=</span><span class="kw">c</span>(<span class="st">&quot;Fertilizer&quot;</span>, <span class="st">&quot;F. open&quot;</span>, <span class="st">&quot;F.+sugar&quot;</span>, </span>
+<span id="cb1-10"><a href="#cb1-10"></a>                    <span class="st">&quot;F.+CaCO3&quot;</span>, <span class="st">&quot;Bas.med.&quot;</span>, <span class="st">&quot;A.dest&quot;</span>, <span class="st">&quot;Tap water&quot;</span>)),</span>
+<span id="cb1-11"><a href="#cb1-11"></a>  <span class="dt">rep   =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>), </span>
+<span id="cb1-12"><a href="#cb1-12"></a>  <span class="dt">growth =</span> <span class="kw">c</span>(<span class="fl">0.02</span>, <span class="fl">-0.217</span>, <span class="fl">-0.273</span>, <span class="fl">0.94</span>, <span class="fl">0.78</span>, <span class="fl">0.555</span>, <span class="fl">0.188</span>, <span class="fl">-0.1</span>, <span class="fl">0.02</span>, </span>
+<span id="cb1-13"><a href="#cb1-13"></a>             <span class="fl">0.245</span>, <span class="fl">0.236</span>, <span class="fl">0.456</span>, <span class="fl">0.699</span>, <span class="fl">0.727</span>, <span class="fl">0.656</span>, <span class="fl">-0.01</span>, <span class="dv">0</span>, <span class="fl">-0.01</span>, <span class="fl">0.03</span>, <span class="fl">-0.07</span>)</span>
+<span id="cb1-14"><a href="#cb1-14"></a>)</span></code></pre></div>
+<p>… can be read from a <strong>csv</strong>-file or entered directly in the code.</p>
+</div>
+<div id="visualization" class="slide section level2">
+<h1>Visualization</h1>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">boxplot</span>(growth <span class="op">~</span><span class="st"> </span>treat, <span class="dt">data=</span>dat)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">abline</span>(<span class="dt">h=</span><span class="dv">0</span>, <span class="dt">lty=</span><span class="st">&quot;dashed&quot;</span>, <span class="dt">col=</span><span class="st">&quot;grey&quot;</span>)</span></code></pre></div>
+<p><img src="slides-anova_files/figure-slidy/unnamed-chunk-5-1.png" width="768" /></p>
+<p>But as we have only 2-3 replicates per box, it is better to plot the all values separately using <code>stripchart</code>:</p>
+<p><img src="slides-anova_files/figure-slidy/unnamed-chunk-6-1.png" width="768" /></p>
+</div>
+<div id="statistical-approach-and-the-bonferroni-law" class="slide section level2">
+<h1>Statistical approach and the Bonferroni law</h1>
+<h3 id="questions">Questions</h3>
+<ul>
+<li>Are the treatments different?</li>
+<li>Which medium is the best?</li>
+<li>Is the best medium significantly better than the others?</li>
+</ul>
+<h3 id="hypotheses">Hypotheses</h3>
+<ul>
+<li><span class="math inline">\(H_0\)</span> growth is the same in all treatments</li>
+<li><span class="math inline">\(H_A\)</span> differences between media</li>
+</ul>
+<h3 id="why-cant-we-apply-just-several-t-tests">Why can’t we apply just several t-tests?</h3>
+<ul>
+<li>If we have 7 treatments and want to test all against each other, we would need <span class="math inline">\(7 \cdot (7 - 1) / 2 = 21\)</span>  tests.</li>
+<li>If we set <span class="math inline">\(\alpha = 0.05\)</span> we will get 5% false positives, i.e. one of 20 tests is on average false positive</li>
+<li>This means that we do N tests, we may increase the overall <span class="math inline">\(\alpha\)</span> error in the worst case to a value of <span class="math inline">\(N\alpha\)</span>.</li>
+<li>This is called <strong>alpha-error-inflation</strong> or the <strong>Bonferroni</strong> law:</li>
+</ul>
+<p><span class="math display">\[
+\alpha_{total} \le \sum_{i=1}^{N} \alpha_i = N \cdot \alpha
+\]</span></p>
+<ul>
+<li>If we ignore the Bonferroni law, we end in <strong>statistical fishing</strong> i.e. we get spurious results just by chance.</li>
+</ul>
+<h3 id="solutions">Solutions</h3>
+<ul>
+<li>One approach can be to down-correct the alpha errors so that <span class="math inline">\(\alpha_{total} = 0.05\)</span></li>
+<li>The preferred approach is to use a method that does all tests simultanaeously: the ANOVA.</li>
+</ul>
+</div>
+<div id="anova-analysis-of-variances-1" class="slide section level2">
+<h1>ANOVA: Analysis of variances</h1>
+<h3 id="basic-idea">Basic Idea</h3>
+<ul>
+<li>split the total variance into effect(s) and errors:</li>
+</ul>
+<p><span class="math display">\[
+s_y^2 = s^2_\mathrm{effect} + s^2_{\varepsilon}
+\]</span></p>
+<ul>
+<li>The most surprising is, that we use variances to compare mean values. The reason for this is, that differences of means contribute to the total variance of the whole sample. Sometimes, the variance components are also called <strong>variance within</strong> (<span class="math inline">\(s^2_\varepsilon\)</span>) and variance <strong>between</strong> samples.</li>
+<li>The way how to separate variances is a linear model.</li>
+</ul>
+<p style="padding-bottom: 5ex">
+ 
+</p>
+<h3 id="example">Example</h3>
+<p>We have two brands of Clementines from a shop “E”, that we encode as “EB” and “EP”. We want to know whether the premium brand (“P”) and the basic brand (“B”) have a different weight.</p>
+<p>Instead of a t-test we encode “EB” with 1 and “EP” with 2.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>clem_edeka &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb3-2"><a href="#cb3-2"></a>  <span class="dt">brand =</span> <span class="kw">c</span>(<span class="st">&quot;EP&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, </span>
+<span id="cb3-3"><a href="#cb3-3"></a>            <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EP&quot;</span>, <span class="st">&quot;EP&quot;</span>, <span class="st">&quot;EP&quot;</span>, <span class="st">&quot;EP&quot;</span>, <span class="st">&quot;EP&quot;</span>, <span class="st">&quot;EP&quot;</span>, <span class="st">&quot;EP&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EP&quot;</span>),</span>
+<span id="cb3-4"><a href="#cb3-4"></a>  <span class="dt">weight =</span> <span class="kw">c</span>(<span class="dv">88</span>, <span class="dv">96</span>, <span class="dv">100</span>, <span class="dv">96</span>, <span class="dv">90</span>, <span class="dv">100</span>, <span class="dv">92</span>, <span class="dv">92</span>, <span class="dv">102</span>, <span class="dv">99</span>, <span class="dv">86</span>, <span class="dv">89</span>, <span class="dv">99</span>, <span class="dv">89</span>, <span class="dv">75</span>, <span class="dv">80</span>, </span>
+<span id="cb3-5"><a href="#cb3-5"></a>             <span class="dv">81</span>, <span class="dv">96</span>, <span class="dv">82</span>, <span class="dv">98</span>, <span class="dv">80</span>, <span class="dv">107</span>, <span class="dv">88</span>)</span>
+<span id="cb3-6"><a href="#cb3-6"></a>)</span>
+<span id="cb3-7"><a href="#cb3-7"></a></span>
+<span id="cb3-8"><a href="#cb3-8"></a>clem_edeka<span class="op">$</span>code &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">factor</span>(clem_edeka<span class="op">$</span>brand))</span>
+<span id="cb3-9"><a href="#cb3-9"></a></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="kw">plot</span>(weight <span class="op">~</span><span class="st"> </span>code, <span class="dt">data=</span>clem_edeka, <span class="dt">axe=</span><span class="ot">FALSE</span>)</span>
+<span id="cb3-11"><a href="#cb3-11"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(weight <span class="op">~</span><span class="st"> </span>code, <span class="dt">data=</span>clem_edeka)</span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">at=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EP&quot;</span>)); <span class="kw">axis</span>(<span class="dv">2</span>); <span class="kw">box</span>()</span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="kw">abline</span>(m, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<p><img src="slides-anova_files/figure-slidy/unnamed-chunk-7-1.png" width="768" /></p>
+<h4 id="total-variance">Total variance</h4>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>(var_tot &lt;-<span class="st"> </span><span class="kw">var</span>(clem_edeka<span class="op">$</span>weight))</span></code></pre></div>
+<pre><code>## [1] 68.98814</code></pre>
+<h4 id="residual-variance-alias-within-variance">Residual variance (alias “within variance”)</h4>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>(var_res &lt;-<span class="st"> </span><span class="kw">var</span>(<span class="kw">residuals</span>(m)))</span></code></pre></div>
+<pre><code>## [1] 43.25</code></pre>
+<ul>
+<li>Between variance or explained variance</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="dv">1</span> <span class="op">-</span><span class="st"> </span>var_res <span class="op">/</span><span class="st"> </span>var_tot</span></code></pre></div>
+<pre><code>## [1] 0.3730807</code></pre>
+<p><strong>Exercise:</strong></p>
+<ul>
+<li>Perform a t-Test for the two Clementine brands</li>
+<li>Compare the p-value of the t-test with the p-value of an ANOVA</li>
+</ul>
+</div>
+<div id="anova-in-r" class="slide section level2">
+<h1>ANOVA in R</h1>
+<p>Back to the algae growth data. Let’s call the linear model <code>m</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>treat, <span class="dt">data=</span>dat)</span></code></pre></div>
+<p>We can then print the coefficients of the linear model with <code>summary(m)</code>, but the more common way is to use the <code>anova</code>function</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">anova</span>(m)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: growth
+##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## treat      6 2.35441 0.39240  25.045 1.987e-06 ***
+## Residuals 13 0.20368 0.01567                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The ANOVA table shows the F-tests testing for significance of all factors. In the table above, we have only one single factor.</p>
+<p>We see that the treatment had a significant effect.</p>
+</div>
+<div id="posthoc-tests" class="slide section level2">
+<h1>Posthoc tests</h1>
+<p>The test above showed only, that the <strong>factor</strong> “treatment” had a significant effect, but we don’t know which <strong>levels</strong> of the factor are different. Here we apply a so-called posthoc test.</p>
+<p>Different posthoc tests exist, here we use the <strong>Tukey HSD test</strong> that is the most common.</p>
+<p>The <code>TukeyHSD</code> function has a numerical and a graphical output.</p>
+<h3 id="tukey-hsd-test">Tukey HSD test</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>tk &lt;-<span class="st"> </span><span class="kw">TukeyHSD</span>(<span class="kw">aov</span>(m))</span>
+<span id="cb13-2"><a href="#cb13-2"></a>tk</span></code></pre></div>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = m)
+## 
+## $treat
+##                             diff         lwr         upr     p adj
+## F. open-Fertilizer    0.91500000  0.56202797  1.26797203 0.0000103
+## F.+sugar-Fertilizer   0.19266667 -0.16030537  0.54563870 0.5211198
+## F.+CaCO3-Fertilizer   0.46900000  0.11602797  0.82197203 0.0069447
+## Bas.med.-Fertilizer   0.85066667  0.49769463  1.20363870 0.0000231
+## A.dest-Fertilizer     0.15000000 -0.20297203  0.50297203 0.7579063
+## Tap water-Fertilizer  0.13666667 -0.25796806  0.53130140 0.8837597
+## F.+sugar-F. open     -0.72233333 -1.07530537 -0.36936130 0.0001312
+## F.+CaCO3-F. open     -0.44600000 -0.79897203 -0.09302797 0.0102557
+## Bas.med.-F. open     -0.06433333 -0.41730537  0.28863870 0.9943994
+## A.dest-F. open       -0.76500000 -1.11797203 -0.41202797 0.0000721
+## Tap water-F. open    -0.77833333 -1.17296806 -0.38369860 0.0001913
+## F.+CaCO3-F.+sugar     0.27633333 -0.07663870  0.62930537 0.1727182
+## Bas.med.-F.+sugar     0.65800000  0.30502797  1.01097203 0.0003363
+## A.dest-F.+sugar      -0.04266667 -0.39563870  0.31030537 0.9994197
+## Tap water-F.+sugar   -0.05600000 -0.45063473  0.33863473 0.9985686
+## Bas.med.-F.+CaCO3     0.38166667  0.02869463  0.73463870 0.0307459
+## A.dest-F.+CaCO3      -0.31900000 -0.67197203  0.03397203 0.0879106
+## Tap water-F.+CaCO3   -0.33233333 -0.72696806  0.06230140 0.1247914
+## A.dest-Bas.med.      -0.70066667 -1.05363870 -0.34769463 0.0001792
+## Tap water-Bas.med.   -0.71400000 -1.10863473 -0.31936527 0.0004507
+## Tap water-A.dest     -0.01333333 -0.40796806  0.38130140 0.9999997</code></pre>
+<h3 id="graphical-output">Graphical output</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">plot</span>(tk)</span></code></pre></div>
+<p><img src="slides-anova_files/figure-slidy/unnamed-chunk-14-1.png" width="768" /></p>
+</div>
+<div id="anova-assumptions-and-diagnostics" class="slide section level2">
+<h1>ANOVA assumptions and diagnostics</h1>
+<p>The assumptions of the ANOVA are the same as for the linear model. In short:</p>
+<ol style="list-style-type: decimal">
+<li>Independence of errors</li>
+<li>Variance homogeneity</li>
+<li>Approximate normality of errors</li>
+</ol>
+<p>Again, graphical methods are preferred. The easiest is <code>plot(m)</code>.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">plot</span>(m, <span class="dt">which=</span><span class="dv">1</span>)</span></code></pre></div>
+<p><img src="slides-anova_files/figure-slidy/unnamed-chunk-15-1.png" width="768" /></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">plot</span>(m, <span class="dt">which=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="slides-anova_files/figure-slidy/unnamed-chunk-16-1.png" width="768" /></p>
+<p>It is also possible to test variance homogeneity. Instead of an F-test that can only compare two variances, we need a test that can compare more than two, for example the Fligner-Killeen-test:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw">fligner.test</span>(growth <span class="op">~</span><span class="st"> </span>treat, <span class="dt">data=</span>dat)</span></code></pre></div>
+<pre><code>## 
+##  Fligner-Killeen test of homogeneity of variances
+## 
+## data:  growth by treat
+## Fligner-Killeen:med chi-squared = 4.2095, df = 6, p-value = 0.6483</code></pre>
+</div>
+<div id="one-way-anova-with-heterogeneous-variances" class="slide section level2">
+<h1>One-way ANOVA with heterogeneous variances</h1>
+<p>If variances are not equal we can use an extension of the Welch test for <span class="math inline">\(\ge 2\)</span> samples, in R called <code>oneway.test</code> instead of the one-way ANOVA :</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="kw">oneway.test</span>(growth <span class="op">~</span><span class="st"> </span>treat, <span class="dt">data=</span>dat)</span></code></pre></div>
+<pre><code>## 
+##  One-way analysis of means (not assuming equal variances)
+## 
+## data:  growth and treat
+## F = 115.09, num df = 6.0000, denom df = 4.6224, p-value = 6.57e-05</code></pre>
+</div>
+<div id="two-way-anova" class="slide section level2">
+<h1>Two-way ANOVA</h1>
+<ul>
+<li>Example from a statistics text book, Crawley (2002)</li>
+<li>Effects of diet and coat color on growth of Hamsters in Gramm per time (constructed data set)</li>
+</ul>
+<div style="align: center">
+<p><img src="img/hams-crosstable.jpg" alt="Hamster growth" style="width:30%"></p>
+</div>
+<ul>
+<li>Factorial experiment (<strong>with replicates</strong>)</li>
+<li>Each factor combination (cell) contains more than one observation.</li>
+</ul>
+<p>Without replication: only one experiment per factor combination. This is possible, but does not allow to identify interaction effects.</p>
+</div>
+<div id="tidy-data" class="slide section level2">
+<h1>Tidy data</h1>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>hams &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">No =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">12</span>,</span>
+<span id="cb22-2"><a href="#cb22-2"></a>                   <span class="dt">growth =</span> <span class="kw">c</span>(<span class="fl">6.6</span>, <span class="fl">7.2</span>, <span class="fl">6.9</span>, <span class="fl">8.3</span>, <span class="fl">7.9</span>, <span class="fl">9.2</span>,</span>
+<span id="cb22-3"><a href="#cb22-3"></a>                            <span class="fl">8.3</span>, <span class="fl">8.7</span>, <span class="fl">8.1</span>, <span class="fl">8.5</span>, <span class="fl">9.1</span>, <span class="fl">9.0</span>),</span>
+<span id="cb22-4"><a href="#cb22-4"></a>                   <span class="dt">diet =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>), <span class="dt">each=</span><span class="dv">2</span>),</span>
+<span id="cb22-5"><a href="#cb22-5"></a>                   <span class="dt">coat =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;light&quot;</span>, <span class="st">&quot;dark&quot;</span>), <span class="dt">each=</span><span class="dv">6</span>)</span>
+<span id="cb22-6"><a href="#cb22-6"></a>                   )</span></code></pre></div>
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Data set: Growth of hamsters (in gramm)
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+No
+</th>
+<th style="text-align:right;">
+growth
+</th>
+<th style="text-align:left;">
+diet
+</th>
+<th style="text-align:left;">
+coat
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+6.6
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+light
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+7.2
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+light
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+6.9
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:left;">
+light
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+8.3
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:left;">
+light
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+7.9
+</td>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:left;">
+light
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+9.2
+</td>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:left;">
+light
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+8.3
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+dark
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+8.7
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+dark
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+8.1
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:left;">
+dark
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+8.5
+</td>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:left;">
+dark
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+9.1
+</td>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:left;">
+dark
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+9.0
+</td>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:left;">
+dark
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="visualization-and-anova" class="slide section level2">
+<h1>Visualization and ANOVA</h1>
+<p><img src="slides-anova_files/figure-slidy/unnamed-chunk-22-1.png" width="768" /></p>
+<h3 id="anova">ANOVA</h3>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(growth<span class="op">~</span>coat<span class="op">*</span>diet, <span class="dt">data=</span>hams)</span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="kw">anova</span>(m)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: growth
+##           Df  Sum Sq Mean Sq F value  Pr(&gt;F)  
+## coat       1 2.61333 2.61333  7.2258 0.03614 *
+## diet       2 2.66000 1.33000  3.6774 0.09069 .
+## coat:diet  2 0.68667 0.34333  0.9493 0.43833  
+## Residuals  6 2.17000 0.36167                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<h3 id="interaction-plot">Interaction plot</h3>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="kw">with</span>(hams, <span class="kw">interaction.plot</span>(diet, coat, growth, <span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;brown&quot;</span>, <span class="st">&quot;orange&quot;</span>), <span class="dt">lty=</span><span class="dv">1</span>, <span class="dt">lwd=</span><span class="dv">2</span>))</span></code></pre></div>
+<p><img src="slides-anova_files/figure-slidy/unnamed-chunk-24-1.png" width="768" /></p>
+</div>
+<div id="diagnostics" class="slide section level2">
+<h1>Diagnostics</h1>
+<h3 id="assumptions">Assumptions</h3>
+<ol style="list-style-type: decimal">
+<li>independence of measurements (within samples)</li>
+<li>Variance homogeneity of residuals</li>
+<li>Normal distribution of residuals</li>
+</ol>
+<p>Note: test of assumptions only possible after fitting the model. ⇒ Fit the ANOVA model first, then check if it was correct!</p>
+<h3 id="diagnostic-tools">Diagnostic tools</h3>
+<ul>
+<li>Box plot</li>
+<li>Plot of residuals vs. mean values</li>
+<li>Q-Q-plot of residuals</li>
+<li>Fligner-Killeen test (alternative: some people recommend the Levene-Test)</li>
+</ul>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="kw">par</span>(<span class="dt">cex=</span><span class="fl">1.2</span>, <span class="dt">las=</span><span class="dv">1</span>)</span>
+<span id="cb26-3"><a href="#cb26-3"></a><span class="kw">qqnorm</span>(<span class="kw">residuals</span>(m))</span>
+<span id="cb26-4"><a href="#cb26-4"></a><span class="kw">qqline</span>(<span class="kw">residuals</span>(m))</span>
+<span id="cb26-5"><a href="#cb26-5"></a></span>
+<span id="cb26-6"><a href="#cb26-6"></a><span class="kw">plot</span>(<span class="kw">residuals</span>(m)<span class="op">~</span><span class="kw">fitted</span>(m))</span>
+<span id="cb26-7"><a href="#cb26-7"></a><span class="kw">abline</span>(<span class="dt">h=</span><span class="dv">0</span>)</span></code></pre></div>
+<p><img src="slides-anova_files/figure-slidy/unnamed-chunk-25-1.png" width="768" /></p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="kw">fligner.test</span>(growth <span class="op">~</span><span class="st"> </span><span class="kw">interaction</span>(coat, diet), <span class="dt">data=</span>hams)</span></code></pre></div>
+<pre><code>## 
+##  Fligner-Killeen test of homogeneity of variances
+## 
+## data:  growth by interaction(coat, diet)
+## Fligner-Killeen:med chi-squared = 10.788, df = 5, p-value = 0.05575</code></pre>
+</div>
+<div id="outlook" class="slide section level2">
+<h1>Outlook</h1>
+<h3 id="will-follow-soon">… will follow soon</h3>
+<ul>
+<li>Sequential Bonferroni test</li>
+<li>ANCOVA</li>
+<li>Type II and III ANOVA</li>
+<li>Model Selection</li>
+<li>AIC, BIC</li>
+<li>step</li>
+<li>Summary</li>
+<li>Avoid p-value hacking!</li>
+</ul>
+</div>
+
+  <!-- dynamically load mathjax for compatibility with self-contained -->
+  <script>
+    (function () {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+      document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+  </script>
+
+</body>
+</html>
