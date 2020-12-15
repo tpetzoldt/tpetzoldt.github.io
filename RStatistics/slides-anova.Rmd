@@ -15,6 +15,15 @@ output:
     self_contained: no
 ---
 
+Preface
+--------------------------------------------------------------------------------
+
+* Work in progress ...
+* This HTML document is intended to amend the PDF lecture slides
+* questions and comments to: https://tu-dresden.de/Members/thomas.petzoldt
+* Photos and algae growth data were created as part of a Highschool internship
+* Many thanks to C. Belger for his contribution.
+
 <style>
  h2, h3 {
    color: #009de0;
@@ -45,6 +54,7 @@ li::marker {
 }
 </style>
 
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 library("dplyr")
@@ -53,7 +63,8 @@ library("kableExtra")
 mypar <- list(las=1, cex.lab=1.4, cex.axis=1.4, lwd=2)
 ```
 
-ANOVA – Analysis of variances {.bigger}
+
+ANOVA – Analysis of Variances
 --------------------------------------------------------------------------------
 * Testing of complex hypothesis as a whole, e.g.:
     * more than two samples (multiple test problem),
@@ -91,7 +102,7 @@ Find a suitable medium for growth experiments with green algae:
 * Does non-sparkling mineral water contain enough $\mathrm{HCO_3^-}$?
 * Test how to improve ($\mathrm{CO_2}$) availability for photosynthesis
 
-Application  {.bigger}
+Application
 --------------------------------------------------------------------------------
 
 ### 7 Different treatments
@@ -277,6 +288,7 @@ whole sample. Sometimes, the variance components are also called **variance with
 * The way how to separate variances is a linear model.
 
 <p style="padding-bottom: 5ex">&nbsp;</p>
+
 ### Example
 
 We have two brands of Clementines from a shop "E", that we encode as "EB" and "EP".
@@ -301,19 +313,19 @@ axis(1, at=c(1,2), labels=c("EB", "EP")); axis(2); box()
 abline(m, col="blue")
 ```
 
-#### Total variance
+### Total variance
 
 ```{r, echo=TRUE}
 (var_tot <- var(clem_edeka$weight))
 ```
 
-#### Residual variance (alias "within variance")
+### Residual variance (alias "within variance")
 
 ```{r, echo=TRUE}
 (var_res <- var(residuals(m)))
 ```
 
-* Between variance or explained variance
+### Between variance or explained variance
 
 ```{r, echo=TRUE}
 1 - var_res / var_tot
@@ -367,6 +379,8 @@ tk
 ### Graphical output
 
 ```{r, echo=TRUE}
+par(las = 1)             # las = 1 make y annotation horizontal
+par(mar = c(4, 10, 3, 1)) # more space at the left for axis annotation
 plot(tk)
 ```
 
@@ -511,7 +525,7 @@ fligner.test(growth ~ interaction(coat, diet), data=hams)
 Outlook
 --------------------------------------------------------------------------------
 
-### ... will follow soon
+### ... will follow next
 
 
 * Sequential Bonferroni test

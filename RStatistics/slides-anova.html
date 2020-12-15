@@ -167,8 +167,15 @@ Thomas Petzoldt
   </p>
   <p class="date">2020-12-14</p>
 </div>
-<div class="slide section level2">
-
+<div id="preface" class="slide section level2">
+<h1>Preface</h1>
+<ul>
+<li>Work in progress …</li>
+<li>This HTML document is intended to amend the PDF lecture slides</li>
+<li>questions and comments to: <a href="https://tu-dresden.de/Members/thomas.petzoldt" class="uri">https://tu-dresden.de/Members/thomas.petzoldt</a></li>
+<li>Photos and algae growth data were created as part of a Highschool internship</li>
+<li>Many thanks to C. Belger for his contribution.</li>
+</ul>
 <style>
  h2, h3 {
    color: #009de0;
@@ -199,8 +206,8 @@ li::marker {
 }
 </style>
 </div>
-<div id="anova-analysis-of-variances" class="slide section level2 bigger">
-<h1>ANOVA – Analysis of variances</h1>
+<div id="anova-analysis-of-variances" class="slide section level2">
+<h1>ANOVA – Analysis of Variances</h1>
 <ul>
 <li>Testing of complex hypothesis as a whole, e.g.:
 <ul>
@@ -235,7 +242,7 @@ li::marker {
 <li>Test how to improve (<span class="math inline">\(\mathrm{CO_2}\)</span>) availability for photosynthesis</li>
 </ul>
 </div>
-<div id="application" class="slide section level2 bigger">
+<div id="application" class="slide section level2">
 <h1>Application</h1>
 <h3 id="different-treatments">7 Different treatments</h3>
 <ul>
@@ -747,15 +754,13 @@ s_y^2 = s^2_\mathrm{effect} + s^2_{\varepsilon}
 <span id="cb3-12"><a href="#cb3-12"></a><span class="kw">axis</span>(<span class="dv">1</span>, <span class="dt">at=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EP&quot;</span>)); <span class="kw">axis</span>(<span class="dv">2</span>); <span class="kw">box</span>()</span>
 <span id="cb3-13"><a href="#cb3-13"></a><span class="kw">abline</span>(m, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
 <p><img src="slides-anova_files/figure-slidy/unnamed-chunk-7-1.png" width="768" /></p>
-<h4 id="total-variance">Total variance</h4>
+<h3 id="total-variance">Total variance</h3>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>(var_tot &lt;-<span class="st"> </span><span class="kw">var</span>(clem_edeka<span class="op">$</span>weight))</span></code></pre></div>
 <pre><code>## [1] 68.98814</code></pre>
-<h4 id="residual-variance-alias-within-variance">Residual variance (alias “within variance”)</h4>
+<h3 id="residual-variance-alias-within-variance">Residual variance (alias “within variance”)</h3>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>(var_res &lt;-<span class="st"> </span><span class="kw">var</span>(<span class="kw">residuals</span>(m)))</span></code></pre></div>
 <pre><code>## [1] 43.25</code></pre>
-<ul>
-<li>Between variance or explained variance</li>
-</ul>
+<h3 id="between-variance-or-explained-variance">Between variance or explained variance</h3>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="dv">1</span> <span class="op">-</span><span class="st"> </span>var_res <span class="op">/</span><span class="st"> </span>var_tot</span></code></pre></div>
 <pre><code>## [1] 0.3730807</code></pre>
 <p><strong>Exercise:</strong></p>
@@ -818,7 +823,9 @@ s_y^2 = s^2_\mathrm{effect} + s^2_{\varepsilon}
 ## Tap water-Bas.med.   -0.71400000 -1.10863473 -0.31936527 0.0004507
 ## Tap water-A.dest     -0.01333333 -0.40796806  0.38130140 0.9999997</code></pre>
 <h3 id="graphical-output">Graphical output</h3>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">plot</span>(tk)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">par</span>(<span class="dt">las =</span> <span class="dv">1</span>)             <span class="co"># las = 1 make y annotation horizontal</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="kw">par</span>(<span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">10</span>, <span class="dv">3</span>, <span class="dv">1</span>)) <span class="co"># more space at the left for axis annotation</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="kw">plot</span>(tk)</span></code></pre></div>
 <p><img src="slides-anova_files/figure-slidy/unnamed-chunk-14-1.png" width="768" /></p>
 </div>
 <div id="anova-assumptions-and-diagnostics" class="slide section level2">
@@ -1120,7 +1127,7 @@ dark
 </div>
 <div id="outlook" class="slide section level2">
 <h1>Outlook</h1>
-<h3 id="will-follow-soon">… will follow soon</h3>
+<h3 id="will-follow-next">… will follow next</h3>
 <ul>
 <li>Sequential Bonferroni test</li>
 <li>ANCOVA</li>
