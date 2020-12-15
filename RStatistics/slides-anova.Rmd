@@ -21,7 +21,7 @@ Preface
 * Work in progress ...
 * This HTML document is intended to amend the PDF lecture slides
 * questions and comments to: https://tu-dresden.de/Members/thomas.petzoldt
-* Photos and algae growth data were created as part of a Highschool internship
+* Photos and algae growth data were created as part of a highschool internship project
 * Many thanks to C. Belger for his contribution.
 
 <style>
@@ -125,8 +125,7 @@ Experimental design
 * each treatment with 3 replicates
 * randomized experiment on a shaker
 * 16:8 light:dark-cycle
-
-Measurement directly in the bottles using a self-made turbidity meter
+* Measurement directly in the bottles using a self-made [turbidity meter](https://tpetzoldt.github.io/growthlab/doc/versuchsaufbau.html)
 </div>
 
 Results
