@@ -7,7 +7,7 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
   <meta name="author" content="Thomas Petzoldt" />
-  <meta name="date" content="2020-12-14" />
+  <meta name="date" content="2021-01-04" />
   <title>Basic one and two-way ANOVA with R</title>
   <style type="text/css">
     code{white-space: pre-wrap;}
@@ -165,7 +165,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <p class="author">
 Thomas Petzoldt
   </p>
-  <p class="date">2020-12-14</p>
+  <p class="date">2021-01-04</p>
 </div>
 <div id="preface" class="slide section level2">
 <h1>Preface</h1>
@@ -1102,7 +1102,8 @@ dark
 <li>Variance homogeneity of residuals</li>
 <li>Normal distribution of residuals</li>
 </ol>
-<p>Note: test of assumptions only possible after fitting the model. ⇒ Fit the ANOVA model first, then check if it was correct!</p>
+<p>Note: test of assumptions only possible after fitting the model.</p>
+<p>⇒ Fit the ANOVA model first, then check if it was correct!</p>
 <h3 id="diagnostic-tools">Diagnostic tools</h3>
 <ul>
 <li>Box plot</li>
@@ -1125,11 +1126,55 @@ dark
 ## data:  growth by interaction(coat, diet)
 ## Fligner-Killeen:med chi-squared = 10.788, df = 5, p-value = 0.05575</code></pre>
 </div>
+<div id="sequential-holm-bonferroni-method" class="slide section level2">
+<h1>Sequential Holm-Bonferroni method</h1>
+<ul>
+<li>Also called Holm procedure <span class="citation">(Holm 1979)</span></li>
+<li>Easy to use</li>
+<li>Can be applied to any multiple test problem</li>
+<li>Less conservative that ordinary Bonferroni correction, but …</li>
+<li>… still a very conservative approach</li>
+<li>see also <a href="https://en.wikipedia.org/wiki/Holm%E2%80%93Bonferroni_method">Wikipedia</a></li>
+</ul>
+<h3 id="algorithm">Algorithm</h3>
+<ol style="list-style-type: decimal">
+<li>Select smallest <span class="math inline">\(p\)</span> out of all <span class="math inline">\(n\)</span> <span class="math inline">\(p\)</span>-values</li>
+<li>If <span class="math inline">\(p \cdot n &lt; \alpha\)</span> <span class="math inline">\(\Rightarrow\)</span> significant, else <bf>STOP</bf></li>
+<li>Set <span class="math inline">\(n − 1 \rightarrow n\)</span>, remove smallest <span class="math inline">\(p\)</span> from the list and go to step 1.</li>
+</ol>
+<h3 id="example-1">Example</h3>
+<p>Growth rate per day (<span class="math inline">\(d^{-1}\)</span>) of blue-green algae cultures (<em>Pseudanabaena</em>) after adding toxic peptides from another blue-green algae (<em>Microcystis</em>).</p>
+<p>The original hypothesis was that Microcystin LR (MCYST) or a derivative of it (Substance A) inhibits growth.</p>
+<h3 id="approach-1-one-way-anova">Approach 1: one-way ANOVA</h3>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: mu
+##           Df     Sum Sq    Mean Sq F value   Pr(&gt;F)   
+## treat      2 0.00053293 2.6647e-04   8.775 0.004485 **
+## Residuals 12 0.00036440 3.0367e-05                    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p><img src="slides-anova_files/figure-slidy/unnamed-chunk-28-1.png" width="768" /></p>
+<h3 id="approach-2-multiple-t-tests-with-sequential-bonferroni-correction">Approach 2: multiple t-Tests with sequential Bonferroni correction</h3>
+<p>We separate the data set in single subsets:</p>
+<p>and perform 3 t-Tests:</p>
+<p>The following shows the raw p-values without correction:</p>
+<pre><code>## [1] 0.576275261 0.027378832 0.001190592</code></pre>
+<p>and with Holm correction:</p>
+<pre><code>## [1] 0.576275261 0.054757664 0.003571775</code></pre>
+<h3 id="conclusions-i">Conclusions I</h3>
+<h4 id="statistical-methods">Statistical methods</h4>
+<p>We see that only the last p-value (MCYST vs. Subst A) remains significant. This indicates that Holm corrected t-tests are more conservative than TukeyHSD (only one compared to two significant) effects.</p>
+<p>A ANOVA with posthoc test is in general preferred but the sequential Bonferroni can be helpful in special cases. Moreover, it demonstrates clearly that massive multiple testing needs to be avoided.</p>
+<h4 id="interpretation">Interpretation</h4>
+<p>Regarding our original hypothesis, we can see that MCYST and Subst. A did not inhibit growth of <em>Pseudanabaena</em>. in fact Subst. A seemed to stimulate growth.</p>
+<p>This was contrary to our expectations – the biological reason was then found 10 years later.</p>
+<p>More about this can be found in <span class="citation">Jähnichen, Petzoldt, and Benndorf (2001)</span>, <span class="citation">Jähnichen et al. (2007)</span>, <span class="citation">Jähnichen, Long, and Petzoldt (2011)</span> and <span class="citation">Zilliges et al. (2011)</span></p>
+</div>
 <div id="outlook" class="slide section level2">
 <h1>Outlook</h1>
 <h3 id="will-follow-next">… will follow next</h3>
 <ul>
-<li>Sequential Bonferroni test</li>
 <li>ANCOVA</li>
 <li>Type II and III ANOVA</li>
 <li>Model Selection</li>
@@ -1138,6 +1183,26 @@ dark
 <li>Summary</li>
 <li>Avoid p-value hacking!</li>
 </ul>
+</div>
+<div id="bibliography" class="slide section level2 unnumbered">
+<h1>Bibliography</h1>
+<div id="refs" class="references">
+<div id="ref-Holm1979">
+<p>Holm, Sture. 1979. “A Simple Sequentially Rejective Multiple Test Procedure.” <em>Scandinavian Journal of Statistics</em>, 65–70. <a href="https://www.jstor.org/stable/4615733">https://www.jstor.org/stable/4615733</a>.</p>
+</div>
+<div id="ref-Jahnichen2011">
+<p>Jähnichen, Sabine, Benedict M. Long, and Thomas Petzoldt. 2011. “Microcystin Production by Microcystis Aeruginosa: Direct Regulation by Multiple Environmental Factors.” <em>Harmful Algae</em> 12: 95–104. <a href="https://doi.org/10.1016/j.hal.2011.09.002">https://doi.org/10.1016/j.hal.2011.09.002</a>.</p>
+</div>
+<div id="ref-Jahnichen2001">
+<p>Jähnichen, Sabine, Thomas Petzoldt, and Jürgen Benndorf. 2001. “Evidence for Control of Microcystin Dynamics in Bautzen Reservoir (Germany) by Cyanobacterial Population Growth Rates and Dissolved Inorganic Carbon.” <em>Fundamental and Applied Limnology</em> 150 (2): 177–96. <a href="https://doi.org/10.1127/archiv-hydrobiol/150/2001/177">https://doi.org/10.1127/archiv-hydrobiol/150/2001/177</a>.</p>
+</div>
+<div id="ref-Jahnichen2007">
+<p>Jähnichen, S., T. Ihle, T. Petzoldt, and J. Benndorf. 2007. “Impact of Inorganic Carbon Availability on Microcystin Production by Microcystis Aeruginosa PCC 7806.” <em>Applied and Environmental Microbiology</em> 73 (21): 6994–7002. <a href="https://doi.org/10.1128/AEM.01253-07">https://doi.org/10.1128/AEM.01253-07</a>.</p>
+</div>
+<div id="ref-Zilliges2011">
+<p>Zilliges, Yvonne, Jan-Christoph Kehr, Sven Meissner, Keishi Ishida, Stefan Mikkat, Martin Hagemann, Aaron Kaplan, Thomas Börner, and Elke Dittmann. 2011. “The Cyanobacterial Hepatotoxin Microcystin Binds to Proteins and Increases the Fitness of Microcystis Under Oxidative Stress Conditions.” <em>PLoS ONE</em> 6 (3): e17615. <a href="https://doi.org/10.1371/journal.pone.0017615">https://doi.org/10.1371/journal.pone.0017615</a>.</p>
+</div>
+</div>
 </div>
 
   <!-- dynamically load mathjax for compatibility with self-contained -->

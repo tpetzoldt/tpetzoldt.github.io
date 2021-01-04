@@ -2,7 +2,8 @@
 # https://garrettgman.github.io/rmarkdown/slidy_presentation_format.html
 title: "Basic one and two-way ANOVA with R"
 author: "Thomas Petzoldt"
-date: "2020-12-14"
+date: "2021-01-04"
+bibliography: bib.bib
 output:
   slidy_presentation:
     font_adjustment: 0
@@ -498,6 +499,7 @@ Diagnostics
 3. Normal distribution of residuals
 
 Note: test of assumptions only possible after fitting the model.
+
 ⇒ Fit the ANOVA model first, then check if it was correct!
 
 ### Diagnostic tools
@@ -521,13 +523,109 @@ abline(h=0)
 fligner.test(growth ~ interaction(coat, diet), data=hams)
 ```
 
+Sequential Holm-Bonferroni method
+--------------------------------------------------------------------------------
+
+* Also called Holm procedure [@Holm1979]
+* Easy to use
+* Can be applied to any multiple test problem
+* Less conservative that ordinary Bonferroni correction, but ...
+* ... still a very conservative approach
+* see also [Wikipedia](https://en.wikipedia.org/wiki/Holm%E2%80%93Bonferroni_method)
+
+### Algorithm
+
+1. Select smallest $p$ out of all $n$ $p$-values
+2. If $p \cdot n < \alpha$ $\Rightarrow$ significant, else <bf>STOP</bf>
+3. Set $n − 1 \rightarrow n$, remove smallest $p$ from the list and go to step 1.
+
+
+### Example
+
+Growth rate per day ($d^{-1}$) of blue-green algae cultures (*Pseudanabaena*) after adding
+toxic peptides from another blue-green algae (*Microcystis*).
+
+The original hypothesis was that Microcystin LR (MCYST) or a derivative of it 
+(Substance A) inhibits growth.
+
+```{r}
+mcyst <-  data.frame(treat = factor(c(rep("Control", 5),
+                                       rep("MCYST", 5),
+                                       rep("Subst A", 5)),
+                                levels=c("Control", "MCYST", "Subst A")),
+                      mu   = c(0.086, 0.101, 0.086, 0.086, 0.099,
+                               0.092, 0.088, 0.093, 0.088, 0.086,
+                               0.095, 0.102, 0.106, 0.106, 0.106)
+                     )
+```
+
+### Approach 1: one-way ANOVA
+
+```{r}
+par(mar=c(4, 8, 2, 1), las=1)
+m <- lm(mu ~ treat, data=mcyst)
+anova(m)
+plot(TukeyHSD(aov(m)))
+```
+
+### Approach 2: multiple t-Tests with sequential Bonferroni correction
+
+We separate the data set in single subsets:
+
+```{r}
+Control <- mcyst$mu[mcyst$treat == "Control"]
+MCYST   <- mcyst$mu[mcyst$treat == "MCYST"]
+SubstA  <- mcyst$mu[mcyst$treat == "Subst A"]
+```
+
+and perform 3 t-Tests:
+
+```{r}
+p1 <- t.test(Control, MCYST)$p.value
+p2 <- t.test(Control, SubstA)$p.value
+p3 <- t.test(MCYST, SubstA)$p.value
+```
+
+The following shows the raw p-values without correction:
+
+```{r}
+c(p1, p2, p3)
+```
+
+and with Holm correction:
+
+```{r}
+p.adjust(c(p1, p2, p3))
+```
+### Conclusions I
+
+#### Statistical methods
+
+We see that only the last p-value (MCYST vs. Subst A) remains significant. 
+This indicates that Holm corrected t-tests are more conservative than TukeyHSD 
+(only one compared to two significant) effects.
+
+A ANOVA with posthoc test is in general preferred but the sequential Bonferroni
+can be helpful in special cases. Moreover, it demonstrates clearly that massive
+multiple testing needs to be avoided.
+
+#### Interpretation
+
+Regarding our original hypothesis, we can see that MCYST and Subst. A did not
+inhibit growth of *Pseudanabaena*. in fact Subst. A seemed to stimulate growth.
+
+This was contrary to our expectations -- the biological reason was then found 10 years later.
+
+More about this can be found in @Jahnichen2001, @Jahnichen2007, @Jahnichen2011 
+and @Zilliges2011
+
+
 Outlook
 --------------------------------------------------------------------------------
 
 ### ... will follow next
 
 
-* Sequential Bonferroni test
 * ANCOVA
 * Type II and III ANOVA
 * Model Selection
@@ -535,3 +633,7 @@ Outlook
 * step
 * Summary
 * Avoid p-value hacking!
+
+
+Bibliography
+--------------------------------------------------------------------------------
