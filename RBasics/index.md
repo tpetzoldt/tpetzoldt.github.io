@@ -1,9 +1,11 @@
 ---
+pagetitle: Some R Basics and Applications in Practical Statistics
+lang: en
 output: 
   html_document: 
     keep_md: yes
 ---
-# Some R Basics and its Applications in Practical Statistics
+# Some R Basics and Applications in Practical Statistics
 
 ... is a loose collection of code snippets in the R programming language. 
 The slides are used in different workshops and lectures. 
