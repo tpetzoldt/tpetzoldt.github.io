@@ -862,7 +862,7 @@ s_y^2 = s^2_\mathrm{effect} + s^2_{\varepsilon}
 <div id="two-way-anova" class="slide section level2">
 <h1>Two-way ANOVA</h1>
 <ul>
-<li>Example from a statistics text book, Crawley (2002)</li>
+<li>Example from a statistics text book <span class="citation">(Crawley 2002)</span></li>
 <li>Effects of diet and coat color on growth of Hamsters in Gramm per time (constructed data set)</li>
 </ul>
 <div style="align: center">
@@ -1142,10 +1142,23 @@ dark
 <li>If <span class="math inline">\(p \cdot n &lt; \alpha\)</span> <span class="math inline">\(\Rightarrow\)</span> significant, else <bf>STOP</bf></li>
 <li>Set <span class="math inline">\(n − 1 \rightarrow n\)</span>, remove smallest <span class="math inline">\(p\)</span> from the list and go to step 1.</li>
 </ol>
-<h3 id="example-1">Example</h3>
+</div>
+<div id="example-1" class="slide section level2">
+<h1>Example</h1>
 <p>Growth rate per day (<span class="math inline">\(d^{-1}\)</span>) of blue-green algae cultures (<em>Pseudanabaena</em>) after adding toxic peptides from another blue-green algae (<em>Microcystis</em>).</p>
 <p>The original hypothesis was that Microcystin LR (MCYST) or a derivative of it (Substance A) inhibits growth.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>mcyst &lt;-<span class="st">  </span><span class="kw">data.frame</span>(<span class="dt">treat =</span> <span class="kw">factor</span>(<span class="kw">c</span>(<span class="kw">rep</span>(<span class="st">&quot;Control&quot;</span>, <span class="dv">5</span>),</span>
+<span id="cb29-2"><a href="#cb29-2"></a>                                       <span class="kw">rep</span>(<span class="st">&quot;MCYST&quot;</span>, <span class="dv">5</span>),</span>
+<span id="cb29-3"><a href="#cb29-3"></a>                                       <span class="kw">rep</span>(<span class="st">&quot;Subst A&quot;</span>, <span class="dv">5</span>)),</span>
+<span id="cb29-4"><a href="#cb29-4"></a>                                <span class="dt">levels=</span><span class="kw">c</span>(<span class="st">&quot;Control&quot;</span>, <span class="st">&quot;MCYST&quot;</span>, <span class="st">&quot;Subst A&quot;</span>)),</span>
+<span id="cb29-5"><a href="#cb29-5"></a>                      <span class="dt">mu   =</span> <span class="kw">c</span>(<span class="fl">0.086</span>, <span class="fl">0.101</span>, <span class="fl">0.086</span>, <span class="fl">0.086</span>, <span class="fl">0.099</span>,</span>
+<span id="cb29-6"><a href="#cb29-6"></a>                               <span class="fl">0.092</span>, <span class="fl">0.088</span>, <span class="fl">0.093</span>, <span class="fl">0.088</span>, <span class="fl">0.086</span>,</span>
+<span id="cb29-7"><a href="#cb29-7"></a>                               <span class="fl">0.095</span>, <span class="fl">0.102</span>, <span class="fl">0.106</span>, <span class="fl">0.106</span>, <span class="fl">0.106</span>)</span>
+<span id="cb29-8"><a href="#cb29-8"></a>                     )</span></code></pre></div>
 <h3 id="approach-1-one-way-anova">Approach 1: one-way ANOVA</h3>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="kw">par</span>(<span class="dt">mar=</span><span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">2</span>, <span class="dv">1</span>), <span class="dt">las=</span><span class="dv">1</span>)</span>
+<span id="cb30-2"><a href="#cb30-2"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(mu <span class="op">~</span><span class="st"> </span>treat, <span class="dt">data=</span>mcyst)</span>
+<span id="cb30-3"><a href="#cb30-3"></a><span class="kw">anova</span>(m)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: mu
@@ -1154,39 +1167,324 @@ dark
 ## Residuals 12 0.00036440 3.0367e-05                    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="kw">plot</span>(<span class="kw">TukeyHSD</span>(<span class="kw">aov</span>(m)))</span></code></pre></div>
 <p><img src="slides-anova_files/figure-slidy/unnamed-chunk-28-1.png" width="768" /></p>
 <h3 id="approach-2-multiple-t-tests-with-sequential-bonferroni-correction">Approach 2: multiple t-Tests with sequential Bonferroni correction</h3>
 <p>We separate the data set in single subsets:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>Control &lt;-<span class="st"> </span>mcyst<span class="op">$</span>mu[mcyst<span class="op">$</span>treat <span class="op">==</span><span class="st"> &quot;Control&quot;</span>]</span>
+<span id="cb33-2"><a href="#cb33-2"></a>MCYST   &lt;-<span class="st"> </span>mcyst<span class="op">$</span>mu[mcyst<span class="op">$</span>treat <span class="op">==</span><span class="st"> &quot;MCYST&quot;</span>]</span>
+<span id="cb33-3"><a href="#cb33-3"></a>SubstA  &lt;-<span class="st"> </span>mcyst<span class="op">$</span>mu[mcyst<span class="op">$</span>treat <span class="op">==</span><span class="st"> &quot;Subst A&quot;</span>]</span></code></pre></div>
 <p>and perform 3 t-Tests:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>p1 &lt;-<span class="st"> </span><span class="kw">t.test</span>(Control, MCYST)<span class="op">$</span>p.value</span>
+<span id="cb34-2"><a href="#cb34-2"></a>p2 &lt;-<span class="st"> </span><span class="kw">t.test</span>(Control, SubstA)<span class="op">$</span>p.value</span>
+<span id="cb34-3"><a href="#cb34-3"></a>p3 &lt;-<span class="st"> </span><span class="kw">t.test</span>(MCYST, SubstA)<span class="op">$</span>p.value</span></code></pre></div>
 <p>The following shows the raw p-values without correction:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="kw">c</span>(p1, p2, p3)</span></code></pre></div>
 <pre><code>## [1] 0.576275261 0.027378832 0.001190592</code></pre>
 <p>and with Holm correction:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="kw">p.adjust</span>(<span class="kw">c</span>(p1, p2, p3))</span></code></pre></div>
 <pre><code>## [1] 0.576275261 0.054757664 0.003571775</code></pre>
-<h3 id="conclusions-i">Conclusions I</h3>
-<h4 id="statistical-methods">Statistical methods</h4>
-<p>We see that only the last p-value (MCYST vs. Subst A) remains significant. This indicates that Holm corrected t-tests are more conservative than TukeyHSD (only one compared to two significant) effects.</p>
-<p>A ANOVA with posthoc test is in general preferred but the sequential Bonferroni can be helpful in special cases. Moreover, it demonstrates clearly that massive multiple testing needs to be avoided.</p>
-<h4 id="interpretation">Interpretation</h4>
-<p>Regarding our original hypothesis, we can see that MCYST and Subst. A did not inhibit growth of <em>Pseudanabaena</em>. in fact Subst. A seemed to stimulate growth.</p>
-<p>This was contrary to our expectations – the biological reason was then found 10 years later.</p>
+</div>
+<div id="conclusion-anova-is-to-be-preferred-when-possible" class="slide section level2">
+<h1>Conclusion: ANOVA is to be preferred, when possible</h1>
+<h3 id="statistical-methods">Statistical methods</h3>
+<ul>
+<li>We see that only the last p-value (MCYST vs. Subst A) remains significant. This indicates that Holm corrected t-tests are more conservative than TukeyHSD (only one compared to two significant) effects.</li>
+<li>A ANOVA with posthoc test is in general preferred but the sequential Bonferroni can be helpful in special cases. Moreover, it demonstrates clearly that massive multiple testing needs to be avoided.</li>
+</ul>
+<h3 id="interpretation">Interpretation</h3>
+<ul>
+<li>Regarding our original hypothesis, we can see that MCYST and SubstA did not inhibit growth of <em>Pseudanabaena</em>. In fact SubstA stimulated growth.</li>
+<li>This was contrary to our expectations – the biological reason was then found 10 years later.</li>
+</ul>
 <p>More about this can be found in <span class="citation">Jähnichen, Petzoldt, and Benndorf (2001)</span>, <span class="citation">Jähnichen et al. (2007)</span>, <span class="citation">Jähnichen, Long, and Petzoldt (2011)</span> and <span class="citation">Zilliges et al. (2011)</span></p>
+</div>
+<div id="ancova" class="slide section level2">
+<h1>ANCOVA</h1>
+<p><img src="slides-anova_files/figure-slidy/unnamed-chunk-33-1.png" width="768" /> Annette Dobson’s birthweight data. A data set from a statistics textbook <span class="citation">(Dobson 2013)</span>, birth weight of boys and girls in dependence of the pregnancy week.</p>
+<hr>
+</hr>
+<p>The data set is found at different places on the internet and in different versions.</p>
+<p>Here the version that is found in an R demo: <code>demo(lm.glm)</code></p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="co">## Birth Weight Data see stats/demo/lm.glm.R</span></span>
+<span id="cb39-2"><a href="#cb39-2"></a>dobson &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb39-3"><a href="#cb39-3"></a>  <span class="dt">week =</span> <span class="kw">c</span>(<span class="dv">40</span>, <span class="dv">38</span>, <span class="dv">40</span>, <span class="dv">35</span>, <span class="dv">36</span>, <span class="dv">37</span>, <span class="dv">41</span>, <span class="dv">40</span>, <span class="dv">37</span>, <span class="dv">38</span>, <span class="dv">40</span>, <span class="dv">38</span>,</span>
+<span id="cb39-4"><a href="#cb39-4"></a>     <span class="dv">40</span>, <span class="dv">36</span>, <span class="dv">40</span>, <span class="dv">38</span>, <span class="dv">42</span>, <span class="dv">39</span>, <span class="dv">40</span>, <span class="dv">37</span>, <span class="dv">36</span>, <span class="dv">38</span>, <span class="dv">39</span>, <span class="dv">40</span>),</span>
+<span id="cb39-5"><a href="#cb39-5"></a>  <span class="dt">weight =</span> <span class="kw">c</span>(<span class="dv">2968</span>, <span class="dv">2795</span>, <span class="dv">3163</span>, <span class="dv">2925</span>, <span class="dv">2625</span>, <span class="dv">2847</span>, <span class="dv">3292</span>, <span class="dv">3473</span>, <span class="dv">2628</span>, <span class="dv">3176</span>,</span>
+<span id="cb39-6"><a href="#cb39-6"></a>        <span class="dv">3421</span>, <span class="dv">2975</span>, <span class="dv">3317</span>, <span class="dv">2729</span>, <span class="dv">2935</span>, <span class="dv">2754</span>, <span class="dv">3210</span>, <span class="dv">2817</span>, <span class="dv">3126</span>, <span class="dv">2539</span>,</span>
+<span id="cb39-7"><a href="#cb39-7"></a>        <span class="dv">2412</span>, <span class="dv">2991</span>, <span class="dv">2875</span>, <span class="dv">3231</span>),</span>
+<span id="cb39-8"><a href="#cb39-8"></a>  <span class="dt">sex =</span> <span class="kw">gl</span>(<span class="dv">2</span>, <span class="dv">12</span>, <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&quot;M&quot;</span>,<span class="st">&quot;F&quot;</span>))</span>
+<span id="cb39-9"><a href="#cb39-9"></a>)</span></code></pre></div>
+</div>
+<div id="linear-regression-ancova-and-ancova" class="slide section level2">
+<h1>Linear regression, ANCOVA and ANCOVA</h1>
+<ul>
+<li>ANCOVA (analysis of covariance) deals with the comparison of regression lines</li>
+<li>Simply speaking, we can distinguish the following:
+<ul>
+<li>independent variables have metric scale: linear regression</li>
+<li>independent variables all nominal (factor): ANOVA</li>
+<li>independent variables are mixed nominal and metric: ANCOVA</li>
+</ul></li>
+</ul>
+<p>For the linear models discussed so far, the <strong>dependent</strong> variable is always metric, while binary or nominal dependent variables can be handled with generalized linear models (GLM).</p>
+</div>
+<div id="anette-dobsons-birthweight-data" class="slide section level2">
+<h1>Anette Dobson’s birthweight data</h1>
+<p>Why not just using a t-test?</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="kw">boxplot</span>(weight <span class="op">~</span><span class="st"> </span>sex,<span class="dt">data=</span>dobson, <span class="dt">ylab=</span><span class="st">&quot;weight&quot;</span>)</span></code></pre></div>
+<p><img src="slides-anova_files/figure-slidy/unnamed-chunk-35-1.png" width="768" /></p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a><span class="kw">t.test</span>(weight <span class="op">~</span><span class="st"> </span>sex, <span class="dt">data=</span>dobson, <span class="dt">var.equal=</span><span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## 
+##  Two Sample t-test
+## 
+## data:  weight by sex
+## t = 0.97747, df = 22, p-value = 0.339
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -126.3753  351.7086
+## sample estimates:
+## mean in group M mean in group F 
+##        3024.000        2911.333</code></pre>
+<p>The box plot shows much overlap and the difference is not significant, because the t-test ignores important information: the pregnancy week.</p>
+</div>
+<div id="ancova-makes-use-of-covariates" class="slide section level2">
+<h1>ANCOVA makes use of covariates</h1>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a><span class="kw">data</span>(dobson)</span></code></pre></div>
+<pre><code>## Warning in data(dobson): data set &#39;dobson&#39; not found</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(weight <span class="op">~</span><span class="st"> </span>week <span class="op">*</span><span class="st"> </span>sex, <span class="dt">data=</span>dobson)</span>
+<span id="cb45-2"><a href="#cb45-2"></a><span class="kw">anova</span>(m)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: weight
+##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+## week       1 1013799 1013799 31.0779 1.862e-05 ***
+## sex        1  157304  157304  4.8221   0.04006 *  
+## week:sex   1    6346    6346  0.1945   0.66389    
+## Residuals 20  652425   32621                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p><img src="slides-anova_files/figure-slidy/unnamed-chunk-37-1.png" width="768" /></p>
+<h3 id="how-this-works">How this works</h3>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="kw">plot</span>(weight <span class="op">~</span><span class="st"> </span>week, <span class="dt">data=</span>dobson, <span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;red&quot;</span>)[<span class="kw">as.numeric</span>(sex)], <span class="dt">pch=</span><span class="dv">16</span>)</span>
+<span id="cb47-2"><a href="#cb47-2"></a></span>
+<span id="cb47-3"><a href="#cb47-3"></a><span class="kw">summary</span>(m)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = weight ~ week * sex, data = dobson)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -246.69 -138.11  -39.13  176.57  274.28 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -1268.67    1114.64  -1.138 0.268492    
+## week          111.98      29.05   3.855 0.000986 ***
+## sexF         -872.99    1611.33  -0.542 0.593952    
+## week:sexF      18.42      41.76   0.441 0.663893    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 180.6 on 20 degrees of freedom
+## Multiple R-squared:  0.6435, Adjusted R-squared:   0.59 
+## F-statistic: 12.03 on 3 and 20 DF,  p-value: 0.000101</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a>p &lt;-<span class="st"> </span><span class="kw">coef</span>(m)</span>
+<span id="cb49-2"><a href="#cb49-2"></a><span class="kw">abline</span>(<span class="dt">a=</span>p[<span class="dv">1</span>],      <span class="dt">b=</span>p[<span class="dv">2</span>],      <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb49-3"><a href="#cb49-3"></a><span class="kw">abline</span>(<span class="dt">a=</span>p[<span class="dv">1</span>]<span class="op">+</span>p[<span class="dv">3</span>], <span class="dt">b=</span>p[<span class="dv">2</span>]<span class="op">+</span>p[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb49-4"><a href="#cb49-4"></a></span>
+<span id="cb49-5"><a href="#cb49-5"></a><span class="co">## the result is the same as when we would fit separate linear models</span></span>
+<span id="cb49-6"><a href="#cb49-6"></a>fem &lt;-<span class="st"> </span><span class="kw">lm</span>(weight <span class="op">~</span><span class="st"> </span>week, <span class="dt">data=</span>dobson, <span class="dt">subset =</span> sex<span class="op">==</span><span class="st">&quot;F&quot;</span>)</span>
+<span id="cb49-7"><a href="#cb49-7"></a>mal &lt;-<span class="st"> </span><span class="kw">lm</span>(weight <span class="op">~</span><span class="st"> </span>week, <span class="dt">data=</span>dobson, <span class="dt">subset =</span> sex<span class="op">==</span><span class="st">&quot;M&quot;</span>)</span>
+<span id="cb49-8"><a href="#cb49-8"></a><span class="kw">abline</span>(fem, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>, <span class="dt">lty=</span><span class="st">&quot;dashed&quot;</span>)</span>
+<span id="cb49-9"><a href="#cb49-9"></a><span class="kw">abline</span>(mal, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>, <span class="dt">lty=</span><span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
+<p><img src="slides-anova_files/figure-slidy/unnamed-chunk-38-1.png" width="768" /></p>
+</div>
+<div id="pitfalls-of-the-anova-described-so-far" class="slide section level2">
+<h1>Pitfalls of the ANOVA described so far</h1>
+<ol style="list-style-type: decimal">
+<li>Heterogeneity of variance
+<ul>
+<li>p-values can be biased (i.e. misleading or wrong)</li>
+<li>use of a one-way ANOVA for uneaqual variances (Welch, 1951); in R: <code>oneway.test</code></li>
+</ul></li>
+<li>Unbalanced case:<br> unequal number of samples for each factor combination
+<ul>
+<li>ANOVA results depend on the order of factors in the model formula.</li>
+<li>Classical method: Type II or Type III ANOVA</li>
+<li>Modern approach: model selection and likelihood ratio tests</li>
+</ul></li>
+</ol>
+</div>
+<div id="type-ii-and-type-iii-anova" class="slide section level2">
+<h1>Type II and Type III ANOVA</h1>
+<ul>
+<li>function <code>Anova</code> (with upper case <code>A</code>) in package <strong>car</strong></li>
+<li>Help of function Anova: “Type-II tests are calculated according to the principle of marginality, testing each term after all others, except ignoring the term’s higher-order relatives; so-called type-III tests violate marginality, testing each term in the model after all of the others.”</li>
+<li>Conclusion: use Type II and don’t try to interpret single terms in case of significant interactions.</li>
+</ul>
+</div>
+<div id="type-ii-and-type-iii-anova-example" class="slide section level2">
+<h1>Type II and Type III ANOVA: Example</h1>
+<p><img src="slides-anova_files/figure-slidy/unnamed-chunk-39-1.png" width="768" /></p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a><span class="kw">library</span>(car, <span class="dt">quiet=</span><span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;car&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     recode</code></pre>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>coat <span class="op">*</span><span class="st"> </span>diet, <span class="dt">data =</span> hams)</span>
+<span id="cb53-2"><a href="#cb53-2"></a><span class="kw">Anova</span>(m, <span class="dt">type=</span><span class="st">&quot;II&quot;</span>)</span></code></pre></div>
+<pre><code>## Anova Table (Type II tests)
+## 
+## Response: growth
+##            Sum Sq Df F value  Pr(&gt;F)  
+## coat      2.61333  1  7.2258 0.03614 *
+## diet      2.66000  2  3.6774 0.09069 .
+## coat:diet 0.68667  2  0.9493 0.43833  
+## Residuals 2.17000  6                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="model-selection-a-paradigm-change" class="slide section level2">
+<h1>Model selection – a paradigm change</h1>
+<h3 id="problem">Problem:</h3>
+<ul>
+<li>In complicated models, p-values depend on number (and sometimes of order) of included factors and interactions.</li>
+<li>The <span class="math inline">\(H_0\)</span>-based approach becomes confusing, e.g. because of contradictory p-values.</li>
+</ul>
+<h3 id="alternative-approach">Alternative approach:</h3>
+<p>Comparison of different model candidates instead of p-value based testing.</p>
+<ul>
+<li>Model with all potentiall effects → <span style="color:blue">full model</span>,</li>
+<li>Omit single factors → <span style="color:blue">reduced models</span> (several!),</li>
+<li>No influence factors (ony mean value) → <span style="color:blue">null model</span>.</li>
+<li>Which model is the best → <span style="color:blue">minimal adequate model</span>?</li>
+</ul>
+</div>
+<div id="how-can-we-measure-which-model-is-the-best" class="slide section level2">
+<h1>How can we measure which model is the best?</h1>
+<p>Compromize between model fit and model complexity (number of parameters, k).</p>
+<ul>
+<li>Goodness of fit: Likelihood L (measures how good the data match a given model).</li>
+<li>Log Likelihood: makes the criterion additive.</li>
+<li>AIC (Akaike Information Criterion):</li>
+</ul>
+<p><span class="math display">\[AIC = −2 \ln(L) + 2k\]</span></p>
+<ul>
+<li>Alternative: BIC (Bayesian Information Criterion), takes sample size into account (<span class="math inline">\(n\)</span>):</li>
+</ul>
+<p><span class="math display">\[BIC = −2 \ln(L) + k · \ln(n)\]</span></p>
+<p>The model with the smallest AIC (or BIC) is considered as <span style="color:blue">minimal adequate</span> (i.e. optimal) model.</p>
+</div>
+<div id="model-selection-and-likelihood-ratio-tests" class="slide section level2">
+<h1>Model Selection and Likelihood Ratio Tests</h1>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>diet <span class="op">*</span><span class="st"> </span>coat, <span class="dt">data=</span>hams)</span>
+<span id="cb55-2"><a href="#cb55-2"></a>m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>diet <span class="op">+</span><span class="st"> </span>coat, <span class="dt">data=</span>hams)</span>
+<span id="cb55-3"><a href="#cb55-3"></a><span class="kw">anova</span>(m1, m2)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: growth ~ diet * coat
+## Model 2: growth ~ diet + coat
+##   Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
+## 1      6 2.1700                           
+## 2      8 2.8567 -2  -0.68667 0.9493 0.4383</code></pre>
+<pre><code>##    df      AIC
+## m1  7 27.53237
+## m2  5 26.83151</code></pre>
+<ul>
+<li>Likelihood ratio test compares two models (<code>anova</code> with &gt; 1 model)</li>
+<li>Model with interaction (<code>m1</code>) not significantly better than model without interaction (<code>m2</code>).</li>
+</ul>
+<p><strong>Conclusion:</strong> take the simpler model</p>
+</div>
+<div id="automatic-model-selection" class="slide section level2">
+<h1>Automatic Model Selection</h1>
+<ul>
+<li>The full model is supplied to the <code>step</code> function.</li>
+<li>The modell with the smallest AIC ist the <span style="color:blue">minimal adequate</span> model:</li>
+</ul>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>diet <span class="op">*</span><span class="st"> </span>coat, <span class="dt">data=</span>hams)</span>
+<span id="cb58-2"><a href="#cb58-2"></a><span class="kw">step</span>(m1)</span></code></pre></div>
+<pre><code>## Start:  AIC=-8.52
+## growth ~ diet * coat
+## 
+##             Df Sum of Sq    RSS     AIC
+## - diet:coat  2   0.68667 2.8567 -9.2230
+## &lt;none&gt;                   2.1700 -8.5222
+## 
+## Step:  AIC=-9.22
+## growth ~ diet + coat
+## 
+##        Df Sum of Sq    RSS     AIC
+## &lt;none&gt;              2.8567 -9.2230
+## - diet  2    2.6600 5.5167 -5.3256
+## - coat  1    2.6133 5.4700 -3.4275</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = growth ~ diet + coat, data = hams)
+## 
+## Coefficients:
+## (Intercept)        dietB        dietC    coatlight  
+##      8.1667       0.2500       1.1000      -0.9333</code></pre>
+</div>
+<div id="summary" class="slide section level2">
+<h1>Summary</h1>
+<ul>
+<li>Linear models form the basis of many statistical methods
+<ul>
+<li>Linear regression</li>
+<li>ANOVA, ANCOVA, GLM, GAM, GLMM, . . .</li>
+<li>ANOVA/ANCOVA instead of multiple testing</li>
+</ul></li>
+<li>ANOVA is more powerful than multiple tests:
+<ul>
+<li>one big experiment needs less n than many small experiments together</li>
+<li>identification of interaction effects</li>
+<li>elimination of co-variates</li>
+</ul></li>
+<li>Model selection vs. p-value based testing
+<ul>
+<li>paradigm shift in statistics: AIC instead of p-value</li>
+<li>more reliable, especially for imbalanced or complex designs</li>
+<li>but: p-value based tests are sometimes easier to understand</li>
+</ul></li>
+</ul>
+</div>
+<div id="avoid-p-value-hacking" class="slide section level2">
+<h1>Avoid p-value hacking</h1>
+<h3 id="do-not-repeat-experiments-until-a-significant-p-value-is-found.">Do NOT repeat experiments until a significant p-value is found.</h3>
+<p>“<strong>As debate rumbles on about how and how much poor statistics is to blame for poor reproducibility, Nature asked influential statisticians to recommend one change to improve science. The common theme? The problem is not our maths, but ourselves.</strong>”</p>
+<hr>
+</hr>
+<h3 id="five-ways-to-fix-statistics.-comment-on-nature.">Five ways to fix statistics. Comment on Nature.</h3>
+<p>Leek et al. (2017) <a href="https://doi.org/10.1038/d41586-017-07522-z" class="uri">https://doi.org/10.1038/d41586-017-07522-z</a></p>
+<ol style="list-style-type: decimal">
+<li>Jeff Leek: Adjust for human cognition</li>
+<li>Blakeley B. McShane &amp; Andrew Gelman: Abandon statistical significance</li>
+<li>David Colquhoun: State false-positive risk, too</li>
+<li>Michèle B. Nuijten: Share analysis plans and results</li>
+<li>Steven N. Goodman: Change norms from within</li>
+</ol>
+<hr>
+</hr>
+<p>Another blog post that aims to improve understanding: <a href="http://daniellakens.blogspot.de/2017/12/understanding-common-misconceptions.html?m=1" class="uri">http://daniellakens.blogspot.de/2017/12/understanding-common-misconceptions.html?m=1</a></p>
+<hr>
+</hr>
+<p><strong>My conclusion:</strong> The p-value is still useful but apply it with great care.</p>
 </div>
 <div id="outlook" class="slide section level2">
 <h1>Outlook</h1>
-<h3 id="will-follow-next">… will follow next</h3>
-<ul>
-<li>ANCOVA</li>
-<li>Type II and III ANOVA</li>
-<li>Model Selection</li>
-<li>AIC, BIC</li>
-<li>step</li>
-<li>Summary</li>
-<li>Avoid p-value hacking!</li>
-</ul>
 </div>
 <div id="bibliography" class="slide section level2 unnumbered">
 <h1>Bibliography</h1>
 <div id="refs" class="references">
+<div id="ref-Crawley2002">
+<p>Crawley, Michael J. 2002. <em>Statistical Computing. An Introduction to Data Analysis Using S-PLUS</em>. Chichester: Wiley. <a href="datasets:%20http://www.bio.ic.ac.uk/research/mjcraw/statcomp/data/">datasets: http://www.bio.ic.ac.uk/research/mjcraw/statcomp/data/</a>.</p>
+</div>
+<div id="ref-Dobson2013">
+<p>Dobson, Annette J. 2013. <em>Introduction to Statistical Modelling</em>. Springer.</p>
+</div>
 <div id="ref-Holm1979">
 <p>Holm, Sture. 1979. “A Simple Sequentially Rejective Multiple Test Procedure.” <em>Scandinavian Journal of Statistics</em>, 65–70. <a href="https://www.jstor.org/stable/4615733">https://www.jstor.org/stable/4615733</a>.</p>
 </div>

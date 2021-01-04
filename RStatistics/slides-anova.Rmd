@@ -437,7 +437,7 @@ hams <- data.frame(No=1:12,
 ```
 
 
-* Example from a statistics text book, Crawley (2002)
+* Example from a statistics text book [@Crawley2002]
 * Effects of diet and coat color on growth of Hamsters  in Gramm per time (constructed data set)
 
 <div style="align: center">
@@ -540,7 +540,8 @@ Sequential Holm-Bonferroni method
 3. Set $n − 1 \rightarrow n$, remove smallest $p$ from the list and go to step 1.
 
 
-### Example
+Example
+--------------------------------------------------------------------------------
 
 Growth rate per day ($d^{-1}$) of blue-green algae cultures (*Pseudanabaena*) after adding
 toxic peptides from another blue-green algae (*Microcystis*).
@@ -548,7 +549,7 @@ toxic peptides from another blue-green algae (*Microcystis*).
 The original hypothesis was that Microcystin LR (MCYST) or a derivative of it 
 (Substance A) inhibits growth.
 
-```{r}
+```{r, echo=TRUE}
 mcyst <-  data.frame(treat = factor(c(rep("Control", 5),
                                        rep("MCYST", 5),
                                        rep("Subst A", 5)),
@@ -561,7 +562,7 @@ mcyst <-  data.frame(treat = factor(c(rep("Control", 5),
 
 ### Approach 1: one-way ANOVA
 
-```{r}
+```{r, echo=TRUE}
 par(mar=c(4, 8, 2, 1), las=1)
 m <- lm(mu ~ treat, data=mcyst)
 anova(m)
@@ -572,7 +573,7 @@ plot(TukeyHSD(aov(m)))
 
 We separate the data set in single subsets:
 
-```{r}
+```{r, echo=TRUE}
 Control <- mcyst$mu[mcyst$treat == "Control"]
 MCYST   <- mcyst$mu[mcyst$treat == "MCYST"]
 SubstA  <- mcyst$mu[mcyst$treat == "Subst A"]
@@ -580,7 +581,7 @@ SubstA  <- mcyst$mu[mcyst$treat == "Subst A"]
 
 and perform 3 t-Tests:
 
-```{r}
+```{r, echo=TRUE}
 p1 <- t.test(Control, MCYST)$p.value
 p2 <- t.test(Control, SubstA)$p.value
 p3 <- t.test(MCYST, SubstA)$p.value
@@ -588,51 +589,315 @@ p3 <- t.test(MCYST, SubstA)$p.value
 
 The following shows the raw p-values without correction:
 
-```{r}
+```{r, echo=TRUE}
 c(p1, p2, p3)
 ```
 
 and with Holm correction:
 
-```{r}
+```{r, echo=TRUE}
 p.adjust(c(p1, p2, p3))
 ```
-### Conclusions I
+Conclusion: ANOVA is to be preferred, when possible
+--------------------------------------------------------------------------------
 
-#### Statistical methods
+### Statistical methods
 
-We see that only the last p-value (MCYST vs. Subst A) remains significant. 
+* We see that only the last p-value (MCYST vs. Subst A) remains significant. 
 This indicates that Holm corrected t-tests are more conservative than TukeyHSD 
 (only one compared to two significant) effects.
-
-A ANOVA with posthoc test is in general preferred but the sequential Bonferroni
+* A ANOVA with posthoc test is in general preferred but the sequential Bonferroni
 can be helpful in special cases. Moreover, it demonstrates clearly that massive
 multiple testing needs to be avoided.
 
-#### Interpretation
+### Interpretation
 
-Regarding our original hypothesis, we can see that MCYST and Subst. A did not
-inhibit growth of *Pseudanabaena*. in fact Subst. A seemed to stimulate growth.
-
-This was contrary to our expectations -- the biological reason was then found 10 years later.
+* Regarding our original hypothesis, we can see that MCYST and SubstA did not
+inhibit growth of *Pseudanabaena*. In fact SubstA stimulated growth.
+* This was contrary to our expectations -- the biological reason was then found 10 years later.
 
 More about this can be found in @Jahnichen2001, @Jahnichen2007, @Jahnichen2011 
 and @Zilliges2011
 
 
+ANCOVA
+--------------------------------------------------------------------------------
+
+
+
+```{r, echo=FALSE}
+## Birth Weight Data see stats/demo/lm.glm.R
+dobson <- data.frame(
+  week = c(40, 38, 40, 35, 36, 37, 41, 40, 37, 38, 40, 38,
+	 40, 36, 40, 38, 42, 39, 40, 37, 36, 38, 39, 40),
+  weight = c(2968, 2795, 3163, 2925, 2625, 2847, 3292, 3473, 2628, 3176,
+	    3421, 2975, 3317, 2729, 2935, 2754, 3210, 2817, 3126, 2539,
+	    2412, 2991, 2875, 3231),
+  sex = gl(2, 12, labels=c("M","F"))
+)
+plot(weight ~ week, data=dobson, col=c("blue", "red")[as.numeric(sex)], pch=16)
+fem <- lm(weight ~ week, data=dobson, subset = sex=="F")
+mal <- lm(weight ~ week, data=dobson, subset = sex=="M")
+abline(fem, col="red")
+abline(mal, col="blue")
+```
+Annette Dobson's birthweight data. A data set from a statistics textbook 
+[@Dobson2013], birth weight of boys and girls in dependence of the
+pregnancy week.
+
+<hr></hr>
+
+The data set is found at different places on the internet and in different versions.
+
+Here the version that is found in an R demo: `demo(lm.glm)`
+
+```{r echo=TRUE, eval=FALSE}
+## Birth Weight Data see stats/demo/lm.glm.R
+dobson <- data.frame(
+  week = c(40, 38, 40, 35, 36, 37, 41, 40, 37, 38, 40, 38,
+	 40, 36, 40, 38, 42, 39, 40, 37, 36, 38, 39, 40),
+  weight = c(2968, 2795, 3163, 2925, 2625, 2847, 3292, 3473, 2628, 3176,
+	    3421, 2975, 3317, 2729, 2935, 2754, 3210, 2817, 3126, 2539,
+	    2412, 2991, 2875, 3231),
+  sex = gl(2, 12, labels=c("M","F"))
+)
+```
+
+
+Linear regression, ANCOVA and ANCOVA
+--------------------------------------------------------------------------------
+
+* ANCOVA (analysis of covariance) deals with the comparison of regression lines
+* Simply speaking, we can distinguish the following:
+    * independent variables have metric scale: linear regression
+    * independent variables all nominal (factor): ANOVA
+    * independent variables are mixed nominal and metric: ANCOVA
+    
+For the linear models discussed so far, the **dependent** variable is always 
+metric, while binary or nominal dependent variables can be handled with generalized
+linear models (GLM).
+
+
+Anette Dobson's birthweight data
+--------------------------------------------------------------------------------
+
+Why not just using a t-test?
+
+```{r, echo=TRUE}
+boxplot(weight ~ sex,data=dobson, ylab="weight")
+t.test(weight ~ sex, data=dobson, var.equal=TRUE)
+```
+
+The box plot shows much overlap and the difference is not significant, because
+the t-test ignores important information: the pregnancy week.
+
+
+ANCOVA makes use of covariates
+--------------------------------------------------------------------------------
+
+
+
+```{r, echo=TRUE}
+data(dobson)
+m <- lm(weight ~ week * sex, data=dobson)
+anova(m)
+```
+
+```{r, echo=FALSE}
+plot(weight ~ week, data=dobson, col=c("blue","red")[as.numeric(sex)], pch=16)
+p <- coef(m)
+abline(a=p[1], b=p[2], col="red")
+abline(a=p[1]+p[3], b=p[2]+p[4], col="blue")
+
+fem <- lm(weight ~ week, data=dobson, subset = sex=="F")
+mal <- lm(weight ~ week, data=dobson, subset = sex=="M")
+abline(fem, col="black", lty="dashed")
+abline(mal, col="black", lty="dashed")
+```
+
+
+### How this works
+
+```{r, echo=TRUE}
+plot(weight ~ week, data=dobson, col=c("blue","red")[as.numeric(sex)], pch=16)
+
+summary(m)
+p <- coef(m)
+abline(a=p[1],      b=p[2],      col="red")
+abline(a=p[1]+p[3], b=p[2]+p[4], col="blue")
+
+## the result is the same as when we would fit separate linear models
+fem <- lm(weight ~ week, data=dobson, subset = sex=="F")
+mal <- lm(weight ~ week, data=dobson, subset = sex=="M")
+abline(fem, col="black", lty="dashed")
+abline(mal, col="black", lty="dashed")
+```
+
+Pitfalls of the ANOVA described so far
+--------------------------------------------------------------------------------
+
+1. Heterogeneity of variance
+    * p-values can be biased (i.e. misleading or wrong)
+    * use of a one-way ANOVA for uneaqual variances (Welch, 1951); in R: `oneway.test` 
+2. Unbalanced case:<br>
+  unequal number of samples for each factor combination
+    * ANOVA results depend on the order of factors in the model formula.
+    * Classical method: Type II or Type III ANOVA
+    * Modern approach: model selection and likelihood ratio tests
+
+
+Type II and Type III ANOVA
+--------------------------------------------------------------------------------
+
+* function `Anova` (with upper case `A`) in package **car**
+* Help of function Anova:
+"Type-II tests are calculated according to the principle of
+marginality, testing each term after all others, except ignoring
+the term’s higher-order relatives; so-called type-III tests violate
+marginality, testing each term in the model after all of the others."
+* Conclusion:
+use Type II and don’t try to interpret single terms in case of significant 
+interactions.
+
+Type II and Type III ANOVA: Example
+--------------------------------------------------------------------------------
+
+```{r, echo=FALSE, fig.height=3}
+par(mar=c(4.1, 5.1, 1.1, 1.1))
+par(cex=1.2, las=1)
+par(mfrow=c(1,2))
+boxplot(growth~diet, data=hams, col="wheat", xlab="diet", ylab="growth")
+boxplot(growth~coat, data=hams, col="wheat", xlab="coat")
+```
+
+
+```{r, echo=TRUE}
+library(car, quiet=TRUE)
+m <- lm(growth ~ coat * diet, data = hams)
+Anova(m, type="II")
+```
+
+
+Model selection -- a paradigm change
+--------------------------------------------------------------------------------
+
+### Problem:
+
+* In complicated models, p-values depend on number (and sometimes
+  of order) of included factors and interactions.
+* The $H_0$-based approach becomes confusing, e.g. because of
+  contradictory p-values.
+
+### Alternative approach:
+
+Comparison of different model candidates instead of p-value based testing.
+
+* Model with all potentiall effects → <span style="color:blue">full model</span>,
+* Omit single factors → <span style="color:blue">reduced models</span> (several!),
+* No influence factors (ony mean value) → <span style="color:blue">null model</span>.
+* Which model is the best → <span style="color:blue">minimal adequate model</span>?
+
+How can we measure which model is the best?
+--------------------------------------------------------------------------------
+
+Compromize between model fit and model complexity (number of
+parameters, k).
+
+* Goodness of fit: Likelihood L (measures how good the data match a
+given model).
+* Log Likelihood: makes the criterion additive.
+* AIC (Akaike Information Criterion):
+
+$$AIC = −2 \ln(L) + 2k$$
+
+* Alternative: BIC (Bayesian Information Criterion), takes sample size
+into account ($n$):
+
+$$BIC = −2 \ln(L) + k · \ln(n)$$
+
+The model with the smallest AIC (or BIC) is considered as 
+<span style="color:blue">minimal adequate</span> (i.e. optimal) model.
+
+Model Selection and Likelihood Ratio Tests
+--------------------------------------------------------------------------------
+
+```{r, echo=TRUE}
+m1 <- lm(growth ~ diet * coat, data=hams)
+m2 <- lm(growth ~ diet + coat, data=hams)
+anova(m1, m2)
+```
+
+```{r}
+AIC(m1, m2)
+```
+
+* Likelihood ratio test compares two models (`anova` with > 1 model)
+* Model with interaction (`m1`) not significantly better than model without
+interaction (`m2`).
+
+**Conclusion:** take the simpler model
+
+Automatic Model Selection
+--------------------------------------------------------------------------------
+
+* The full model is supplied to the `step` function.
+* The modell with the smallest AIC ist the <span style="color:blue">minimal adequate</span> model:
+
+```{r, echo=TRUE}
+m1 <- lm(growth ~ diet * coat, data=hams)
+step(m1)
+```
+
+Summary
+--------------------------------------------------------------------------------
+* Linear models form the basis of many statistical methods
+    * Linear regression
+    * ANOVA, ANCOVA, GLM, GAM, GLMM, . . .
+    * ANOVA/ANCOVA instead of multiple testing
+* ANOVA is more powerful than multiple tests: 
+    * one big experiment needs less n than many small experiments together
+    * identification of interaction effects
+    * elimination of co-variates
+* Model selection vs. p-value based testing
+    * paradigm shift in statistics: AIC instead of p-value
+    * more reliable, especially for imbalanced or complex designs
+    * but: p-value based tests are sometimes easier to understand
+
+Avoid p-value hacking
+--------------------------------------------------------------------------------
+
+### Do NOT repeat experiments until a significant p-value is found.
+
+"**As debate rumbles on about how and how much poor statistics is to
+blame for poor reproducibility, Nature asked influential statisticians to
+recommend one change to improve science. The common theme? The
+problem is not our maths, but ourselves.**"
+
+<hr></hr>
+
+### Five ways to fix statistics. Comment on Nature. 
+
+Leek et al. (2017) https://doi.org/10.1038/d41586-017-07522-z
+
+1. Jeff Leek: Adjust for human cognition
+2. Blakeley B. McShane & Andrew Gelman: Abandon statistical significance
+3. David Colquhoun: State false-positive risk, too
+4. Michèle B. Nuijten: Share analysis plans and results
+5. Steven N. Goodman: Change norms from within
+
+<hr></hr>
+
+Another blog post that aims to improve understanding:
+http://daniellakens.blogspot.de/2017/12/understanding-common-misconceptions.html?m=1
+
+<hr></hr>
+
+**My conclusion:** The p-value is still useful but apply it with great care.
+
+
 Outlook
 --------------------------------------------------------------------------------
 
-### ... will follow next
-
-
-* ANCOVA
-* Type II and III ANOVA
-* Model Selection
-* AIC, BIC
-* step
-* Summary
-* Avoid p-value hacking!
 
 
 Bibliography
