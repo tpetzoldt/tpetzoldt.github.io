@@ -1,8 +1,8 @@
 ---
 # https://garrettgman.github.io/rmarkdown/slidy_presentation_format.html
-title: "Basic one and two-way ANOVA with R"
+title: "One and two-way ANOVA with R"
 author: "Thomas Petzoldt"
-date: "2021-01-04"
+date: "2021-01-05"
 bibliography: bib.bib
 output:
   slidy_presentation:
@@ -19,11 +19,16 @@ output:
 Preface
 --------------------------------------------------------------------------------
 
-* Work in progress ...
-* This HTML document is intended to amend the PDF lecture slides
-* questions and comments to: https://tu-dresden.de/Members/thomas.petzoldt
-* Photos and algae growth data were created as part of a highschool internship project
-* Many thanks to C. Belger for his contribution.
+* This HTML document is intended to amend the PDF lecture slides.
+* The hybrid format of "long slides" aims to make self-study easier. Compared to the
+pdf version more code is shown to improve reproducibility. Just copy the code
+to your favorite R editor (e.g. RStudio).
+* Full source code of the slides is provided in R Markdown format using the "slidy" framework.
+* Photos and algae growth data were created as part of a highschool internship project, 
+many thanks to C. Belger for his contribution.
+* Please send questions and comments to: https://tu-dresden.de/Members/thomas.petzoldt
+
+### Thank you!
 
 <style>
  h2, h3 {
@@ -598,17 +603,20 @@ and with Holm correction:
 ```{r, echo=TRUE}
 p.adjust(c(p1, p2, p3))
 ```
-Conclusion: ANOVA is to be preferred, when possible
+Conclusions
 --------------------------------------------------------------------------------
 
 ### Statistical methods
 
-* We see that only the last p-value (MCYST vs. Subst A) remains significant. 
-This indicates that Holm corrected t-tests are more conservative than TukeyHSD 
+* In case of Holm-corrected t-tests, only a signle p-value (MCYST vs. Subst A) remains significant. 
+This indicates that in this case, Holm's method is more conservative than TukeyHSD 
 (only one compared to two significant) effects.
-* A ANOVA with posthoc test is in general preferred but the sequential Bonferroni
-can be helpful in special cases. Moreover, it demonstrates clearly that massive
+* An ANOVA with posthoc test is in general preferred,
+* but the sequential Holm-Bonferroni can be helpful in special cases. 
+* Moreover, it demonstrates clearly that massive
 multiple testing needs to be avoided.
+
+$\Rightarrow$  ANOVA is to be preferred, when possible.
 
 ### Interpretation
 
@@ -622,7 +630,6 @@ and @Zilliges2011
 
 ANCOVA
 --------------------------------------------------------------------------------
-
 
 
 ```{r, echo=FALSE}
@@ -895,9 +902,11 @@ http://daniellakens.blogspot.de/2017/12/understanding-common-misconceptions.html
 **My conclusion:** The p-value is still useful but apply it with great care.
 
 
-Outlook
+Copyright
 --------------------------------------------------------------------------------
 
+This resource was created by [tpetzoldt](github.com/tpetzoldt). It is provided 
+as is without warranty.
 
 
 Bibliography

@@ -7,8 +7,8 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
   <meta name="author" content="Thomas Petzoldt" />
-  <meta name="date" content="2021-01-04" />
-  <title>Basic one and two-way ANOVA with R</title>
+  <meta name="date" content="2021-01-05" />
+  <title>One and two-way ANOVA with R</title>
   <style type="text/css">
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -161,21 +161,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </head>
 <body>
 <div class="slide titlepage">
-  <h1 class="title">Basic one and two-way ANOVA with R</h1>
+  <h1 class="title">One and two-way ANOVA with R</h1>
   <p class="author">
 Thomas Petzoldt
   </p>
-  <p class="date">2021-01-04</p>
+  <p class="date">2021-01-05</p>
 </div>
 <div id="preface" class="slide section level2">
 <h1>Preface</h1>
 <ul>
-<li>Work in progress …</li>
-<li>This HTML document is intended to amend the PDF lecture slides</li>
-<li>questions and comments to: <a href="https://tu-dresden.de/Members/thomas.petzoldt" class="uri">https://tu-dresden.de/Members/thomas.petzoldt</a></li>
-<li>Photos and algae growth data were created as part of a highschool internship project</li>
-<li>Many thanks to C. Belger for his contribution.</li>
+<li>This HTML document is intended to amend the PDF lecture slides.</li>
+<li>The hybrid format of “long slides” aims to make self-study easier. Compared to the pdf version more code is shown to improve reproducibility. Just copy the code to your favorite R editor (e.g. RStudio).</li>
+<li>Full source code of the slides is provided in R Markdown format using the “slidy” framework.</li>
+<li>Photos and algae growth data were created as part of a highschool internship project, many thanks to C. Belger for his contribution.</li>
+<li>Please send questions and comments to: <a href="https://tu-dresden.de/Members/thomas.petzoldt" class="uri">https://tu-dresden.de/Members/thomas.petzoldt</a></li>
 </ul>
+<h3 id="thank-you">Thank you!</h3>
 <style>
  h2, h3 {
    color: #009de0;
@@ -1185,13 +1186,16 @@ dark
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="kw">p.adjust</span>(<span class="kw">c</span>(p1, p2, p3))</span></code></pre></div>
 <pre><code>## [1] 0.576275261 0.054757664 0.003571775</code></pre>
 </div>
-<div id="conclusion-anova-is-to-be-preferred-when-possible" class="slide section level2">
-<h1>Conclusion: ANOVA is to be preferred, when possible</h1>
+<div id="conclusions" class="slide section level2">
+<h1>Conclusions</h1>
 <h3 id="statistical-methods">Statistical methods</h3>
 <ul>
-<li>We see that only the last p-value (MCYST vs. Subst A) remains significant. This indicates that Holm corrected t-tests are more conservative than TukeyHSD (only one compared to two significant) effects.</li>
-<li>A ANOVA with posthoc test is in general preferred but the sequential Bonferroni can be helpful in special cases. Moreover, it demonstrates clearly that massive multiple testing needs to be avoided.</li>
+<li>In case of Holm-corrected t-tests, only a signle p-value (MCYST vs. Subst A) remains significant. This indicates that in this case, Holm’s method is more conservative than TukeyHSD (only one compared to two significant) effects.</li>
+<li>An ANOVA with posthoc test is in general preferred,</li>
+<li>but the sequential Holm-Bonferroni can be helpful in special cases.</li>
+<li>Moreover, it demonstrates clearly that massive multiple testing needs to be avoided.</li>
 </ul>
+<p><span class="math inline">\(\Rightarrow\)</span> ANOVA is to be preferred, when possible.</p>
 <h3 id="interpretation">Interpretation</h3>
 <ul>
 <li>Regarding our original hypothesis, we can see that MCYST and SubstA did not inhibit growth of <em>Pseudanabaena</em>. In fact SubstA stimulated growth.</li>
@@ -1473,8 +1477,9 @@ dark
 </hr>
 <p><strong>My conclusion:</strong> The p-value is still useful but apply it with great care.</p>
 </div>
-<div id="outlook" class="slide section level2">
-<h1>Outlook</h1>
+<div id="copyright" class="slide section level2">
+<h1>Copyright</h1>
+<p>This resource was created by <a href="github.com/tpetzoldt">tpetzoldt</a>. It is provided as is without warranty.</p>
 </div>
 <div id="bibliography" class="slide section level2 unnumbered">
 <h1>Bibliography</h1>
