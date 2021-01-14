@@ -1,14 +1,35 @@
 # growthlab
 
+![Demonstrationsbeispiel mit Mikroprozessorsteuerung im Miniformat](growthlab-demo.jpg)
+
+
 ## Reale und virtuelle Wachstumsexperimente für Schule und Studium
 
-## Real and virtual growth experiments for highschool and university students
+Das Projekt verfolgt das Ziel, Wachtumsprozesse von Organismen zu veranschaulichen. Hierfür werden verschiedene Versuche entwickelt und praktisch getestet, von der einfachen
+Trübungsmessung bis hin zum vernetzten mikroprozessorgesteuerten Messsystem.
+Zusätzlich zur Hard- und Software werden auch die gewonnenen Daten und Erfahrungen geteilt.
 
-Note to English speaking people: This repository is still mainly in German to support use by private persons and in schools.
+### Grundideen
 
-* [documentation](doc/versuchsaufbau.html)
-* [software](https://github.com/tpetzoldt/growthlab/)
+* [Ein Arduino steuert das Licht](doc/blink.html)
+* [Versuchsaufbau: Steuerung, Sensoren, Daten](doc/versuchsaufbau.html)
 
-[tpetzoldt](https://github.com/tpetzoldt) 2019-09-19
+### Schülerprojekte
+
+* [Jugend Forsch-Projekt 2019/2020 -- Wachstumsversuche:](doc/petzoldt_belger_2019.pdf) Experimente zur Messung des Wachstums einer Phytoplanktonpopulation
+* [Jugend Forscht-Projekt 2020/2021 -- Algenlogger:](doc/algenlogger.html) Versuchsoptimierung, Kalibrierung und Langzeitexperimente
 
 
+
+### Quelltexte, Software und Bilder
+
+* [Software-Repository](https://github.com/tpetzoldt/growthlab/)
+
+
+<hr></hr>
+
+Note to English speaking people: This repository is still mainly in German to 
+support use by private persons and schools in Germany. Translations are 
+welcome.
+
+[Maintainer: tpetzoldt](https://github.com/tpetzoldt) 2021-01-14
