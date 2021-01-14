@@ -26,10 +26,10 @@ Zusätzlich zur Hard- und Software werden auch die gewonnenen Daten und Erfahrun
 * [Software-Repository](https://github.com/tpetzoldt/growthlab/)
 
 
-<hr></hr>
+<hr>
 
-Note to English speaking people: This repository is still mainly in German to 
-support use by private persons and schools in Germany. Translations are 
+Note to English speaking people: This repository is mainly in German to 
+support its use by private persons and schools in Germany. Translations are 
 welcome.
 
 [Maintainer: tpetzoldt](https://github.com/tpetzoldt) 2021-01-14
