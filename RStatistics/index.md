@@ -5,13 +5,14 @@ output:
   html_document: 
     keep_md: yes
 ---
-# Some R Basics and Applications in Practical Statistics
+
+# https://tpetzoldt.github.io/RStatistics
 
 ... is a loose collection of code snippets in the R programming language. 
 The slides are used in different workshops and lectures. 
 Comments and suggestions are welcome.
 
-## Contents
+## Some R Basics and Applications in Practical Statistics
 
 ### R Basics
 
