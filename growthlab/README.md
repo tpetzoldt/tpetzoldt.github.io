@@ -1,4 +1,7 @@
-# growthlab
+---
+pagetitle: growthlab -- Reale und virtuelle Wachstumsexperimente für Schule und Studium
+--- 
+
 
 ![Demonstrationsbeispiel mit Mikroprozessorsteuerung im Miniformat](growthlab-demo.jpg)
 
