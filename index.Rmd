@@ -24,7 +24,7 @@ This page serves additional documentation of some of my Github and other source 
 | - dynamic models with shiny | code snippets | | | - [deSolve-shiny](deSolve-shiny/deSolve-shiny.html) |
 | - stoichiometry-matrix ODE models with rodeo | code snippets | | | - [deSolve-rodeo](deSolve-rodeo/rodeo-lv3.html) |
 | [R Basics](https://tpetzoldt.github.io/RBasics) |teaching | alpha  |[tpetzoldt](https://github.com/tpetzoldt)| [R Basics (Slides)](RBasics)|
-| [growthlab](https://github.com/tpetzoldt/growthlab) |teaching | alpha  |[tpetzoldt](https://github.com/tpetzoldt)| [Blink LED-Strip](growthlab/doc/blink.html), [Wachstumsversuch](growthlab/doc/versuchsaufbau.html)|
+| [growthlab](https://github.com/tpetzoldt/growthlab) |teaching | alpha  |[tpetzoldt](https://github.com/tpetzoldt)| [Digitally controlled growth experiments](https://tpetzoldt.github.io/growthlab/)|
 | | | | | |
 
 ## Other repositories
