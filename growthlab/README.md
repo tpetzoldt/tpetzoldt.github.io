@@ -3,7 +3,7 @@ pagetitle: growthlab -- Reale und virtuelle Wachstumsexperimente für Schule und
 --- 
 
 
-![Demonstrationsbeispiel mit Mikroprozessorsteuerung im Miniformat](growthlab-demo.jpg)
+![Demo-Aufbau mit Mikroprozessorsteuerung im Miniformat](growthlab-demo.jpg)
 
 
 ## Reale und virtuelle Wachstumsexperimente für Schule und Studium
