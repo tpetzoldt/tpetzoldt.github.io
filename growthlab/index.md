@@ -19,7 +19,7 @@ Zusätzlich zur Hard- und Software werden auch die gewonnenen Daten und Erfahrun
 
 ### Schülerprojekte
 
-* [Jugend Forsch-Projekt 2019/2020 -- Wachstumsversuche:](doc/petzoldt_belger_2019.pdf) Experimente zur Messung des Wachstums einer Phytoplanktonpopulation
+* [Jugend Forscht-Projekt 2019/2020 -- Wachstumsversuche:](doc/petzoldt_belger_2019.pdf) Experimente zur Messung des Wachstums einer Phytoplanktonpopulation
 * [Jugend Forscht-Projekt 2020/2021 -- Algenlogger:](doc/algenlogger.html) Versuchsoptimierung, Kalibrierung und Langzeitexperimente
 
 
