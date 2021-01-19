@@ -66,6 +66,7 @@ knitr::opts_chunk$set(echo = FALSE)
 library("dplyr")
 library("tidyr")
 library("kableExtra")
+library("car")
 mypar <- list(las=1, cex.lab=1.4, cex.axis=1.4, lwd=2)
 ```
 
@@ -624,7 +625,7 @@ $\Rightarrow$  ANOVA is to be preferred, when possible.
 inhibit growth of *Pseudanabaena*. In fact SubstA stimulated growth.
 * This was contrary to our expectations -- the biological reason was then found 10 years later.
 
-More about this can be found in @Jahnichen2001, @Jahnichen2007, @Jahnichen2011, @Zilliges2011 or @Dziallas2011
+More about this can be found in @Jahnichen2001, @Jahnichen2007, @Jahnichen2011, @Zilliges2011 or @Dziallas2011.
 
 
 ANCOVA
@@ -777,7 +778,7 @@ boxplot(growth~coat, data=hams, col="wheat", xlab="coat")
 
 
 ```{r, echo=TRUE}
-library(car, quiet=TRUE)
+library("car")
 m <- lm(growth ~ coat * diet, data = hams)
 Anova(m, type="II")
 ```

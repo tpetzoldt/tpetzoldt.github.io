@@ -1201,7 +1201,7 @@ dark
 <li>Regarding our original hypothesis, we can see that MCYST and SubstA did not inhibit growth of <em>Pseudanabaena</em>. In fact SubstA stimulated growth.</li>
 <li>This was contrary to our expectations – the biological reason was then found 10 years later.</li>
 </ul>
-<p>More about this can be found in <span class="citation">Jähnichen, Petzoldt, and Benndorf (2001)</span>, <span class="citation">Jähnichen et al. (2007)</span>, <span class="citation">Jähnichen, Long, and Petzoldt (2011)</span>, <span class="citation">Zilliges et al. (2011)</span> or <span class="citation">Dziallas and Grossart (2011)</span></p>
+<p>More about this can be found in <span class="citation">Jähnichen, Petzoldt, and Benndorf (2001)</span>, <span class="citation">Jähnichen et al. (2007)</span>, <span class="citation">Jähnichen, Long, and Petzoldt (2011)</span>, <span class="citation">Zilliges et al. (2011)</span> or <span class="citation">Dziallas and Grossart (2011)</span>.</p>
 </div>
 <div id="ancova" class="slide section level2">
 <h1>ANCOVA</h1>
@@ -1329,14 +1329,9 @@ dark
 <div id="type-ii-and-type-iii-anova-example" class="slide section level2">
 <h1>Type II and Type III ANOVA: Example</h1>
 <p><img src="slides-anova_files/figure-slidy/unnamed-chunk-39-1.png" width="768" /></p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a><span class="kw">library</span>(car, <span class="dt">quiet=</span><span class="ot">TRUE</span>)</span></code></pre></div>
-<pre><code>## 
-## Attaching package: &#39;car&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
-## 
-##     recode</code></pre>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>coat <span class="op">*</span><span class="st"> </span>diet, <span class="dt">data =</span> hams)</span>
-<span id="cb51-2"><a href="#cb51-2"></a><span class="kw">Anova</span>(m, <span class="dt">type=</span><span class="st">&quot;II&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a><span class="kw">library</span>(<span class="st">&quot;car&quot;</span>)</span>
+<span id="cb48-2"><a href="#cb48-2"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>coat <span class="op">*</span><span class="st"> </span>diet, <span class="dt">data =</span> hams)</span>
+<span id="cb48-3"><a href="#cb48-3"></a><span class="kw">Anova</span>(m, <span class="dt">type=</span><span class="st">&quot;II&quot;</span>)</span></code></pre></div>
 <pre><code>## Anova Table (Type II tests)
 ## 
 ## Response: growth
@@ -1381,9 +1376,9 @@ dark
 </div>
 <div id="model-selection-and-likelihood-ratio-tests" class="slide section level2">
 <h1>Model Selection and Likelihood Ratio Tests</h1>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>diet <span class="op">*</span><span class="st"> </span>coat, <span class="dt">data=</span>hams)</span>
-<span id="cb53-2"><a href="#cb53-2"></a>m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>diet <span class="op">+</span><span class="st"> </span>coat, <span class="dt">data=</span>hams)</span>
-<span id="cb53-3"><a href="#cb53-3"></a><span class="kw">anova</span>(m1, m2)</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>diet <span class="op">*</span><span class="st"> </span>coat, <span class="dt">data=</span>hams)</span>
+<span id="cb50-2"><a href="#cb50-2"></a>m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>diet <span class="op">+</span><span class="st"> </span>coat, <span class="dt">data=</span>hams)</span>
+<span id="cb50-3"><a href="#cb50-3"></a><span class="kw">anova</span>(m1, m2)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Model 1: growth ~ diet * coat
@@ -1406,8 +1401,8 @@ dark
 <li>The full model is supplied to the <code>step</code> function.</li>
 <li>The modell with the smallest AIC ist the <span style="color:blue">minimal adequate</span> model:</li>
 </ul>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>diet <span class="op">*</span><span class="st"> </span>coat, <span class="dt">data=</span>hams)</span>
-<span id="cb56-2"><a href="#cb56-2"></a><span class="kw">step</span>(m1)</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>diet <span class="op">*</span><span class="st"> </span>coat, <span class="dt">data=</span>hams)</span>
+<span id="cb53-2"><a href="#cb53-2"></a><span class="kw">step</span>(m1)</span></code></pre></div>
 <pre><code>## Start:  AIC=-8.52
 ## growth ~ diet * coat
 ## 
