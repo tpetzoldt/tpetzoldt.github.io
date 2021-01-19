@@ -7,7 +7,7 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
   <meta name="author" content="Thomas Petzoldt" />
-  <meta name="date" content="2021-01-05" />
+  <meta name="date" content="2021-01-19" />
   <title>One and two-way ANOVA with R</title>
   <style type="text/css">
     code{white-space: pre-wrap;}
@@ -165,7 +165,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <p class="author">
 Thomas Petzoldt
   </p>
-  <p class="date">2021-01-05</p>
+  <p class="date">2021-01-19</p>
 </div>
 <div id="preface" class="slide section level2">
 <h1>Preface</h1>
@@ -1201,7 +1201,7 @@ dark
 <li>Regarding our original hypothesis, we can see that MCYST and SubstA did not inhibit growth of <em>Pseudanabaena</em>. In fact SubstA stimulated growth.</li>
 <li>This was contrary to our expectations – the biological reason was then found 10 years later.</li>
 </ul>
-<p>More about this can be found in <span class="citation">Jähnichen, Petzoldt, and Benndorf (2001)</span>, <span class="citation">Jähnichen et al. (2007)</span>, <span class="citation">Jähnichen, Long, and Petzoldt (2011)</span> and <span class="citation">Zilliges et al. (2011)</span></p>
+<p>More about this can be found in <span class="citation">Jähnichen, Petzoldt, and Benndorf (2001)</span>, <span class="citation">Jähnichen et al. (2007)</span>, <span class="citation">Jähnichen, Long, and Petzoldt (2011)</span>, <span class="citation">Zilliges et al. (2011)</span> or <span class="citation">Dziallas and Grossart (2011)</span></p>
 </div>
 <div id="ancova" class="slide section level2">
 <h1>ANCOVA</h1>
@@ -1254,10 +1254,8 @@ dark
 </div>
 <div id="ancova-makes-use-of-covariates" class="slide section level2">
 <h1>ANCOVA makes use of covariates</h1>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a><span class="kw">data</span>(dobson)</span></code></pre></div>
-<pre><code>## Warning in data(dobson): data set &#39;dobson&#39; not found</code></pre>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(weight <span class="op">~</span><span class="st"> </span>week <span class="op">*</span><span class="st"> </span>sex, <span class="dt">data=</span>dobson)</span>
-<span id="cb45-2"><a href="#cb45-2"></a><span class="kw">anova</span>(m)</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(weight <span class="op">~</span><span class="st"> </span>week <span class="op">*</span><span class="st"> </span>sex, <span class="dt">data=</span>dobson)</span>
+<span id="cb43-2"><a href="#cb43-2"></a><span class="kw">anova</span>(m)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: weight
@@ -1270,9 +1268,9 @@ dark
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p><img src="slides-anova_files/figure-slidy/unnamed-chunk-37-1.png" width="768" /></p>
 <h3 id="how-this-works">How this works</h3>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="kw">plot</span>(weight <span class="op">~</span><span class="st"> </span>week, <span class="dt">data=</span>dobson, <span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;red&quot;</span>)[<span class="kw">as.numeric</span>(sex)], <span class="dt">pch=</span><span class="dv">16</span>)</span>
-<span id="cb47-2"><a href="#cb47-2"></a></span>
-<span id="cb47-3"><a href="#cb47-3"></a><span class="kw">summary</span>(m)</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a><span class="kw">plot</span>(weight <span class="op">~</span><span class="st"> </span>week, <span class="dt">data=</span>dobson, <span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;red&quot;</span>)[<span class="kw">as.numeric</span>(sex)], <span class="dt">pch=</span><span class="dv">16</span>)</span>
+<span id="cb45-2"><a href="#cb45-2"></a></span>
+<span id="cb45-3"><a href="#cb45-3"></a><span class="kw">summary</span>(m)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = weight ~ week * sex, data = dobson)
@@ -1293,15 +1291,15 @@ dark
 ## Residual standard error: 180.6 on 20 degrees of freedom
 ## Multiple R-squared:  0.6435, Adjusted R-squared:   0.59 
 ## F-statistic: 12.03 on 3 and 20 DF,  p-value: 0.000101</code></pre>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a>p &lt;-<span class="st"> </span><span class="kw">coef</span>(m)</span>
-<span id="cb49-2"><a href="#cb49-2"></a><span class="kw">abline</span>(<span class="dt">a=</span>p[<span class="dv">1</span>],      <span class="dt">b=</span>p[<span class="dv">2</span>],      <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</span>
-<span id="cb49-3"><a href="#cb49-3"></a><span class="kw">abline</span>(<span class="dt">a=</span>p[<span class="dv">1</span>]<span class="op">+</span>p[<span class="dv">3</span>], <span class="dt">b=</span>p[<span class="dv">2</span>]<span class="op">+</span>p[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)</span>
-<span id="cb49-4"><a href="#cb49-4"></a></span>
-<span id="cb49-5"><a href="#cb49-5"></a><span class="co">## the result is the same as when we would fit separate linear models</span></span>
-<span id="cb49-6"><a href="#cb49-6"></a>fem &lt;-<span class="st"> </span><span class="kw">lm</span>(weight <span class="op">~</span><span class="st"> </span>week, <span class="dt">data=</span>dobson, <span class="dt">subset =</span> sex<span class="op">==</span><span class="st">&quot;F&quot;</span>)</span>
-<span id="cb49-7"><a href="#cb49-7"></a>mal &lt;-<span class="st"> </span><span class="kw">lm</span>(weight <span class="op">~</span><span class="st"> </span>week, <span class="dt">data=</span>dobson, <span class="dt">subset =</span> sex<span class="op">==</span><span class="st">&quot;M&quot;</span>)</span>
-<span id="cb49-8"><a href="#cb49-8"></a><span class="kw">abline</span>(fem, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>, <span class="dt">lty=</span><span class="st">&quot;dashed&quot;</span>)</span>
-<span id="cb49-9"><a href="#cb49-9"></a><span class="kw">abline</span>(mal, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>, <span class="dt">lty=</span><span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a>p &lt;-<span class="st"> </span><span class="kw">coef</span>(m)</span>
+<span id="cb47-2"><a href="#cb47-2"></a><span class="kw">abline</span>(<span class="dt">a=</span>p[<span class="dv">1</span>],      <span class="dt">b=</span>p[<span class="dv">2</span>],      <span class="dt">col=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb47-3"><a href="#cb47-3"></a><span class="kw">abline</span>(<span class="dt">a=</span>p[<span class="dv">1</span>]<span class="op">+</span>p[<span class="dv">3</span>], <span class="dt">b=</span>p[<span class="dv">2</span>]<span class="op">+</span>p[<span class="dv">4</span>], <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>)</span>
+<span id="cb47-4"><a href="#cb47-4"></a></span>
+<span id="cb47-5"><a href="#cb47-5"></a><span class="co">## the result is the same as when we would fit separate linear models</span></span>
+<span id="cb47-6"><a href="#cb47-6"></a>fem &lt;-<span class="st"> </span><span class="kw">lm</span>(weight <span class="op">~</span><span class="st"> </span>week, <span class="dt">data=</span>dobson, <span class="dt">subset =</span> sex<span class="op">==</span><span class="st">&quot;F&quot;</span>)</span>
+<span id="cb47-7"><a href="#cb47-7"></a>mal &lt;-<span class="st"> </span><span class="kw">lm</span>(weight <span class="op">~</span><span class="st"> </span>week, <span class="dt">data=</span>dobson, <span class="dt">subset =</span> sex<span class="op">==</span><span class="st">&quot;M&quot;</span>)</span>
+<span id="cb47-8"><a href="#cb47-8"></a><span class="kw">abline</span>(fem, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>, <span class="dt">lty=</span><span class="st">&quot;dashed&quot;</span>)</span>
+<span id="cb47-9"><a href="#cb47-9"></a><span class="kw">abline</span>(mal, <span class="dt">col=</span><span class="st">&quot;black&quot;</span>, <span class="dt">lty=</span><span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
 <p><img src="slides-anova_files/figure-slidy/unnamed-chunk-38-1.png" width="768" /></p>
 </div>
 <div id="pitfalls-of-the-anova-described-so-far" class="slide section level2">
@@ -1331,14 +1329,14 @@ dark
 <div id="type-ii-and-type-iii-anova-example" class="slide section level2">
 <h1>Type II and Type III ANOVA: Example</h1>
 <p><img src="slides-anova_files/figure-slidy/unnamed-chunk-39-1.png" width="768" /></p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a><span class="kw">library</span>(car, <span class="dt">quiet=</span><span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a><span class="kw">library</span>(car, <span class="dt">quiet=</span><span class="ot">TRUE</span>)</span></code></pre></div>
 <pre><code>## 
 ## Attaching package: &#39;car&#39;</code></pre>
 <pre><code>## The following object is masked from &#39;package:dplyr&#39;:
 ## 
 ##     recode</code></pre>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>coat <span class="op">*</span><span class="st"> </span>diet, <span class="dt">data =</span> hams)</span>
-<span id="cb53-2"><a href="#cb53-2"></a><span class="kw">Anova</span>(m, <span class="dt">type=</span><span class="st">&quot;II&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>coat <span class="op">*</span><span class="st"> </span>diet, <span class="dt">data =</span> hams)</span>
+<span id="cb51-2"><a href="#cb51-2"></a><span class="kw">Anova</span>(m, <span class="dt">type=</span><span class="st">&quot;II&quot;</span>)</span></code></pre></div>
 <pre><code>## Anova Table (Type II tests)
 ## 
 ## Response: growth
@@ -1383,9 +1381,9 @@ dark
 </div>
 <div id="model-selection-and-likelihood-ratio-tests" class="slide section level2">
 <h1>Model Selection and Likelihood Ratio Tests</h1>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>diet <span class="op">*</span><span class="st"> </span>coat, <span class="dt">data=</span>hams)</span>
-<span id="cb55-2"><a href="#cb55-2"></a>m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>diet <span class="op">+</span><span class="st"> </span>coat, <span class="dt">data=</span>hams)</span>
-<span id="cb55-3"><a href="#cb55-3"></a><span class="kw">anova</span>(m1, m2)</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>diet <span class="op">*</span><span class="st"> </span>coat, <span class="dt">data=</span>hams)</span>
+<span id="cb53-2"><a href="#cb53-2"></a>m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>diet <span class="op">+</span><span class="st"> </span>coat, <span class="dt">data=</span>hams)</span>
+<span id="cb53-3"><a href="#cb53-3"></a><span class="kw">anova</span>(m1, m2)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Model 1: growth ~ diet * coat
@@ -1408,8 +1406,8 @@ dark
 <li>The full model is supplied to the <code>step</code> function.</li>
 <li>The modell with the smallest AIC ist the <span style="color:blue">minimal adequate</span> model:</li>
 </ul>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>diet <span class="op">*</span><span class="st"> </span>coat, <span class="dt">data=</span>hams)</span>
-<span id="cb58-2"><a href="#cb58-2"></a><span class="kw">step</span>(m1)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(growth <span class="op">~</span><span class="st"> </span>diet <span class="op">*</span><span class="st"> </span>coat, <span class="dt">data=</span>hams)</span>
+<span id="cb56-2"><a href="#cb56-2"></a><span class="kw">step</span>(m1)</span></code></pre></div>
 <pre><code>## Start:  AIC=-8.52
 ## growth ~ diet * coat
 ## 
@@ -1489,6 +1487,9 @@ dark
 </div>
 <div id="ref-Dobson2013">
 <p>Dobson, Annette J. 2013. <em>Introduction to Statistical Modelling</em>. Springer.</p>
+</div>
+<div id="ref-Dziallas2011">
+<p>Dziallas, Claudia, and Hans-Peter Grossart. 2011. “Increasing Oxygen Radicals and Water Temperature Select for Toxic Microcystis Sp.” Edited by Jack Anthony Gilbert. <em>PLoS ONE</em> 6 (9): e25569. <a href="https://doi.org/10.1371/journal.pone.0025569">https://doi.org/10.1371/journal.pone.0025569</a>.</p>
 </div>
 <div id="ref-Holm1979">
 <p>Holm, Sture. 1979. “A Simple Sequentially Rejective Multiple Test Procedure.” <em>Scandinavian Journal of Statistics</em>, 65–70. <a href="https://www.jstor.org/stable/4615733">https://www.jstor.org/stable/4615733</a>.</p>

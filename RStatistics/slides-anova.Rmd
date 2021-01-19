@@ -2,7 +2,7 @@
 # https://garrettgman.github.io/rmarkdown/slidy_presentation_format.html
 title: "One and two-way ANOVA with R"
 author: "Thomas Petzoldt"
-date: "2021-01-05"
+date: "2021-01-19"
 bibliography: bib.bib
 output:
   slidy_presentation:
@@ -624,8 +624,7 @@ $\Rightarrow$  ANOVA is to be preferred, when possible.
 inhibit growth of *Pseudanabaena*. In fact SubstA stimulated growth.
 * This was contrary to our expectations -- the biological reason was then found 10 years later.
 
-More about this can be found in @Jahnichen2001, @Jahnichen2007, @Jahnichen2011 
-and @Zilliges2011
+More about this can be found in @Jahnichen2001, @Jahnichen2007, @Jahnichen2011, @Zilliges2011 or @Dziallas2011
 
 
 ANCOVA
@@ -705,7 +704,6 @@ ANCOVA makes use of covariates
 
 
 ```{r, echo=TRUE}
-data(dobson)
 m <- lm(weight ~ week * sex, data=dobson)
 anova(m)
 ```
