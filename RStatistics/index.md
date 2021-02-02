@@ -23,6 +23,7 @@ Comments and suggestions are welcome.
 ### Statistical Applications
 
 4. [ANOVA](https://tpetzoldt.github.io/RStatistics/slides-anova.html)
+5. [Multivariate Statistics I](https://tpetzoldt.github.io/RStatistics/multivar-3d.html)
 
 
-**Copyright and original author:** [tpetzoldt](https://github.com/tpetzoldt), 2021-01-04
+**Copyright and original author:** [tpetzoldt](https://github.com/tpetzoldt), 2021-02-02
