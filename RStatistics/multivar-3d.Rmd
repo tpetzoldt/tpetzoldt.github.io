@@ -194,6 +194,8 @@ The plot can again be rotated and zoomed in. The x- and y axes show the NMDS coo
 
 ## Distance and dissimilarity measures
 
+
+
 ### Quantitative form
 
 with $x_{ij}, x_{ik}$ abundance of species  $i$ at sites ($j, k$).
@@ -223,11 +225,11 @@ d_{jk} = \frac{\sum{|x_{ij}-x_{ik}|}}{\sum{(x_{ij}+x_{ik})}}
 
 ### Binary form
 
-applicable to binary and factor variables, where: 
+The binary form is applicable to binary and factor variables, where: 
 
-$A, B$ = number of occurences in compared sites
-$J$ =  (joint) number of occurences
-$M$ =  total number of columns
+* $A, B$ = numbers of species on compared sites
+* $J$ =  (joint) is the number of species that occur on both compared sites
+* $M$ =  number of columns (excluding missing values)
 
 Euclidean: $\sqrt{A+B-2J}$
 
@@ -239,6 +241,8 @@ Bray-Curtis: $\frac{A+B-2J}{A+B}$
 
 Jaccard: $\frac{2b}{1+b}$ with $b$ = Bray-Curtis dissimilarity
 
+### Applications
 
-
+Additional distance measures and application suggestions are found in
+the  [`vegdist`](https://www.rdocumentation.org/packages/vegan/versions/2.4-2/topics/vegdist) help page.
 
