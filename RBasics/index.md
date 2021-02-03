@@ -5,13 +5,14 @@ output:
   html_document: 
     keep_md: yes
 ---
-# Some R Basics and Applications in Practical Statistics
+
+# https://tpetzoldt.github.io/RStatistics
 
 ... is a loose collection of code snippets in the R programming language. 
 The slides are used in different workshops and lectures. 
 Comments and suggestions are welcome.
 
-## Contents
+## Some R Basics and Applications in Practical Statistics
 
 ### R Basics
 
@@ -22,6 +23,7 @@ Comments and suggestions are welcome.
 ### Statistical Applications
 
 4. [ANOVA](https://tpetzoldt.github.io/RStatistics/slides-anova.html)
+5. [Multivariate Statistics I](https://tpetzoldt.github.io/RStatistics/multivar-3d.html)
 
 
-**Copyright and original author:** [tpetzoldt](https://github.com/tpetzoldt), 2021-01-04
+**Copyright and original author:** [tpetzoldt](https://github.com/tpetzoldt), 2021-02-02
