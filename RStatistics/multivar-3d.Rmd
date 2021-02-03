@@ -186,4 +186,59 @@ ordirgltree(ord=mds, cluster=hc, col=mycolors)
 axes3d(expand=1.5)
 ```
 
-The plot can again be rotated and zoomed in. The x- and y axes show the NMDS coordinates and the y axis the euclidean distance. Two-dimensional plots are of course also possible, practical examples will be given in the next section.
+The plot can again be rotated and zoomed in. The x- and y axes show the NMDS coordinates and the y axis the euclidean distance. Two-dimensional plots are of course also possible, practical examples will be given later.
+
+<hr>
+
+# Glossary
+
+## Distance and dissimilarity measures
+
+### Quantitative form
+
+with $x_{ij}, x_{ik}$ abundance of species  $i$ at sites ($j, k$).
+
+Euclidean distance:
+
+\[
+d_{jk} = \sqrt{\sum (x_{ij}-x_{ik})^2}
+\]
+
+Manhattan distance:
+\[
+d_{jk} = \sum |x_{ij}-x_{ik}|
+\]
+
+
+Gower distance:
+\[
+d_{jk} = \frac{1}{M} \sum\frac{|x_{ij}-x_{ik}|}{\max(x_i)-\min(x_i)}
+\]
+
+
+Bray-Curtis dissimilarity:
+\[
+d_{jk} = \frac{\sum{|x_{ij}-x_{ik}|}}{\sum{(x_{ij}+x_{ik})}}
+\]
+
+### Binary form
+
+applicable to binary and factor variables, where: 
+
+$A, B$ = number of occurences in compared sites
+$J$ =  (joint) number of occurences
+$M$ =  total number of columns
+
+Euclidean: $\sqrt{A+B-2J}$
+
+Manhattan: $A+B-2J$
+
+Gower: $\frac{A+B-2J}{M}$
+
+Bray-Curtis: $\frac{A+B-2J}{A+B}$
+
+Jaccard: $\frac{2b}{1+b}$ with $b$ = Bray-Curtis dissimilarity
+
+
+
+
