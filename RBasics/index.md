@@ -26,4 +26,4 @@ Comments and suggestions are welcome.
 5. [Multivariate Statistics I](https://tpetzoldt.github.io/RStatistics/multivar-3d.html)
 
 
-**Copyright and original author:** [tpetzoldt](https://github.com/tpetzoldt), 2021-02-02
+**Copyright and original author:** [tpetzoldt](https://github.com/tpetzoldt), 2021-04-12
