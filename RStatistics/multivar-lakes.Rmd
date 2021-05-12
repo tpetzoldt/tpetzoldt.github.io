@@ -1,7 +1,7 @@
 ---
 title: "Multivariate Lake Data Example"
 author: "Thomas Petzoldt"
-date: "2021-02-03"
+date: "2021-05-12"
 output: html_document
 bibliography: bib.bib
 ---
@@ -23,11 +23,18 @@ teaching example. A few more examples are available in  the lecture tutorial
 excellent books of @Legendre1998 and @Borcard2018. Practical help is found in the
 tutorials of the **vegan** package [@Oksanen2020].
 
-## Data set
+## Data set and terms of use
 
 The lake data set originates from the public data repository of the German 
-Umweltbundesamt [@UBA2020]. The data set provided here is an update kindly 
-provided by the UBA for demonstration purposes.
+Umweltbundesamt [@UBA2020]. The data set provided can be used freely according
+to the [terms and conditions](https://www.umweltbundesamt.de/datenschutz-haftung#c-urheber-und-kennzeichenrecht) 
+published at the [UBA web site](https://www.umweltbundesamt.de/), that refer to
+§ 12a EGovG with respect of the data, and to the [Creative Commons CC-BY ND International License 4.0 ](https://creativecommons.org/licenses/by-nd/4.0/deed.de)
+with respect to other objects directly created by UBA.
+
+The document and codes provided here can be shared according to [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.en).
+
+## Load the data
 
 Here we load the data set and add English column names and 
 abbreviated lake identifiers as row names to the table,
@@ -80,6 +87,9 @@ dat$altitude <- ifelse(dat$altitude < 0, 0, dat$altitude)
 boxplot(scale(sqrt(dat)), las=2)
 ```
 
+## Multivariate Analysis
+
+### Principal Components: PCA
 
 ```{r}
 pc <- prcomp(scale(dat))
@@ -114,6 +124,8 @@ pc3
 plot(pc3)
 ```
 
+### Nonmetric Multidimensional Scaling: NMDS
+
 And now an NMDS for the data set. Function `metaMDS` runs a series of NMDS runs
 with different start values to avoid local minima. It has also some automatic
 transformations built in and works usually with the Bray-Curtis dissimilarity,
@@ -127,7 +139,7 @@ abline(h=0, col="grey", lty="dotted")
 abline(v=0, col="grey", lty="dotted")
 ```
 
-## Cluster analysis
+### Cluster analysis
 
 Here we apply a hierarchical cluster analysis with square root transformed data 
 and two different agglomeration schemes, "complete linkage" and "Ward's method".
