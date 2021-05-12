@@ -24,6 +24,7 @@ Comments and suggestions are welcome.
 
 4. [ANOVA](https://tpetzoldt.github.io/RStatistics/slides-anova.html)
 5. [Multivariate Statistics I](https://tpetzoldt.github.io/RStatistics/multivar-3d.html)
+6. [Multivariate Statistics II](https://tpetzoldt.github.io/RStatistics/multivar-lakes.html)
 
 
-**Copyright and original author:** [tpetzoldt](https://github.com/tpetzoldt), 2021-02-02
+**Copyright and original author:** [tpetzoldt](https://github.com/tpetzoldt), 2021-05-12
