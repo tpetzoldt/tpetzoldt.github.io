@@ -1,0 +1,21 @@
+Dataset: seen_bb.csv
+
+Description: Lake Chemistry and Morphometric Data 
+
+Details: see reference
+
+Source: 
+
+@Book{Casper1985,
+  Title                    = {Lake Stechlin: A temperate oligotrophic lake},
+  Author                   = {Casper, S. Jost},
+  Publisher                = {Dr. W. Junk Publishers},
+  Year                     = {1985},
+  Volume                   = {58}
+}
+
+
+
+
+
+

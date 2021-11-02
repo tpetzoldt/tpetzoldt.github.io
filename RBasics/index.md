@@ -16,15 +16,16 @@ Comments and suggestions are welcome.
 
 ### R Basics
 
-1. [R Basics](https://tpetzoldt.github.io/RBasics/RBasics.html)
-2. [Functions](https://tpetzoldt.github.io/RBasics/Functions.html)
-3. [Graphics](https://tpetzoldt.github.io/RBasics/Graphics.html)
+1. [An Introductory R Session](https://tpetzoldt.github.io/RBasics/An-Introductory-R-Session.html)
+2. [R Basics](https://tpetzoldt.github.io/RBasics/RBasics.html)
+3. [Functions](https://tpetzoldt.github.io/RBasics/Functions.html)
+4. [Graphics](https://tpetzoldt.github.io/RBasics/Graphics.html)
 
 ### Statistical Applications
 
-4. [ANOVA](https://tpetzoldt.github.io/RStatistics/slides-anova.html)
-5. [Multivariate Statistics I](https://tpetzoldt.github.io/RStatistics/multivar-3d.html)
-6. [Multivariate Statistics II](https://tpetzoldt.github.io/RStatistics/multivar-lakes.html)
+5. [ANOVA](https://tpetzoldt.github.io/RStatistics/slides-anova.html)
+6. [Multivariate Statistics I](https://tpetzoldt.github.io/RStatistics/multivar-3d.html)
+7. [Multivariate Statistics II](https://tpetzoldt.github.io/RStatistics/multivar-lakes.html)
 
 
-**Copyright and original author:** [tpetzoldt](https://github.com/tpetzoldt), 2021-05-12
+**Copyright and original author:** [tpetzoldt](https://github.com/tpetzoldt), 2021-11-02
