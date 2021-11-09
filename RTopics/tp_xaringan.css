@@ -1,0 +1,21 @@
+.inverse {
+  background-color: #272822;
+  color: #d6d6d6;
+  text-shadow: 0 0 20px #333;
+}
+
+
+.scrollable {
+  height: 500px;
+  overflow-y: auto;
+}
+
+
+.scrollable-auto {
+  height: 80%;
+  overflow-y: auto;
+}
+
+.remark-slide-number {
+  display: none;
+}
