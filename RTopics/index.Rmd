@@ -121,6 +121,29 @@ grViz("digraph causal {
 
 ---
 
+## A data set
+
+
+
+---
+
+## Date and time with POSIXct
+
+
+---
+
+## Date and time with lubridate
+
+
+---
+
+## The pipe operators: `%>%` and `|>`
+
+
+
+
+---
+
 ### Further Reading
 
 A bunch of free docs and examples can be found in the internet, just search for `tidyverse` and `R`.
