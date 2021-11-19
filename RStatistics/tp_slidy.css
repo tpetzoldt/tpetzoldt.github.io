@@ -217,8 +217,8 @@ p.copyright { font-size: smaller }
 
 a img { border-width: 0; border-style: none }
 
-a:visited { color: navy }
-a:link { color: navy }
+a:visited { color: #006ab2; }
+a:link { color: #717778; }
 a:hover { color: red; text-decoration: underline }
 a:active { color: red; text-decoration: underline }
 

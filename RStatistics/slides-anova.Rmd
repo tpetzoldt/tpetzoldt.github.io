@@ -2,7 +2,7 @@
 # https://garrettgman.github.io/rmarkdown/slidy_presentation_format.html
 title: "One and two-way ANOVA with R"
 author: "Thomas Petzoldt"
-date: "2021-01-19"
+date: "2021-11-19"
 bibliography: bib.bib
 output:
   slidy_presentation:
@@ -20,8 +20,8 @@ Preface
 --------------------------------------------------------------------------------
 
 * This HTML document is intended to amend the PDF lecture slides.
-* The hybrid format of "long slides" aims to make self-study easier. Compared to the
-pdf version more code is shown to improve reproducibility. Just copy the code
+* The "long slides"-format aims to make self-study easier. Compared to the
+pdf version more code is shown to improve reproducibility. Scroll down and then copy the code
 to your favorite R editor (e.g. RStudio).
 * Full source code of the slides is provided in R Markdown format using the "slidy" framework.
 * Photos and algae growth data were created as part of a highschool internship project, 
@@ -98,28 +98,28 @@ A practical example
 
 Find a suitable medium for growth experiments with green algae:
 
-* Cheap, easy to handle
-* Suitable for students courses and classroom experiments
+* cheap, easy to handle
+* suitable for students courses and classroom experiments
 
 ### Idea
 
 
-* Use a commercial fertilizer with the main nutrients N and P
-* Mineral water with trace elements
-* Does non-sparkling mineral water contain enough $\mathrm{HCO_3^-}$?
-* Test how to improve ($\mathrm{CO_2}$) availability for photosynthesis
+* use a commercial fertilizer with the main nutrients N and P
+* mineral water with trace elements
+* does non-sparkling mineral water contain enough $\mathrm{HCO_3^-}$?
+* test how to improve ($\mathrm{CO_2}$) availability for photosynthesis
 
 Application
 --------------------------------------------------------------------------------
 
 ### 7 Different treatments
 
-* Fertilizer solution in closed bottles 
-* Fertilizer solution in open bottles ($\mathrm{CO_2}$ from air)
-* Fertilizer + Sugar (organic C source)
-* Fertilizer + additional $\mathrm{HCO_3^-}$ (add $\mathrm{CaCO_3}$ to sparkling mineral water)
-* A standard algae growth medium ("Basal medium") for comparison
-* Deionized ("destilled") water and tap water for comparison
+* fertilizer solution in closed bottles 
+* fertilizer solution in open bottles ($\mathrm{CO_2}$ from air)
+* fertilizer + sugar (organic C source)
+* fertilizer + additional $\mathrm{HCO_3^-}$ (add $\mathrm{CaCO_3}$ to sparkling mineral water)
+* a standard algae growth medium ("Basal medium") for comparison
+* deionized ("destilled") water and tap water for comparison
 
 Experimental design
 --------------------------------------------------------------------------------
@@ -132,7 +132,7 @@ Experimental design
 * each treatment with 3 replicates
 * randomized experiment on a shaker
 * 16:8 light:dark-cycle
-* Measurement directly in the bottles using a self-made [turbidity meter](https://tpetzoldt.github.io/growthlab/doc/versuchsaufbau.html)
+* measurement directly in the bottles using a self-made [turbidity meter](https://tpetzoldt.github.io/growthlab/doc/versuchsaufbau.html)
 </div>
 
 Results
@@ -176,7 +176,7 @@ xdat %>%
 ```
 
 * NA means "not available", i.e. a missing value
-* The crosstable structure is compact and nice for a slide, but not suitable for
+* the crosstable structure is compact and nice on a slide, but not suitable for
 data analysis
 * therefore, we use the long table format instead
 
@@ -186,9 +186,10 @@ Data in long format
 
 <div class='left' style='float:left;width:48%'>
 
-<p style="padding-bottom: 30ex">&nbsp;</p>
+<p style="padding-bottom: 10ex">&nbsp;</p>
 
-## Advantages
+### Advantages
+
 * looks "stupid" but is better for data analysis
 * dependend **growth** and explanation variable **treat** clearly visible
 * easily extensible to $>1$ explanation variable
@@ -203,6 +204,7 @@ dat %>%
 ```
 
 </div>
+
 
 The data in R
 --------------------------------------------------------------------------------
@@ -229,15 +231,17 @@ dat <- data.frame(
 Visualization
 --------------------------------------------------------------------------------
 
+We can try a `boxplot`:
+
 ```{r echo=TRUE}
 boxplot(growth ~ treat, data=dat)
 abline(h=0, lty="dashed", col="grey")
 ```
 
-But as we have only 2-3 replicates per box, it is better to plot the all values
-separately using `stripchart`:
+But as we have only 2-3 replicates per box, it is better to use `stripchart`
+that shows all individual values:
 
-```{r}
+```{r echo=TRUE}
 stripchart(growth ~ treat, data=dat, vertical=TRUE)
 ```
 
@@ -274,7 +278,7 @@ get spurious results just by chance.
 
 ### Solutions
 
-* One approach can be to down-correct the alpha errors so that $\alpha_{total} = 0.05$
+* One approach can be to down-correct the alpha errors so that $\alpha_{total} = 0.05$: Bonferroni rule
 * The preferred approach is to use a method that does all tests simultanaeously: the ANOVA.
 
 ANOVA: Analysis of variances
@@ -282,7 +286,7 @@ ANOVA: Analysis of variances
 
 ### Basic Idea
 
-* split the total variance into effect(s) and errors:
+* Split the total variance into effect(s) and errors:
 
 \[
 s_y^2 = s^2_\mathrm{effect} + s^2_{\varepsilon}
@@ -444,7 +448,7 @@ hams <- data.frame(No=1:12,
 
 
 * Example from a statistics text book [@Crawley2002]
-* Effects of diet and coat color on growth of Hamsters  in Gramm per time (constructed data set)
+* Effects of diet and coat color on growth of Hamsters in gramm per time (constructed data set)
 
 <div style="align: center">
 <img src="img/hams-crosstable.jpg" alt="Hamster growth" style="width:30%">
@@ -631,6 +635,17 @@ More about this can be found in @Jahnichen2001, @Jahnichen2007, @Jahnichen2011, 
 ANCOVA
 --------------------------------------------------------------------------------
 
+### Statistical question
+
+* Comparison of regression lines
+* Similar to ANOVA, but contains also **metric** variables (covariates)
+
+
+### Example
+
+Annette Dobson's birthweight data. A data set from a statistics textbook 
+[@Dobson2013], birth weight of boys and girls in dependence of the
+pregnancy week.
 
 ```{r, echo=FALSE}
 ## Birth Weight Data see stats/demo/lm.glm.R
@@ -648,9 +663,6 @@ mal <- lm(weight ~ week, data=dobson, subset = sex=="M")
 abline(fem, col="red")
 abline(mal, col="blue")
 ```
-Annette Dobson's birthweight data. A data set from a statistics textbook 
-[@Dobson2013], birth weight of boys and girls in dependence of the
-pregnancy week.
 
 <hr></hr>
 
@@ -827,13 +839,21 @@ The model with the smallest AIC (or BIC) is considered as
 Model Selection and Likelihood Ratio Tests
 --------------------------------------------------------------------------------
 
+### Approach
+
+1. Fit several models individually
+2. Compare the models pairwise with ANOVA (likelihood ratio test)
+3. Or: select model with minimum AIC
+
 ```{r, echo=TRUE}
 m1 <- lm(growth ~ diet * coat, data=hams)
 m2 <- lm(growth ~ diet + coat, data=hams)
 anova(m1, m2)
 ```
 
-```{r}
+The AIC can be shown with `AIC`:
+
+```{r, echo=TRUE}
 AIC(m1, m2)
 ```
 
