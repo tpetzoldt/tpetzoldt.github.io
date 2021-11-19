@@ -165,13 +165,13 @@ dat <- data.frame(
 
 xdat <- 
   dat %>% 
-  pivot_wider(id_cols = treat, names_from=rep, values_from=growth, names_prefix="replicate ")
+  pivot_wider(id_cols = treat, names_from = rep, values_from = growth, names_prefix = "replicate ")
 ```
 
 
 ```{r}
 xdat %>% 
-  kable('html', caption="Data set: Growth from day 2 to day 6 (in relative units)") %>% 
+  kable('html', caption = "Data set: Growth from day 2 to day 6 (in relative units)") %>% 
   kable_styling(bootstrap_options = "striped", full_width = FALSE)
 ```
 
@@ -234,15 +234,15 @@ Visualization
 We can try a `boxplot`:
 
 ```{r echo=TRUE}
-boxplot(growth ~ treat, data=dat)
-abline(h=0, lty="dashed", col="grey")
+boxplot(growth ~ treat, data = dat)
+abline(h = 0, lty = "dashed", col = "grey")
 ```
 
 But as we have only 2-3 replicates per box, it is better to use `stripchart`
 that shows all individual values:
 
 ```{r echo=TRUE}
-stripchart(growth ~ treat, data=dat, vertical=TRUE)
+stripchart(growth ~ treat, data = dat, vertical = TRUE)
 ```
 
 
@@ -317,10 +317,10 @@ clem_edeka <- data.frame(
 
 clem_edeka$code <- as.numeric(factor(clem_edeka$brand))
 
-plot(weight ~ code, data=clem_edeka, axe=FALSE)
-m <- lm(weight ~ code, data=clem_edeka)
-axis(1, at=c(1,2), labels=c("EB", "EP")); axis(2); box()
-abline(m, col="blue")
+plot(weight ~ code, data = clem_edeka, axe = FALSE)
+m <- lm(weight ~ code, data = clem_edeka)
+axis(1, at = c(1,2), labels = c("EB", "EP")); axis(2); box()
+abline(m, col = "blue")
 ```
 
 ### Total variance
@@ -482,21 +482,22 @@ Visualization and ANOVA
 --------------------------------------------------------------------------------
 ```{r}
 par(mfrow=c(1, 2))
-boxplot(growth ~ diet, data = hams, col="wheat")
-boxplot(growth ~ coat, data=hams, col="wheat")
+boxplot(growth ~ diet, data = hams, col = "wheat")
+boxplot(growth ~ coat, data = hams, col = "wheat")
 ```
 
 ### ANOVA
 
 ```{r, echo=TRUE}
-m <- lm(growth~coat*diet, data=hams)
+m <- lm(growth ~ coat * diet, data = hams)
 anova(m)
 ```
 
 ### Interaction plot
 
 ```{r, echo=TRUE}
-with(hams, interaction.plot(diet, coat, growth, col=c("brown", "orange"), lty=1, lwd=2))
+with(hams, interaction.plot(diet, coat, growth, 
+                            col = c("brown", "orange"), lty = 1, lwd = 2))
 ```
 
 Diagnostics
@@ -660,8 +661,8 @@ dobson <- data.frame(
 plot(weight ~ week, data=dobson, col=c("blue", "red")[as.numeric(sex)], pch=16)
 fem <- lm(weight ~ week, data=dobson, subset = sex=="F")
 mal <- lm(weight ~ week, data=dobson, subset = sex=="M")
-abline(fem, col="red")
-abline(mal, col="blue")
+abline(fem, col = "red")
+abline(mal, col = "blue")
 ```
 
 <hr></hr>
@@ -678,12 +679,12 @@ dobson <- data.frame(
   weight = c(2968, 2795, 3163, 2925, 2625, 2847, 3292, 3473, 2628, 3176,
 	    3421, 2975, 3317, 2729, 2935, 2754, 3210, 2817, 3126, 2539,
 	    2412, 2991, 2875, 3231),
-  sex = gl(2, 12, labels=c("M","F"))
+  sex = gl(2, 12, labels=c("M", "F"))
 )
 ```
 
 
-Linear regression, ANCOVA and ANCOVA
+Summary: Linear regression, ANOVA and ANCOVA
 --------------------------------------------------------------------------------
 
 * ANCOVA (analysis of covariance) deals with the comparison of regression lines
