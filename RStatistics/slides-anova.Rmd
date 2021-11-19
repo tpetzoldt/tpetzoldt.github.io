@@ -308,17 +308,17 @@ a different weight.
 Instead of a t-test we encode "EB" with 1 and "EP" with 2.  
 
 ```{r, echo=TRUE}
-clem_edeka <- data.frame(
+clem <- data.frame(
   brand = c("EP", "EB", "EB", "EB", "EB", "EB", "EB", "EB", "EB", "EB", "EB", 
             "EB", "EB", "EB", "EP", "EP", "EP", "EP", "EP", "EP", "EP", "EB", "EP"),
   weight = c(88, 96, 100, 96, 90, 100, 92, 92, 102, 99, 86, 89, 99, 89, 75, 80, 
              81, 96, 82, 98, 80, 107, 88)
 )
 
-clem_edeka$code <- as.numeric(factor(clem_edeka$brand))
+clem$code <- as.numeric(factor(clem$brand))
 
-plot(weight ~ code, data = clem_edeka, axe = FALSE)
-m <- lm(weight ~ code, data = clem_edeka)
+plot(weight ~ code, data = clem, axe = FALSE)
+m <- lm(weight ~ code, data = clem)
 axis(1, at = c(1,2), labels = c("EB", "EP")); axis(2); box()
 abline(m, col = "blue")
 ```
@@ -326,7 +326,7 @@ abline(m, col = "blue")
 ### Total variance
 
 ```{r, echo=TRUE}
-(var_tot <- var(clem_edeka$weight))
+(var_tot <- var(clem$weight))
 ```
 
 ### Residual variance (alias "within variance")

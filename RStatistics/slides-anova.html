@@ -694,11 +694,11 @@ Tap water
 <div id="visualization" class="slide section level2">
 <h1>Visualization</h1>
 <p>We can try a <code>boxplot</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(growth <span class="sc">~</span> treat, <span class="at">data=</span>dat)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>, <span class="at">lty=</span><span class="st">&quot;dashed&quot;</span>, <span class="at">col=</span><span class="st">&quot;grey&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(growth <span class="sc">~</span> treat, <span class="at">data =</span> dat)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">col =</span> <span class="st">&quot;grey&quot;</span>)</span></code></pre></div>
 <p><img src="slides-anova_files/figure-slidy/unnamed-chunk-5-1.png" width="768" /></p>
 <p>But as we have only 2-3 replicates per box, it is better to use <code>stripchart</code> that shows all individual values:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stripchart</span>(growth <span class="sc">~</span> treat, <span class="at">data=</span>dat, <span class="at">vertical=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stripchart</span>(growth <span class="sc">~</span> treat, <span class="at">data =</span> dat, <span class="at">vertical =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><img src="slides-anova_files/figure-slidy/unnamed-chunk-6-1.png" width="768" /></p>
 </div>
 <div id="statistical-approach-and-the-bonferroni-law" class="slide section level2">
@@ -752,22 +752,22 @@ s_y^2 = s^2_\mathrm{effect} + s^2_{\varepsilon}
 <h3 id="example">Example</h3>
 <p>We have two brands of Clementines from a shop “E,” that we encode as “EB” and “EP.” We want to know whether the premium brand (“P”) and the basic brand (“B”) have a different weight.</p>
 <p>Instead of a t-test we encode “EB” with 1 and “EP” with 2.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>clem_edeka <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>clem <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">brand =</span> <span class="fu">c</span>(<span class="st">&quot;EP&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EP&quot;</span>, <span class="st">&quot;EP&quot;</span>, <span class="st">&quot;EP&quot;</span>, <span class="st">&quot;EP&quot;</span>, <span class="st">&quot;EP&quot;</span>, <span class="st">&quot;EP&quot;</span>, <span class="st">&quot;EP&quot;</span>, <span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EP&quot;</span>),</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">weight =</span> <span class="fu">c</span>(<span class="dv">88</span>, <span class="dv">96</span>, <span class="dv">100</span>, <span class="dv">96</span>, <span class="dv">90</span>, <span class="dv">100</span>, <span class="dv">92</span>, <span class="dv">92</span>, <span class="dv">102</span>, <span class="dv">99</span>, <span class="dv">86</span>, <span class="dv">89</span>, <span class="dv">99</span>, <span class="dv">89</span>, <span class="dv">75</span>, <span class="dv">80</span>, </span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>             <span class="dv">81</span>, <span class="dv">96</span>, <span class="dv">82</span>, <span class="dv">98</span>, <span class="dv">80</span>, <span class="dv">107</span>, <span class="dv">88</span>)</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>clem_edeka<span class="sc">$</span>code <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">factor</span>(clem_edeka<span class="sc">$</span>brand))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>clem<span class="sc">$</span>code <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">factor</span>(clem<span class="sc">$</span>brand))</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(weight <span class="sc">~</span> code, <span class="at">data=</span>clem_edeka, <span class="at">axe=</span><span class="cn">FALSE</span>)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">lm</span>(weight <span class="sc">~</span> code, <span class="at">data=</span>clem_edeka)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EP&quot;</span>)); <span class="fu">axis</span>(<span class="dv">2</span>); <span class="fu">box</span>()</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(m, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(weight <span class="sc">~</span> code, <span class="at">data =</span> clem, <span class="at">axe =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">lm</span>(weight <span class="sc">~</span> code, <span class="at">data =</span> clem)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;EB&quot;</span>, <span class="st">&quot;EP&quot;</span>)); <span class="fu">axis</span>(<span class="dv">2</span>); <span class="fu">box</span>()</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(m, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
 <p><img src="slides-anova_files/figure-slidy/unnamed-chunk-7-1.png" width="768" /></p>
 <h3 id="total-variance">Total variance</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>(var_tot <span class="ot">&lt;-</span> <span class="fu">var</span>(clem_edeka<span class="sc">$</span>weight))</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>(var_tot <span class="ot">&lt;-</span> <span class="fu">var</span>(clem<span class="sc">$</span>weight))</span></code></pre></div>
 <pre><code>## [1] 68.98814</code></pre>
 <h3 id="residual-variance-alias-within-variance">Residual variance (alias “within variance”)</h3>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>(var_res <span class="ot">&lt;-</span> <span class="fu">var</span>(<span class="fu">residuals</span>(m)))</span></code></pre></div>
@@ -1090,7 +1090,7 @@ dark
 <h1>Visualization and ANOVA</h1>
 <p><img src="slides-anova_files/figure-slidy/unnamed-chunk-22-1.png" width="768" /></p>
 <h3 id="anova">ANOVA</h3>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">lm</span>(growth<span class="sc">~</span>coat<span class="sc">*</span>diet, <span class="at">data=</span>hams)</span>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">lm</span>(growth <span class="sc">~</span> coat <span class="sc">*</span> diet, <span class="at">data =</span> hams)</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
@@ -1103,7 +1103,8 @@ dark
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <h3 id="interaction-plot">Interaction plot</h3>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(hams, <span class="fu">interaction.plot</span>(diet, coat, growth, <span class="at">col=</span><span class="fu">c</span>(<span class="st">&quot;brown&quot;</span>, <span class="st">&quot;orange&quot;</span>), <span class="at">lty=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(hams, <span class="fu">interaction.plot</span>(diet, coat, growth, </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;brown&quot;</span>, <span class="st">&quot;orange&quot;</span>), <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">2</span>))</span></code></pre></div>
 <p><img src="slides-anova_files/figure-slidy/unnamed-chunk-24-1.png" width="768" /></p>
 </div>
 <div id="diagnostics" class="slide section level2">
@@ -1235,7 +1236,7 @@ dark
 <span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">weight =</span> <span class="fu">c</span>(<span class="dv">2968</span>, <span class="dv">2795</span>, <span class="dv">3163</span>, <span class="dv">2925</span>, <span class="dv">2625</span>, <span class="dv">2847</span>, <span class="dv">3292</span>, <span class="dv">3473</span>, <span class="dv">2628</span>, <span class="dv">3176</span>,</span>
 <span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>        <span class="dv">3421</span>, <span class="dv">2975</span>, <span class="dv">3317</span>, <span class="dv">2729</span>, <span class="dv">2935</span>, <span class="dv">2754</span>, <span class="dv">3210</span>, <span class="dv">2817</span>, <span class="dv">3126</span>, <span class="dv">2539</span>,</span>
 <span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>        <span class="dv">2412</span>, <span class="dv">2991</span>, <span class="dv">2875</span>, <span class="dv">3231</span>),</span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">sex =</span> <span class="fu">gl</span>(<span class="dv">2</span>, <span class="dv">12</span>, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;M&quot;</span>,<span class="st">&quot;F&quot;</span>))</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">sex =</span> <span class="fu">gl</span>(<span class="dv">2</span>, <span class="dv">12</span>, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">&quot;M&quot;</span>, <span class="st">&quot;F&quot;</span>))</span>
 <span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 </div>
 <div id="summary-linear-regression-anova-and-ancova" class="slide section level2">
