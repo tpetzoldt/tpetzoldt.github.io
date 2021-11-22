@@ -24,8 +24,9 @@ Comments and suggestions are welcome.
 ### Statistical Applications
 
 5. [ANOVA](https://tpetzoldt.github.io/RStatistics/slides-anova.html)
-6. [Multivariate Statistics I](https://tpetzoldt.github.io/RStatistics/multivar-3d.html)
-7. [Multivariate Statistics II](https://tpetzoldt.github.io/RStatistics/multivar-lakes.html)
+6. [Basic nonlinear Regression](https://tpetzoldt.github.io/RStatistics/nonlinear-regression.html)
+7. [Multivariate Statistics I](https://tpetzoldt.github.io/RStatistics/multivar-3d.html)
+8. [Multivariate Statistics II](https://tpetzoldt.github.io/RStatistics/multivar-lakes.html)
 
 
 **Copyright and original author:** [tpetzoldt](https://github.com/tpetzoldt), 2021-11-02
