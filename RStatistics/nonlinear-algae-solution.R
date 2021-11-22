@@ -11,7 +11,7 @@ y <- c(0.88, 1.02, 1.43, 2.79, 4.61, 7.12,
 yy <- y * 1e-6
 
 ## we now plot the data linearly and logarithmically
-## the layout fnction is another way to subdivide the plotting area
+## the layout function is another way to subdivide the plotting area
 nf <- layout(matrix(c(1,2,3,3), 2, 2, byrow = TRUE), respect = TRUE)
 layout.show(nf) # this shows how the plotting area is subdivided
 
@@ -25,7 +25,7 @@ abline(a=log(yy[1]), b=r)
 
 ## this way, we have a heuristics for all start parameters:
 ## r:  steepest increase of y in log scale
-## K:   maximum value
+## K:  maximum value
 ## N0: first value
 
 ## we can check this by plotting the function with the start values
@@ -39,7 +39,7 @@ aFit   <- nls(yy ~ f(x, r, K,N0), start = pstart, trace=TRUE)
 x1 <- seq(0, 25, length = 100)
 lines(x1, predict(aFit, data.frame(x = x1)), col = "red")
 legend("topleft",
-       legend = c("data", "start parameters", "fitted parameters"),
+       legend = c("data", "start", "fitted"),
        col = c("black", "blue", "red"),
        lty = c(0, 1, 1),
        pch = c(16, NA, NA))
@@ -66,7 +66,7 @@ fit2   <- nls(yy ~ baranyi(x, r, K, N0, h0), start = pstart, trace=TRUE)
 lines(x1, predict(fit2, data.frame(x = x1)), col = "forestgreen", lwd=2)
 
 legend("topleft",
-       legend = c("data", "logistic model", "Baranyi-Roberts model"),
+       legend = c("data", "logistic", "Baranyi-Roberts"),
        col = c("black", "red", "forestgreen"),
        lty = c(0, 1, 1),
        pch = c(16, NA, NA))
@@ -109,7 +109,7 @@ lines(fit3, col="magenta")
 summary(fit3)
 
 legend("topleft",
-       legend = c("data", "logistic model", "Baranyi model"),
+       legend = c("data", "logistic", "Baranyi"),
        col = c("red", "blue", "magenta"),
        lty = c(0, 1, 1),
        pch = c(16, NA, NA))
