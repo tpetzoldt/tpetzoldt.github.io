@@ -80,9 +80,9 @@ replace this with zero. As it is a small value, it does not influence our analys
 but we should always be very careful to document such workarounds.
 
 ```{r}
-par(mfrow=c(1,1))
-par(mar=c(7,4,2,1)+.1)
-boxplot(scale(dat), las=2)
+par(mfrow = c(1, 1))
+par(mar = c(7, 4, 2, 1) + .1)
+boxplot(scale(dat), las = 2)
 dat$altitude <- ifelse(dat$altitude < 0, 0, dat$altitude)
 boxplot(scale(sqrt(dat)), las=2)
 ```
@@ -98,7 +98,7 @@ plot(pc)
 biplot(pc)
 ```
 
-As the PCA with the untransformed data looks somewhat asymmetrix, we repeat it with
+As the PCA with the untransformed data looks somewhat asymmetric, we repeat it with
 square transformed data. In addition, also the 3rd PC is plotted.
 
 ```{r}
@@ -109,12 +109,12 @@ summary(pc2)
 par(mfrow=c(1,2))
 par(mar=c(5, 4, 4, 2) + 0.1)
 biplot(pc2, cex=0.6)
-biplot(pc2, cex=0.6, choices=c(3,2))
+biplot(pc2, cex=0.6, choices=c(3, 2))
 ```
 
 A PCA is also possible with the `rda` function of the **vegan** package. The
-syntax of the plot functions is somewhat different here. Instead of `biplot`as 
-above, we can directly use `plot`. Details are foudn in the **vegan** documentation.
+syntax of the plot functions is somewhat different. Instead of `biplot` as 
+above, we can directly use `plot`. Details are found in the **vegan** documentation.
 
 ```{r}
 par(mfrow=c(1,1))
@@ -126,14 +126,14 @@ plot(pc3)
 
 ### Nonmetric Multidimensional Scaling: NMDS
 
-And now an NMDS for the data set. Function `metaMDS` runs a series of NMDS runs
+Lt's now perform an NMDS for the data set. Function `metaMDS` runs a series of NMDS fits
 with different start values to avoid local minima. It has also some automatic
 transformations built in and works usually with the Bray-Curtis dissimilarity,
 that is used for plants and animal species abundance data. As we work with
 physical data here, we set the distance measure to "euclidean".
 
 ```{r}
-md <- metaMDS(dat2, scale=TRUE, distance = "euclid")
+md <- metaMDS(dat2, scale = TRUE, distance = "euclid")
 plot(md, type="text")
 abline(h=0, col="grey", lty="dotted")
 abline(v=0, col="grey", lty="dotted")
@@ -156,7 +156,7 @@ plot(hc2)
 We can also use the clusters to indicate groups in the NMDS plot. Function 
 `rect.hclust` indicates a given number of clusters in the dendrogram, then we cut
 the tree with `cutree` and use the groups `grp` as color codes. **R** has 8 
-standard colors. If we need more, we must define an own palette.
+standard colors. If we need more, we can define an own palette.
 
 ```{r}
 plot(hc, hang = -1)
@@ -168,7 +168,7 @@ text(md$points, row.names(dat2), col = grp)
 ```
 
 
-Instead of a hierarchical clustering, we can also use a non-hierarchical method,
+Instead of hierarchical clustering, we can also use a non-hierarchical method,
 e.g. k-means clustering. This is an iterative method, and avoids the problem that 
 cluster assignment depends on the order of clustering and the agglomeration method.
 

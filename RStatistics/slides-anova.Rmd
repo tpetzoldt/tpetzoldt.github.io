@@ -2,7 +2,7 @@
 # https://garrettgman.github.io/rmarkdown/slidy_presentation_format.html
 title: "One and two-way ANOVA with R"
 author: "Thomas Petzoldt"
-date: "2021-11-19"
+date: "2021-12-14"
 bibliography: bib.bib
 output:
   slidy_presentation:
@@ -505,7 +505,7 @@ Diagnostics
 
 ### Assumptions
 
-1. independence of measurements (within samples)
+1. Independence of measurements (within samples)
 2. Variance homogeneity of residuals
 3. Normal distribution of residuals
 
@@ -533,6 +533,17 @@ abline(h=0)
 ```{r, echo=TRUE}  
 fligner.test(growth ~ interaction(coat, diet), data=hams)
 ```
+
+The residuals look ok and the p-value of the Fligner test are not significant at 
+the $p=0.05$ level, so everything looks fine. 
+
+
+However, pre-tests are generally problematic for theoretical reasons, 
+as null hypotheses $H_0$ can only be rejected and not ultimately confirmed. 
+Furthermore,  $p$ is close to the threshold value and, even more important, 
+the data set is very small. This leaves us with some uncertainty, typical for 
+such cases. It can only be overcome with careful thinking and some experience. 
+It is always a good idea to discuss results with colleagues and supervisors.
 
 Sequential Holm-Bonferroni method
 --------------------------------------------------------------------------------

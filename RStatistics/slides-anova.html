@@ -7,7 +7,7 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
   <meta name="author" content="Thomas Petzoldt" />
-  <meta name="date" content="2021-11-19" />
+  <meta name="date" content="2021-12-14" />
   <title>One and two-way ANOVA with R</title>
   <style type="text/css">
     code{white-space: pre-wrap;}
@@ -175,7 +175,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <p class="author">
 Thomas Petzoldt
   </p>
-  <p class="date">2021-11-19</p>
+  <p class="date">2021-12-14</p>
 </div>
 <div id="preface" class="slide section level2">
 <h1>Preface</h1>
@@ -1111,7 +1111,7 @@ dark
 <h1>Diagnostics</h1>
 <h3 id="assumptions">Assumptions</h3>
 <ol style="list-style-type: decimal">
-<li>independence of measurements (within samples)</li>
+<li>Independence of measurements (within samples)</li>
 <li>Variance homogeneity of residuals</li>
 <li>Normal distribution of residuals</li>
 </ol>
@@ -1138,6 +1138,8 @@ dark
 ## 
 ## data:  growth by interaction(coat, diet)
 ## Fligner-Killeen:med chi-squared = 10.788, df = 5, p-value = 0.05575</code></pre>
+<p>The residuals look ok and the p-value of the Fligner test are not significant at the <span class="math inline">\(p=0.05\)</span> level, so everything looks fine.</p>
+<p>However, pre-tests are generally problematic for theoretical reasons, as null hypotheses <span class="math inline">\(H_0\)</span> can only be rejected and not ultimately confirmed. Furthermore, <span class="math inline">\(p\)</span> is close to the threshold value and, even more important, the data set is very small. This leaves us with some uncertainty, typical for such cases. It can only be overcome with careful thinking and some experience. It is always a good idea to discuss results with colleagues and supervisors.</p>
 </div>
 <div id="sequential-holm-bonferroni-method" class="slide section level2">
 <h1>Sequential Holm-Bonferroni method</h1>
@@ -1516,14 +1518,14 @@ Dziallas, Claudia, and Hans-Peter Grossart. 2011. <span>“Increasing <span>Oxyg
 <div id="ref-Holm1979" class="csl-entry">
 Holm, Sture. 1979. <span>“A Simple Sequentially Rejective Multiple Test Procedure.”</span> <em>Scandinavian Journal of Statistics</em>, 65–70. <a href="https://www.jstor.org/stable/4615733">https://www.jstor.org/stable/4615733</a>.
 </div>
-<div id="ref-Jahnichen2007" class="csl-entry">
-Jähnichen, S., T. Ihle, T. Petzoldt, and J. Benndorf. 2007. <span>“Impact of <span>Inorganic Carbon Availability</span> on <span>Microcystin Production</span> by <span>Microcystis</span> Aeruginosa <span>PCC</span> 7806.”</span> <em>Applied and Environmental Microbiology</em> 73 (21): 6994–7002. <a href="https://doi.org/10.1128/AEM.01253-07">https://doi.org/10.1128/AEM.01253-07</a>.
-</div>
 <div id="ref-Jahnichen2011" class="csl-entry">
 Jähnichen, Sabine, Benedict M. Long, and Thomas Petzoldt. 2011. <span>“Microcystin Production by <span>Microcystis</span> Aeruginosa: <span>Direct</span> Regulation by Multiple Environmental Factors.”</span> <em>Harmful Algae</em> 12: 95–104. <a href="https://doi.org/10.1016/j.hal.2011.09.002">https://doi.org/10.1016/j.hal.2011.09.002</a>.
 </div>
 <div id="ref-Jahnichen2001" class="csl-entry">
 Jähnichen, Sabine, Thomas Petzoldt, and Jürgen Benndorf. 2001. <span>“Evidence for Control of Microcystin Dynamics in <span>Bautzen Reservoir</span> (<span>Germany</span>) by Cyanobacterial Population Growth Rates and Dissolved Inorganic Carbon.”</span> <em>Fundamental and Applied Limnology</em> 150 (2): 177–96. <a href="https://doi.org/10.1127/archiv-hydrobiol/150/2001/177">https://doi.org/10.1127/archiv-hydrobiol/150/2001/177</a>.
+</div>
+<div id="ref-Jahnichen2007" class="csl-entry">
+Jähnichen, S., T. Ihle, T. Petzoldt, and J. Benndorf. 2007. <span>“Impact of <span>Inorganic Carbon Availability</span> on <span>Microcystin Production</span> by <span>Microcystis</span> Aeruginosa <span>PCC</span> 7806.”</span> <em>Applied and Environmental Microbiology</em> 73 (21): 6994–7002. <a href="https://doi.org/10.1128/AEM.01253-07">https://doi.org/10.1128/AEM.01253-07</a>.
 </div>
 <div id="ref-Zilliges2011" class="csl-entry">
 Zilliges, Yvonne, Jan-Christoph Kehr, Sven Meissner, Keishi Ishida, Stefan Mikkat, Martin Hagemann, Aaron Kaplan, Thomas Börner, and Elke Dittmann. 2011. <span>“The <span>Cyanobacterial Hepatotoxin Microcystin Binds</span> to <span>Proteins</span> and <span>Increases</span> the <span>Fitness</span> of <span>Microcystis</span> Under <span>Oxidative Stress Conditions</span>.”</span> <em>PLoS ONE</em> 6 (3): e17615. <a href="https://doi.org/10.1371/journal.pone.0017615">https://doi.org/10.1371/journal.pone.0017615</a>.
