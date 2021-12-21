@@ -2,7 +2,7 @@
 # https://garrettgman.github.io/rmarkdown/slidy_presentation_format.html
 title: "One and two-way ANOVA with R"
 author: "Thomas Petzoldt"
-date: "2021-12-14"
+date: "2021-12-21"
 bibliography: bib.bib
 csl: apa
 output:
