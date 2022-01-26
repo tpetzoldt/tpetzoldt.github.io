@@ -2,8 +2,9 @@
 # https://garrettgman.github.io/rmarkdown/slidy_presentation_format.html
 title: "One and two-way ANOVA with R"
 author: "Thomas Petzoldt"
-date: "2021-12-14"
+date: "2021-12-21"
 bibliography: bib.bib
+csl: apa
 output:
   slidy_presentation:
     font_adjustment: 0
@@ -848,6 +849,12 @@ $$BIC = −2 \ln(L) + k · \ln(n)$$
 The model with the smallest AIC (or BIC) is considered as 
 <span style="color:blue">minimal adequate</span> (i.e. optimal) model.
 
+### Self study
+
+Read the paper of @JohnsonOmland2004 https://doi.org/10.1016/j.tree.2003.10.013 to 
+gain more understanding the model selection paradigm. 
+
+
 Model Selection and Likelihood Ratio Tests
 --------------------------------------------------------------------------------
 
@@ -856,6 +863,17 @@ Model Selection and Likelihood Ratio Tests
 1. Fit several models individually
 2. Compare the models pairwise with ANOVA (likelihood ratio test)
 3. Or: select model with minimum AIC
+
+### Data and example
+
+```{r, echo=TRUE}
+hams <- data.frame(No=1:12,
+                   growth=c(6.6, 7.2, 6.9, 8.3, 7.9, 9.2,
+                            8.3, 8.7, 8.1, 8.5, 9.1, 9.0),
+                   diet= rep(c("A", "B", "C"), each=2),
+                   coat= rep(c("light", "dark"), each=6)
+                   )
+```
 
 ```{r, echo=TRUE}
 m1 <- lm(growth ~ diet * coat, data=hams)
@@ -873,7 +891,10 @@ AIC(m1, m2)
 * Model with interaction (`m1`) not significantly better than model without
 interaction (`m2`).
 
-**Conclusion:** take the simpler model
+**Conclusion:** take the simpler model (`m2`)
+
+**Exercise:** Generate all possible models and select the model with minimum AIC.
+
 
 Automatic Model Selection
 --------------------------------------------------------------------------------

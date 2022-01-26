@@ -7,7 +7,7 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
   <meta name="author" content="Thomas Petzoldt" />
-  <meta name="date" content="2021-12-14" />
+  <meta name="date" content="2021-12-21" />
   <title>One and two-way ANOVA with R</title>
   <style type="text/css">
     code{white-space: pre-wrap;}
@@ -175,7 +175,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <p class="author">
 Thomas Petzoldt
   </p>
-  <p class="date">2021-12-14</p>
+  <p class="date">2021-12-21</p>
 </div>
 <div id="preface" class="slide section level2">
 <h1>Preface</h1>
@@ -874,7 +874,7 @@ s_y^2 = s^2_\mathrm{effect} + s^2_{\varepsilon}
 <div id="two-way-anova" class="slide section level2">
 <h1>Two-way ANOVA</h1>
 <ul>
-<li>Example from a statistics text book <span class="citation">(Crawley 2002)</span></li>
+<li>Example from a statistics text book <span class="citation">(Crawley, 2002)</span></li>
 <li>Effects of diet and coat color on growth of Hamsters in gramm per time (constructed data set)</li>
 </ul>
 <div style="align: center">
@@ -1144,7 +1144,7 @@ dark
 <div id="sequential-holm-bonferroni-method" class="slide section level2">
 <h1>Sequential Holm-Bonferroni method</h1>
 <ul>
-<li>Also called Holm procedure <span class="citation">(Holm 1979)</span></li>
+<li>Also called Holm procedure <span class="citation">(Holm, 1979)</span></li>
 <li>Easy to use</li>
 <li>Can be applied to any multiple test problem</li>
 <li>Less conservative that ordinary Bonferroni correction, but …</li>
@@ -1215,7 +1215,7 @@ dark
 <li>Regarding our original hypothesis, we can see that MCYST and SubstA did not inhibit growth of <em>Pseudanabaena</em>. In fact SubstA stimulated growth.</li>
 <li>This was contrary to our expectations – the biological reason was then found 10 years later.</li>
 </ul>
-<p>More about this can be found in <span class="citation">Sabine Jähnichen, Petzoldt, and Benndorf (2001)</span>, <span class="citation">S. Jähnichen et al. (2007)</span>, <span class="citation">Sabine Jähnichen, Long, and Petzoldt (2011)</span>, <span class="citation">Zilliges et al. (2011)</span> or <span class="citation">Dziallas and Grossart (2011)</span>.</p>
+<p>More about this can be found in <span class="citation">Jähnichen et al. (2001)</span>, <span class="citation">Jähnichen et al. (2007)</span>, <span class="citation">Jähnichen et al. (2011)</span>, <span class="citation">Zilliges et al. (2011)</span> or <span class="citation">Dziallas &amp; Grossart (2011)</span>.</p>
 </div>
 <div id="ancova" class="slide section level2">
 <h1>ANCOVA</h1>
@@ -1225,7 +1225,7 @@ dark
 <li>Similar to ANOVA, but contains also <strong>metric</strong> variables (covariates)</li>
 </ul>
 <h3 id="example-2">Example</h3>
-<p>Annette Dobson’s birthweight data. A data set from a statistics textbook <span class="citation">(Dobson 2013)</span>, birth weight of boys and girls in dependence of the pregnancy week.</p>
+<p>Annette Dobson’s birthweight data. A data set from a statistics textbook <span class="citation">(Dobson, 2013)</span>, birth weight of boys and girls in dependence of the pregnancy week.</p>
 <p><img src="slides-anova_files/figure-slidy/unnamed-chunk-33-1.png" width="768" /></p>
 <hr>
 </hr>
@@ -1394,6 +1394,8 @@ dark
 </ul>
 <p><span class="math display">\[BIC = −2 \ln(L) + k · \ln(n)\]</span></p>
 <p>The model with the smallest AIC (or BIC) is considered as <span style="color:blue">minimal adequate</span> (i.e. optimal) model.</p>
+<h3 id="self-study">Self study</h3>
+<p>Read the paper of <span class="citation">Johnson &amp; Omland (2004)</span> <a href="https://doi.org/10.1016/j.tree.2003.10.013" class="uri">https://doi.org/10.1016/j.tree.2003.10.013</a> to gain more understanding the model selection paradigm.</p>
 </div>
 <div id="model-selection-and-likelihood-ratio-tests" class="slide section level2">
 <h1>Model Selection and Likelihood Ratio Tests</h1>
@@ -1403,9 +1405,16 @@ dark
 <li>Compare the models pairwise with ANOVA (likelihood ratio test)</li>
 <li>Or: select model with minimum AIC</li>
 </ol>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(growth <span class="sc">~</span> diet <span class="sc">*</span> coat, <span class="at">data=</span>hams)</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(growth <span class="sc">~</span> diet <span class="sc">+</span> coat, <span class="at">data=</span>hams)</span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m1, m2)</span></code></pre></div>
+<h3 id="data-and-example">Data and example</h3>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>hams <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">No=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">growth=</span><span class="fu">c</span>(<span class="fl">6.6</span>, <span class="fl">7.2</span>, <span class="fl">6.9</span>, <span class="fl">8.3</span>, <span class="fl">7.9</span>, <span class="fl">9.2</span>,</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>                            <span class="fl">8.3</span>, <span class="fl">8.7</span>, <span class="fl">8.1</span>, <span class="fl">8.5</span>, <span class="fl">9.1</span>, <span class="fl">9.0</span>),</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">diet=</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>), <span class="at">each=</span><span class="dv">2</span>),</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">coat=</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;light&quot;</span>, <span class="st">&quot;dark&quot;</span>), <span class="at">each=</span><span class="dv">6</span>)</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>                   )</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(growth <span class="sc">~</span> diet <span class="sc">*</span> coat, <span class="at">data=</span>hams)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(growth <span class="sc">~</span> diet <span class="sc">+</span> coat, <span class="at">data=</span>hams)</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(m1, m2)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Model 1: growth ~ diet * coat
@@ -1414,7 +1423,7 @@ dark
 ## 1      6 2.1700                           
 ## 2      8 2.8567 -2  -0.68667 0.9493 0.4383</code></pre>
 <p>The AIC can be shown with <code>AIC</code>:</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(m1, m2)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(m1, m2)</span></code></pre></div>
 <pre><code>##    df      AIC
 ## m1  7 27.53237
 ## m2  5 26.83151</code></pre>
@@ -1422,7 +1431,8 @@ dark
 <li>Likelihood ratio test compares two models (<code>anova</code> with &gt; 1 model)</li>
 <li>Model with interaction (<code>m1</code>) not significantly better than model without interaction (<code>m2</code>).</li>
 </ul>
-<p><strong>Conclusion:</strong> take the simpler model</p>
+<p><strong>Conclusion:</strong> take the simpler model (<code>m2</code>)</p>
+<p><strong>Exercise:</strong> Generate all possible models and select the model with minimum AIC.</p>
 </div>
 <div id="automatic-model-selection" class="slide section level2">
 <h1>Automatic Model Selection</h1>
@@ -1430,8 +1440,8 @@ dark
 <li>The full model is supplied to the <code>step</code> function.</li>
 <li>The modell with the smallest AIC ist the <span style="color:blue">minimal adequate</span> model:</li>
 </ul>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(growth <span class="sc">~</span> diet <span class="sc">*</span> coat, <span class="at">data=</span>hams)</span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">step</span>(m1)</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(growth <span class="sc">~</span> diet <span class="sc">*</span> coat, <span class="at">data=</span>hams)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">step</span>(m1)</span></code></pre></div>
 <pre><code>## Start:  AIC=-8.52
 ## growth ~ diet * coat
 ## 
@@ -1505,30 +1515,33 @@ dark
 </div>
 <div id="bibliography" class="slide section level2 unnumbered">
 <h1 class="unnumbered">Bibliography</h1>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-Crawley2002" class="csl-entry">
-Crawley, Michael J. 2002. <em>Statistical Computing. An Introduction to Data Analysis Using <span>S-PLUS</span></em>. Chichester: Wiley. <a href="datasets: http://www.bio.ic.ac.uk/research/mjcraw/statcomp/data/">datasets: http://www.bio.ic.ac.uk/research/mjcraw/statcomp/data/</a>.
+Crawley, M. J. (2002). <em>Statistical computing. An introduction to data analysis using <span>S-PLUS</span></em> (pp. 1–761). Wiley. <a href="datasets: http://www.bio.ic.ac.uk/research/mjcraw/statcomp/data/">datasets: http://www.bio.ic.ac.uk/research/mjcraw/statcomp/data/</a>
 </div>
 <div id="ref-Dobson2013" class="csl-entry">
-Dobson, Annette J. 2013. <em>Introduction to Statistical Modelling</em>. Springer.
+Dobson, A. J. (2013). <em>Introduction to statistical modelling</em>. Springer.
 </div>
 <div id="ref-Dziallas2011" class="csl-entry">
-Dziallas, Claudia, and Hans-Peter Grossart. 2011. <span>“Increasing <span>Oxygen Radicals</span> and <span>Water Temperature Select</span> for <span>Toxic Microcystis</span> Sp.”</span> Edited by Jack Anthony Gilbert. <em>PLoS ONE</em> 6 (9): e25569. <a href="https://doi.org/10.1371/journal.pone.0025569">https://doi.org/10.1371/journal.pone.0025569</a>.
+Dziallas, C., &amp; Grossart, H.-P. (2011). Increasing <span>Oxygen Radicals</span> and <span>Water Temperature Select</span> for <span>Toxic Microcystis</span> sp. <em>PLoS ONE</em>, <em>6</em>(9), e25569. <a href="https://doi.org/10.1371/journal.pone.0025569">https://doi.org/10.1371/journal.pone.0025569</a>
 </div>
 <div id="ref-Holm1979" class="csl-entry">
-Holm, Sture. 1979. <span>“A Simple Sequentially Rejective Multiple Test Procedure.”</span> <em>Scandinavian Journal of Statistics</em>, 65–70. <a href="https://www.jstor.org/stable/4615733">https://www.jstor.org/stable/4615733</a>.
-</div>
-<div id="ref-Jahnichen2011" class="csl-entry">
-Jähnichen, Sabine, Benedict M. Long, and Thomas Petzoldt. 2011. <span>“Microcystin Production by <span>Microcystis</span> Aeruginosa: <span>Direct</span> Regulation by Multiple Environmental Factors.”</span> <em>Harmful Algae</em> 12: 95–104. <a href="https://doi.org/10.1016/j.hal.2011.09.002">https://doi.org/10.1016/j.hal.2011.09.002</a>.
-</div>
-<div id="ref-Jahnichen2001" class="csl-entry">
-Jähnichen, Sabine, Thomas Petzoldt, and Jürgen Benndorf. 2001. <span>“Evidence for Control of Microcystin Dynamics in <span>Bautzen Reservoir</span> (<span>Germany</span>) by Cyanobacterial Population Growth Rates and Dissolved Inorganic Carbon.”</span> <em>Fundamental and Applied Limnology</em> 150 (2): 177–96. <a href="https://doi.org/10.1127/archiv-hydrobiol/150/2001/177">https://doi.org/10.1127/archiv-hydrobiol/150/2001/177</a>.
+Holm, S. (1979). A simple sequentially rejective multiple test procedure. <em>Scandinavian Journal of Statistics</em>, 65–70. <a href="https://www.jstor.org/stable/4615733">https://www.jstor.org/stable/4615733</a>
 </div>
 <div id="ref-Jahnichen2007" class="csl-entry">
-Jähnichen, S., T. Ihle, T. Petzoldt, and J. Benndorf. 2007. <span>“Impact of <span>Inorganic Carbon Availability</span> on <span>Microcystin Production</span> by <span>Microcystis</span> Aeruginosa <span>PCC</span> 7806.”</span> <em>Applied and Environmental Microbiology</em> 73 (21): 6994–7002. <a href="https://doi.org/10.1128/AEM.01253-07">https://doi.org/10.1128/AEM.01253-07</a>.
+Jähnichen, S., Ihle, T., Petzoldt, T., &amp; Benndorf, J. (2007). Impact of <span>Inorganic Carbon Availability</span> on <span>Microcystin Production</span> by <span>Microcystis</span> aeruginosa <span>PCC</span> 7806. <em>Applied and Environmental Microbiology</em>, <em>73</em>(21), 6994–7002. <a href="https://doi.org/10.1128/AEM.01253-07">https://doi.org/10.1128/AEM.01253-07</a>
+</div>
+<div id="ref-Jahnichen2011" class="csl-entry">
+Jähnichen, S., Long, B. M., &amp; Petzoldt, T. (2011). Microcystin production by <span>Microcystis</span> aeruginosa: <span>Direct</span> regulation by multiple environmental factors. <em>Harmful Algae</em>, <em>12</em>, 95–104. <a href="https://doi.org/10.1016/j.hal.2011.09.002">https://doi.org/10.1016/j.hal.2011.09.002</a>
+</div>
+<div id="ref-Jahnichen2001" class="csl-entry">
+Jähnichen, S., Petzoldt, T., &amp; Benndorf, J. (2001). Evidence for control of microcystin dynamics in <span>Bautzen Reservoir</span> (<span>Germany</span>) by cyanobacterial population growth rates and dissolved inorganic carbon. <em>Fundamental and Applied Limnology</em>, <em>150</em>(2), 177–196. <a href="https://doi.org/10.1127/archiv-hydrobiol/150/2001/177">https://doi.org/10.1127/archiv-hydrobiol/150/2001/177</a>
+</div>
+<div id="ref-JohnsonOmland2004" class="csl-entry">
+Johnson, G., Jerald, &amp; Omland, K. S. (2004). Model <span>Selection</span> in <span>Ecology</span> and <span>Evolution</span>. <em>Trends in Ecology and Evolution</em>, <em>19</em>(2), 101–108. <a href="https://doi.org/10.1016/j.tree.2003.10.013">https://doi.org/10.1016/j.tree.2003.10.013</a>
 </div>
 <div id="ref-Zilliges2011" class="csl-entry">
-Zilliges, Yvonne, Jan-Christoph Kehr, Sven Meissner, Keishi Ishida, Stefan Mikkat, Martin Hagemann, Aaron Kaplan, Thomas Börner, and Elke Dittmann. 2011. <span>“The <span>Cyanobacterial Hepatotoxin Microcystin Binds</span> to <span>Proteins</span> and <span>Increases</span> the <span>Fitness</span> of <span>Microcystis</span> Under <span>Oxidative Stress Conditions</span>.”</span> <em>PLoS ONE</em> 6 (3): e17615. <a href="https://doi.org/10.1371/journal.pone.0017615">https://doi.org/10.1371/journal.pone.0017615</a>.
+Zilliges, Y., Kehr, J.-C., Meissner, S., Ishida, K., Mikkat, S., Hagemann, M., Kaplan, A., Börner, T., &amp; Dittmann, E. (2011). The <span>Cyanobacterial Hepatotoxin Microcystin Binds</span> to <span>Proteins</span> and <span>Increases</span> the <span>Fitness</span> of <span>Microcystis</span> under <span>Oxidative Stress Conditions</span>. <em>PLoS ONE</em>, <em>6</em>(3), e17615. <a href="https://doi.org/10.1371/journal.pone.0017615">https://doi.org/10.1371/journal.pone.0017615</a>
 </div>
 </div>
 </div>
