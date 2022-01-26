@@ -26,38 +26,18 @@ setupKnitr(autoprint = TRUE)
 
 ## Packages and data set
 
-First we load the required packages and generate an artificial data set. It 
-consists of 3 clusters of multivariate normal distributed data points that are
-generated with the `rmvnorm` function. Each data subset has a separate mean value
-and a common variance-covariance matrix $\sigma$ that is created at random.
-
-Please don't worry how the data are created here. It just creates 3 clouds
-of data points with each 3 dimensions. This is done for visualisation, but
-the metnods described below can of course handle much higher dimensional data.
+First we load the required packages and a test data set `multivar.csv`. It 
+consists of 3 clusters of correlated multivariate normally distributed data points 
+that were generated with the `rmvnorm` function. Each data subset has a separate mean value
+and a common variance-covariance matrix $\sigma$ that is created at random. 
+A [separate script](gendata_rotate.R) is used to generate the data.
 
 ```{r}
 library("rgl")
 library("vegan")
 library("vegan3d")
-library("mvtnorm")
 
-set.seed(789)
-ndim     <- 3
-nsamp    <- 50
-effect   <- 3
-mycolors <- rep(c("#e41a1c", "#377eb8", "#4daf4a"), each = nsamp)
-
-## Create a valid variance matrix (positive semidefinite)
-## https://stats.stackexchange.com/questions/215497/how-to-create-an-arbitrary-covariance-matrix
-p <- qr.Q(qr(matrix(rnorm(ndim^2), ndim)))
-sigma <- crossprod(p, p*(ndim:1))
-
-A <- data.frame(rbind(
-  rmvnorm(n = nsamp, mean = rep(-effect, 3), sigma = sigma),
-  rmvnorm(n = nsamp, mean = rep(      0, 3), sigma = sigma),
-  rmvnorm(n = nsamp, mean = rep(+effect, 3), sigma = sigma)
-))
-names(A) <- c("x", "y", "z")
+A <- read.csv("multivar.csv")
 ```
 
 ## Plotting
@@ -69,19 +49,22 @@ graphics interface package **rgl** and the multivariate 3D visualisation package
 **vegan3d**.
 
 ```{r, fig.width=8, fig.height=3.2}
+nsamp    <- nrow(A) / 3  # number of points in each of the 3 samples
+mycolors <- rep(c("#e41a1c", "#377eb8", "#4daf4a"), each = nsamp)
+
 par(mfrow=c(1,3))
 plot(y ~ x, data=A, col=mycolors)
 plot(y ~ z, data=A, col=mycolors)
 plot(z ~ x, data=A, col=mycolors)
 ```
 
-We see that the colors overlap in any of the 3 figures, so let's try to 
+We see that the colors overlap more or less in the 3 figures, so let's try to 
 improve this in the 3D view. The goal is to rotate the axes such, so that
 the colored dots form well separated clusters.
 
 ```{r}
 ordirgl(A, type="p", ax.col = "black", col=mycolors, box=FALSE)
-view3d(theta = 0, phi = 15, fov=30, zoom=0.7)
+view3d(theta = 5, phi = 15, fov=30, zoom=0.7)
 axes3d(labels=FALSE)
 ```
 We see that the coordinate axes can be rotated in the direction of maximum variance
@@ -178,6 +161,7 @@ with "ward.D2" as agglomeration scheme. More about this will be discussed later.
 hc <- hclust(dist(A), method="ward.D2")
 plot(hc)
 ```
+
 The result can also be combined with PCA or NMDS, here again a 3D visualization.
 
 ```{r}
