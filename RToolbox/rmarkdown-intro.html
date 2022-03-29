@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Distraction-free writing with (R)Markdown</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Thomas Petzoldt" />
+    <meta name="date" content="2022-03-29" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/useR-fonts.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+    <script src="libs/viz-1.8.2/viz.js"></script>
+    <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+    <script src="libs/grViz-binding-1.0.8/grViz.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="tp_xaringan_scrollable.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+&lt;!--
+Verbatim code embedding:
+https://themockup.blog/posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations/
+--&gt;
+
+
+
+## Markdown
+
+* "Markdown is a lightweight markup language for creating formatted text using a plain-text editor" [@Wikipedia_Markdown].
+* Can be written with any text editor, less perfect than Latex, but much easier.
+* Supported by many programs and services (e.g. Github, StackOverflow, Matrix, RStudio, ...)
+* Markdown files have the file extension `.md`, RMarkdown files with extension `.Rmd`will be explained later.
+
+A Markdown text is essentially a human readable text with some special formatting
+conventions. To start a markdown document, open any text editor and start writing.
+
+---
+
+## Software
+
+* You can any text editor, e.g. Notepad, Notepad++ or even Word
+* Better: use an editor with Markdown support
+    - RStudio
+    - PanWriter, a basic writing program with an almost empty screen `\(\rightarrow\)` distraction free writing
+    - Joplin, a note taking program with cloud connectivity and encryption
+    - man online services: Github, Gitlab, Stackoverflow, Matrix
+
+---
+
+## Panwriter
+
+.center[
+![The interface of Panwriter](fig/panwriter.png)
+]
+
+---
+
+## Panwriter with Live-Preview
+
+.center[
+![Live preview](fig/panwriter-preview.png)
+]
+
+---
+
+## More Software
+
+https://softwarerecs.stackexchange.com/questions/5746/markdown-editor-for-windows-with-live-rendering-in-the-editing-pane-not-in-a-se
+
+
+... and some other sites.
+
+### Let's use RStudio ...
+
+.center[
+![RStudio](fig/rstudio-small.png)
+]
+
+---
+
+## Example
+
+Section titles are introduced with one or several hash symbols `#`, `##`, praragraphs 
+with empty lines, italic and bold face are indicated with one or two starts before 
+and after a phrase, bullet points with a leading dash `-` or a star `*`. Weblinks 
+are automatically activated. Here an example:
+
+```
+    # First level
+
+    Text can be written with any ediror, that can be formatted, e.g. *slanted*, **boldface**,
+    `verbatim text` weblinks: https://tu-dresden.de or bullet points:
+
+    * point 1
+    * point 2
+
+    Section titles start with one or more hash tags
+    
+    
+    ## Second level
+    
+    ### Third level
+```
+
+There are of course more formatting options, found in the docs or explained later.
+
+---
+
+## YAML Header
+
+Often, markdown documents start with a few special lines 
+enclosed within three dashes `---`. This so called "YAML header" is used to set
+text conversion and formatting options:
+
+```
+    ---
+    title: "Test"
+    author: "Thomas Petzoldt"
+    date: '2022-03-28'
+    output: html_document
+    ---
+    
+    # First Section
+
+    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+    eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+    voluptua.
+    
+    At vero eos et accusam et justo duo dolores et ea rebum.
+    
+    
+    # Second Section
+    
+     
+    Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum 
+    dolor sit amet. 
+```
+
+---
+
+
+## Layout and format conversion
+
+* User can concentrate on writing, formatting is done automatically.
+* Several tools exist to convert markdown to other document formats.
+* One of the most popular **pandoc** that is also built-in in **Rstudio**.
+
+
+<div id="htmlwidget-7efa6b531e5e610ea28a" style="width:100%;height:288px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7efa6b531e5e610ea28a">{"x":{"diagram":"digraph pandoc {\n         graph [rankdir = \"LR\"]\n           node [shape = \"box\", penwidth=1, fontname = \"Helvetica\", \n                color=\"dodgerblue\", style=\"filled\", fontcolor=\"#006ab2\" fillcolor=\"wheat\"]\n                Markdown HTML PDF Word\n           node [shape = cds, style=\"filled\", fontsize=18, fontcolor=\"tomato\", fillcolor=\"wheat\"]\n             pandoc\n           node [shape = oval, penwidth=0.5, style=\"cds\" fixedsize=20 \n                 fontsize=10 fontcolor=\"#93107d\" style=\"filled\", fillcolor=\"wheat\"]\n             figs bib\n           edge [penwidth=1.5]\n             Markdown -> pandoc\n             {figs bib} -> {pandoc}\n             pandoc -> {HTML PDF Word}\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+
+
+The pandoc utility converts markdown text in HTML for web pages, pdf for printing, or Word for further editing.
+
+---
+
+## What is Pandoc?
+
+https://pandoc.org/
+
+* Pandoc can do more than markdown
+* It is said to be the "swiss-army knife" to convert between formats
+* Open Source licensed: GPL 2.0
+* Embedded in RStudio
+
+---
+
+## Exercise
+
+* Write your first (?) markdown document in RStudio.
+* Knit it to HTML and Word
+
+### Optional without warranty:
+
+* Create PDF output
+* Needs Latex installed
+* Can be done with R's tinytex package:
+
+
+```r
+install.packages("tinytex")
+```
+
+```
+## Error in install.packages : Updating loaded packages
+```
+
+... configuration may need some trial and error.
+
+---
+
+## Weblinks
+
+
+---
+
+## Images
+
+
+---
+
+## Verbatim Text
+
+
+---
+
+## Tables
+
+
+---
+
+## Citations
+
+---
+
+## Mathematical Formulae
+
+---
+
+
+# R Markdown
+
+R Markdown is an extension of Markdown from RStudio. It allows to embed 
+R code to produce tables, data analyses and figures.
+
+<div id="htmlwidget-af0d01b006b67ec2dd5b" style="width:100%;height:360px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-af0d01b006b67ec2dd5b">{"x":{"diagram":"digraph pandoc {\n         graph [rankdir = \"LR\"]\n           node [shape = \"box\", penwidth=1, fontname = \"Helvetica\", \n                color=\"dodgerblue\", style=\"filled\", fontcolor=\"#006ab2\" fillcolor=\"wheat\"]\n             RMarkdown Markdown HTML PDF Word\n      \n           node [shape = cds, style=\"filled\", fontsize=18, fontcolor=\"tomato\", fillcolor=\"wheat\"]\n             knitr pandoc\n      \n           node [shape = oval, penwidth=0.5, style=\"cds\" fixedsize=22\n                 fontsize=10 fontcolor=\"#93107d\" style=\"filled\", fillcolor=\"wheat\"]\n             R_Output figs R_figs bib csl\n      \n           edge [penwidth=1.5]\n             RMarkdown -> knitr -> Markdown -> pandoc\n             R_Output -> Markdown\n             knitr -> {R_Output R_figs}\n             {R_figs} -> {pandoc}\n             pandoc -> {HTML PDF Word}\n           edge [minlen=4 penwidth=1]\n             {figs bib csl} -> pandoc\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+
+---
+
+You can create a RMarkdown template from the File menu in RStudio. Then make your
+changes and click the **Knit** button. Then, a document will be generated that 
+includes both content as well as the output of any embedded R code chunks. 
+
+Then you can embed an R code chunk like this:
+
+````
+```{r iris_summary}
+summary(iris)
+```
+````
+
+To show both, the code and the output
+
+```r
+summary(iris)
+```
+
+```
+##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width          Species  
+##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100   setosa    :50  
+##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300   versicolor:50  
+##  Median :5.800   Median :3.000   Median :4.350   Median :1.300   virginica :50  
+##  Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199                  
+##  3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800                  
+##  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500
+```
+
+---
+
+## Tables
+
+This looks of course rather technical. If you want to include real tables, you 
+can create the table in R and then format it with `knitr::kable`:
+
+````
+```{r iris_table}
+knitr::kable(iris[1:4, ])
+```
+````
+
+
+```r
+knitr::kable(iris[1:4, ])
+```
+
+
+
+| Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species |
+|------------:|-----------:|------------:|-----------:|:-------|
+|          5.1|         3.5|          1.4|         0.2|setosa  |
+|          4.9|         3.0|          1.4|         0.2|setosa  |
+|          4.7|         3.2|          1.3|         0.2|setosa  |
+|          4.6|         3.1|          1.5|         0.2|setosa  |
+
+
+The `kable` function has several functions for configuring table layout, see 
+`kable` help page for details.
+
+---
+
+## Include Plots
+
+You can also embed plots, for example:
+
+````
+```{r iris_sepal}
+plot(Sepal.Width ~ Sepal.Length, data=iris, pch=16, col=Species)
+```
+````
+
+
+
+```r
+plot(Sepal.Width ~ Sepal.Length, data=iris, pch=16, col=Species)
+```
+
+&lt;img src="rmarkdown-intro_files/figure-html/iris_sepal2-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Suppress Code
+
+
+The code chunks can be modified with additional options. In the following example
+the figure size is adjusted and an option `echo = FALSE` was added to prevent 
+printing of the R code that generated the plot.
+
+````
+```{r iris_sepal3, fig.width=5, fig.height=5, echo=FALSE}
+plot(Sepal.Width ~ Sepal.Length, data=iris, pch=16, col=Species)
+```
+````
+
+The plot is then shown without the code:
+
+&lt;img src="rmarkdown-intro_files/figure-html/iris_sepal3-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Further reading
+
+For more details on using  R Markdown see &lt;http://rmarkdown.rstudio.com&gt;.
+
+The [Rmarkdown cheat sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/rmarkdown.pdf) can serve as a reference.
+
+---
+## References
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="tp_xaringan.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"self_contained": false,
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
