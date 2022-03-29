@@ -33,6 +33,27 @@ csl: apa
 always_allow_html: true
 ---
 
+
+class: center, middle, title-slide
+
+background-image: url("fig/water_tud_r_oer_by.png")
+
+background-size: cover
+
+
+<!-- Own title slide / -->
+
+# A Small Introduction to (R)Markdown
+
+#### Thomas Petzoldt
+
+.small[Version `r Sys.Date()`, source code freely available from https://github.com/tpetzoldt/tpetzoldt.github.io/)]
+
+
+--- 
+
+Use cursor keys for navigation, press .red["O"] for a slide .red[O]verview
+
 <!--
 Verbatim code embedding:
 https://themockup.blog/posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations/
@@ -42,12 +63,14 @@ https://themockup.blog/posts/2021-08-27-displaying-verbatim-code-chunks-in-xarin
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+---
+
 ## Markdown
 
 * "Markdown is a lightweight markup language for creating formatted text using a plain-text editor" [@Wikipedia_Markdown].
 * Can be written with any text editor, less perfect than Latex, but much easier.
 * Supported by many programs and services (e.g. Github, StackOverflow, Matrix, RStudio, ...)
-* Markdown files have the file extension `.md`, RMarkdown files with extension `.Rmd`will be explained later.
+* Markdown files have the file extension `.md`, RMarkdown files with extension `.Rmd` will be explained later.
 
 A Markdown text is essentially a human readable text with some special formatting
 conventions. To start a markdown document, open any text editor and start writing.
@@ -210,7 +233,7 @@ https://pandoc.org/
 * Needs LaTeX type setting system installed
 * Can be done with R's tinytex package:
 
-```{r}
+```{r, eval=FALSE}
 install.packages("tinytex")
 ```
 
@@ -278,6 +301,8 @@ grViz("digraph pandoc {
 ```
 
 ---
+
+## Creation of Markdown Documents
 
 You can create a RMarkdown template from the File menu in RStudio. Then make your
 changes and click the **Knit** button. Then, a document will be generated that 
