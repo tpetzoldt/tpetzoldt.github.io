@@ -181,8 +181,8 @@ YAML: yet another markup language. A format coming from the python world.
 * One of the most popular **pandoc** that is also built-in in **Rstudio**.
 
 
-<div id="htmlwidget-a1ca069ed6f7210cbb2b" style="width:100%;height:288px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a1ca069ed6f7210cbb2b">{"x":{"diagram":"digraph pandoc {\n         graph [rankdir = \"LR\"]\n           node [shape = \"box\", penwidth=1, fontname = \"Helvetica\", \n                color=\"dodgerblue\", style=\"filled\", fontcolor=\"#006ab2\" fillcolor=\"wheat\"]\n                Markdown HTML PDF Word\n           node [shape = cds, style=\"filled\", fontsize=18, fontcolor=\"tomato\", fillcolor=\"wheat\"]\n             pandoc\n           node [shape = oval, penwidth=0.5, style=\"cds\" fixedsize=20 \n                 fontsize=10 fontcolor=\"#93107d\" style=\"filled\", fillcolor=\"wheat\"]\n             figs bib\n           edge [penwidth=1.5]\n             Markdown -> pandoc\n             {figs bib} -> {pandoc}\n             pandoc -> {HTML PDF Word}\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-2072bcacfeba8a1eb252" style="width:100%;height:288px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2072bcacfeba8a1eb252">{"x":{"diagram":"digraph pandoc {\n         graph [rankdir = \"LR\"]\n           node [shape = \"box\", penwidth=1, fontname = \"Helvetica\", \n                color=\"dodgerblue\", style=\"filled\", fontcolor=\"#006ab2\" fillcolor=\"wheat\"]\n                Markdown HTML PDF Word\n           node [shape = cds, style=\"filled\", fontsize=18, fontcolor=\"tomato\", fillcolor=\"wheat\"]\n             pandoc\n           node [shape = oval, penwidth=0.5, style=\"cds\" fixedsize=20 \n                 fontsize=10 fontcolor=\"#93107d\" style=\"filled\", fillcolor=\"wheat\"]\n             figs bib\n           edge [penwidth=1.5]\n             Markdown -> pandoc\n             {figs bib} -> {pandoc}\n             pandoc -> {HTML PDF Word}\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 
 The pandoc utility converts markdown text in HTML for web pages, pdf for printing, or Word for further editing.
@@ -309,6 +309,26 @@ voluptua.
 
 ## Tables
 
+.center[
+```
+| Right | Left | Default | Center |
+|------:|:-----|---------|:------:|
+|    12 | 34   |   56    |   78   |
+| this  | is   |   a     | table  |
+```
+]
+
+| Right | Left | Default | Center |
+|------:|:-----|---------|:------:|
+|    12 | 34   |   56    |   78   |
+| this  | is   |   a     | table  |
+
+Tables are nicely formatted in paper style if converted to pdfs.
+
+For bigger or more complex tables:
+
+* create the table in Excel or LibreOffice and add markdown formatting, or
+* use **R** and `kable` to create the table from data.
 
 ---
 
@@ -391,8 +411,8 @@ $$\rm 6CO_2 + 6H_2O \rightarrow C_6H_{12}O_6 + 6O_2 \quad \Delta H^0 = +2870 kJ 
 R Markdown is an extension of Markdown from RStudio. It allows to embed 
 R code to produce tables, data analyses and figures.
 
-<div id="htmlwidget-4b5c0f504281716ceeb7" style="width:100%;height:360px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-4b5c0f504281716ceeb7">{"x":{"diagram":"digraph pandoc {\n         graph [rankdir = \"LR\"]\n           node [shape = \"box\", penwidth=1, fontname = \"Helvetica\", \n                color=\"dodgerblue\", style=\"filled\", fontcolor=\"#006ab2\" fillcolor=\"wheat\"]\n             RMarkdown Markdown HTML PDF Word\n      \n           node [shape = cds, style=\"filled\", fontsize=18, fontcolor=\"tomato\", fillcolor=\"wheat\"]\n             knitr pandoc\n      \n           node [shape = oval, penwidth=0.5, style=\"cds\" fixedsize=22\n                 fontsize=10 fontcolor=\"#93107d\" style=\"filled\", fillcolor=\"wheat\"]\n             R_Output figs R_figs bib csl\n      \n           edge [penwidth=1.5]\n             RMarkdown -> knitr -> Markdown -> pandoc\n             R_Output -> Markdown\n             knitr -> {R_Output R_figs}\n             {R_figs} -> {pandoc}\n             pandoc -> {HTML PDF Word}\n           edge [minlen=4 penwidth=1]\n             {figs bib csl} -> pandoc\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-6637db278e2af568d21c" style="width:100%;height:360px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6637db278e2af568d21c">{"x":{"diagram":"digraph pandoc {\n         graph [rankdir = \"LR\"]\n           node [shape = \"box\", penwidth=1, fontname = \"Helvetica\", \n                color=\"dodgerblue\", style=\"filled\", fontcolor=\"#006ab2\" fillcolor=\"wheat\"]\n             RMarkdown Markdown HTML PDF Word\n      \n           node [shape = cds, style=\"filled\", fontsize=18, fontcolor=\"tomato\", fillcolor=\"wheat\"]\n             knitr pandoc\n      \n           node [shape = oval, penwidth=0.5, style=\"cds\" fixedsize=22\n                 fontsize=10 fontcolor=\"#93107d\" style=\"filled\", fillcolor=\"wheat\"]\n             R_Output figs R_figs bib csl\n      \n           edge [penwidth=1.5]\n             RMarkdown -> knitr -> Markdown -> pandoc\n             R_Output -> Markdown\n             knitr -> {R_Output R_figs}\n             {R_figs} -> {pandoc}\n             pandoc -> {HTML PDF Word}\n           edge [minlen=4 penwidth=1]\n             {figs bib csl} -> pandoc\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -529,8 +549,8 @@ The plot is then shown without the code:
 
 ... can be created with the **DiagrammeR** package that supports the [graphviz](https://graphviz.org/) language.
 
-<div id="htmlwidget-4fbb5403d8517e58e1e3" style="width:100%;height:288px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-4fbb5403d8517e58e1e3">{"x":{"diagram":"digraph pandoc {\n         graph [rankdir = LR]\n           node [shape = \"box\"]\n                Markdown HTML PDF Word\n           node [shape = cds]\n             pandoc\n           node [shape = oval]\n             figs bib\n           edge [penwidth=2]\n             Markdown -> pandoc\n             {figs bib} -> {pandoc}\n             pandoc -> {HTML PDF Word}\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-db74c23eb0510de9120e" style="width:100%;height:288px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-db74c23eb0510de9120e">{"x":{"diagram":"digraph pandoc {\n         graph [rankdir = LR]\n           node [shape = \"box\"]\n                Markdown HTML PDF Word\n           node [shape = cds]\n             pandoc\n           node [shape = oval]\n             figs bib\n           edge [penwidth=2]\n             Markdown -> pandoc\n             {figs bib} -> {pandoc}\n             pandoc -> {HTML PDF Word}\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 #### R code
 
@@ -563,6 +583,12 @@ https://graphviz.org/
 
 Use text formatting sparingly and write, write, write ...
 ]
+
+&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;
+These slides were created with [R](https://www.r-project.org), [RStudio](https://rstudio.com), [rmarkdown](https://rmarkdown.rstudio.com/), [knitr](https://CRAN.R-project.org/package=knitr) and [xaringan](https://github.com/yihui/xaringan).
+
+
+
 ---
 
 ## Further reading
@@ -589,10 +615,33 @@ Association](#cite-APA2020) (2020a). _Publication Manual of the
 American Psychological Association: The Official Guide to APA Style._
 7th ed. ISBN: 978-1-4338-3215-4 978-1-4338-3216-1 978-1-4338-3217-8.
 
+&lt;a name=bib-Papaja&gt;&lt;/a&gt;[Aust, F. and M. Barth](#cite-Papaja) (2020a).
+_papaja: Create APA manuscripts with R Markdown_. R package version
+0.1.0.9997. URL:
+[https://github.com/crsh/papaja](https://github.com/crsh/papaja).
+
+&lt;a name=bib-RCore2022&gt;&lt;/a&gt;[R Core Team](#cite-RCore2022) (2022). _R: A
+Language and Environment for Statistical Computing_. R Foundation for
+Statistical Computing. Vienna, Austria. URL:
+[https://www.R-project.org/](https://www.R-project.org/).
+
+&lt;a name=bib-RStudio&gt;&lt;/a&gt;[RStudio Team](#cite-RStudio) (2021). _RStudio:
+Integrated Development Environment for R_. RStudio, PBC. Boston, MA.
+URL: [http://www.rstudio.com/](http://www.rstudio.com/).
+
 &lt;a
 name=bib-Wikipedia_Markdown&gt;&lt;/a&gt;[Wikipedia](#cite-Wikipedia_Markdown)
 (2022). "Markdown". In: _Wikipedia_. URL:
 [https://en.wikipedia.org/w/index.php?title=Markdown&amp;oldid=1079645429](https://en.wikipedia.org/w/index.php?title=Markdown&amp;oldid=1079645429).
+
+&lt;a name=bib-R-knitr&gt;&lt;/a&gt;[Xie, Y.](#cite-R-knitr) (2015b). _Dynamic
+Documents with R and knitr_. 2nd. ISBN 978-1498716963. Boca Raton,
+Florida: Chapman and Hall/CRC. URL:
+[https://yihui.org/knitr/](https://yihui.org/knitr/).
+
+&lt;a name=bib-xaringan&gt;&lt;/a&gt;[Xie, Y.](#cite-xaringan) (2021). _xaringan:
+Presentation Ninja_. R package version 0.22. URL:
+[https://CRAN.R-project.org/package=xaringan](https://CRAN.R-project.org/package=xaringan).
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

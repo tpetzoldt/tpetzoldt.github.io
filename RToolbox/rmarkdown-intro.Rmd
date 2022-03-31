@@ -367,6 +367,26 @@ voluptua.
 
 ## Tables
 
+.center[
+```
+| Right | Left | Default | Center |
+|------:|:-----|---------|:------:|
+|    12 | 34   |   56    |   78   |
+| this  | is   |   a     | table  |
+```
+]
+
+| Right | Left | Default | Center |
+|------:|:-----|---------|:------:|
+|    12 | 34   |   56    |   78   |
+| this  | is   |   a     | table  |
+
+Tables are nicely formatted in paper style if converted to pdfs.
+
+For bigger or more complex tables:
+
+* create the table in Excel or LibreOffice and add markdown formatting, or
+* use **R** and `kable` to create the table from data.
 
 ---
 
@@ -609,6 +629,12 @@ https://graphviz.org/
 
 Use text formatting sparingly and write, write, write ...
 ]
+
+<br></br><br></br><br></br>
+These slides were created with [R](https://www.r-project.org), [RStudio](https://rstudio.com), [rmarkdown](https://rmarkdown.rstudio.com/), [knitr](https://CRAN.R-project.org/package=knitr) and [xaringan](https://github.com/yihui/xaringan).
+
+`r NoCite(bib, "xaringan")`
+`r NoCite(bib, c("RCore2022", "RStudio", "R-knitr", "Papaja"))`
 ---
 
 ## Further reading
