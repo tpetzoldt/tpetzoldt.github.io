@@ -104,7 +104,7 @@ bib <- ReadBib("./bib.bib", check = FALSE)
 
 ## Markdown
 
-* "Markdown is a lightweight markup language for creating formatted text using a plain-text editor" [@Wikipedia_Markdown].
+* "Markdown is a lightweight markup language for creating formatted text using a plain-text editor" `r Citep(bib, "Wikipedia_Markdown")`.
 * Can be written with any text editor, less perfect than Latex, but much easier.
 * Supported by many programs and services (e.g. Github, StackOverflow, Matrix, RStudio, ...)
 * Markdown files have the file extension `.md`, RMarkdown files with extension `.Rmd` will be explained later.
@@ -372,12 +372,77 @@ voluptua.
 
 ## Citations
 
+#### Create database file, e.g. `references.bib `
+
+* can be exported from **Zotero**
+* put bibliography file in bibtex format to the document folder
+* csl styles can be found here: https://citationstyles.org/authors/
+
+#### Declare bibliography in YAML header
+
+```
+bibliography: references.bib
+csl: apa
+```
+* an optional style file (e.g. `apa.csl`) may be copied to your document folder.
+
+#### Use ` @bib_key`-syntax
+* Textual citation: @APA2020 $\rightarrow$ `r Citet(bib, "APA2020")`
+* Parenthetical citation: [@APA2020a] $\rightarrow$ `r Citep(bib, "APA2020a")`
+
+RStudio can also collaborate with Zotero directly.
+
 ---
 
 ## Mathematical Formulae
 
+Many markdown converters support a subset of the LaTeX formula syntax
+
+#### Inline formula
+
+`$s_x = \frac{\sum_{i=1}^{N} (x_i - \bar{x})^2}{N-1}$`
+$s_x = \frac{\sum_{i=1}^{N} (x_i - \bar{x})^2}{N-1}$
+
+#### Display formula
+
+```
+$$s_x = \frac{\sum_{i=1}^{N} (x_i - \bar{x})^2}{N-1}$$
+```
+
+$$s_x = \frac{\sum_{i=1}^{N} (x_i - \bar{x})^2}{N-1}$$
+
+#### Mathematical symbols
+
+$\rightarrow, \le, \approx, \mu, \delta, \int, \infty, \mathrm{m^3s^{-1}}$
+
+
+`$\rightarrow, \le, \approx, \mu, \delta, \int, \infty, \mathrm{m^3s^{-1}}$`
+
 ---
 
+## More maths and chemistry
+
+
+\begin{align}
+\frac{dX_1}{dt} &=    k_1 \cdot X_1 -  k_2 X_1 X_2 \\
+\frac{dX_2}{dt} &=  - k_4 \cdot X_2 + k_3 X_1 X_2 \\
+\end{align}
+
+```
+\begin{align}
+\frac{dX_1}{dt} &=  k_1 \cdot X_1 -  k_2 X_1 X_2 \\
+\frac{dX_2}{dt} &=  k_3 X_1 X_2 - k_4 \cdot X_2 \\
+\end{align}
+```
+
+----
+
+$$\rm 6CO_2 + 6H_2O \rightarrow C_6H_{12}O_6 + 6O_2 
+\quad \Delta H^0 = +2870 kJ mol^{-1}$$
+```
+$$\rm 6CO_2 + 6H_2O \rightarrow C_6H_{12}O_6 + 6O_2 \quad \Delta H^0 = +2870 kJ mol^{-1}$$
+```
+---
 
 # R Markdown
 
@@ -490,7 +555,60 @@ The plot is then shown without the code:
 plot(Sepal.Width ~ Sepal.Length, data=iris, pch=16, col=Species)
 ```
 
+---
 
+## Flowcharts and graphs
+
+... can be created with the **DiagrammeR** package that supports the [graphviz](https://graphviz.org/) language.
+
+```{r diag-markdown3, echo=FALSE, fig.height=4, out.width="100%"}
+library("DiagrammeR")
+grViz("digraph pandoc {
+         graph [rankdir = LR]
+           node [shape = 'box']
+                Markdown HTML PDF Word
+           node [shape = cds]
+             pandoc
+           node [shape = oval]
+             figs bib
+           edge [penwidth=2]
+             Markdown -> pandoc
+             {figs bib} -> {pandoc}
+             pandoc -> {HTML PDF Word}
+}")
+```
+
+#### R code
+
+```
+library("DiagrammeR")
+grViz("digraph pandoc {
+         graph [rankdir = LR]
+           node [shape = 'box']
+                Markdown HTML PDF Word
+           node [shape = cds]
+             pandoc
+           node [shape = oval]
+             figs bib
+           edge [penwidth=2]
+             Markdown -> pandoc
+             {figs bib} -> {pandoc}
+             pandoc -> {HTML PDF Word}
+}")
+```
+
+https://graphviz.org/
+
+---
+
+## Distraction free?
+
+<br></br><br></br><br></br>
+.center[
+(RMarkdown) is a nice playground, but I recommend to concentrate on the simple things.
+
+Use text formatting sparingly and write, write, write ...
+]
 ---
 
 ## Further reading
@@ -503,5 +621,11 @@ Start with the [rmarkdown cheat sheet](https://raw.githubusercontent.com/rstudio
 For more details, see <http://rmarkdown.rstudio.com>.
 
 ---
+
 ## References
+
+
+```{r refs, echo=FALSE, results="asis"}
+PrintBibliography(bib)
+```
 
