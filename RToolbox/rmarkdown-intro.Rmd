@@ -104,24 +104,48 @@ bib <- ReadBib("./bib.bib", check = FALSE)
 
 ## Markdown
 
+<style>.bigfont {
+  font-size: 140%;
+  line-height: 160%;
+}</style>
+
+.bigfont[
 * "Markdown is a lightweight markup language for creating formatted text using a plain-text editor" `r Citep(bib, "Wikipedia_Markdown")`.
 * Can be written with any text editor, less perfect than Latex, but much easier.
 * Supported by many programs and services (e.g. Github, StackOverflow, Matrix, RStudio, ...)
 * Markdown files have the file extension `.md`, RMarkdown files with extension `.Rmd` will be explained later.
+]
 
 A Markdown text is essentially a human readable text with some special formatting
 conventions. To start a markdown document, open any text editor and start writing.
 
 ---
 
+## Why Markdown
+
+
+
+
+.bigfont[
+* Quick note taking (documentation of ideas, experiments, SOPs, ...)
+* Documentation of statistical analyses
+* Creation of web pages
+* Some people use it for complete books: https://bookdown.org/
+]
+
+---
+
 ## Software
 
-* You can any text editor, e.g. Notepad, Notepad++ or even Word
+.bigfont[
+* You can any text editor, e.g. Notepad, Notepad++, your mail client<br> ... or even Word
 * Better: use an editor with Markdown support
     - RStudio
-    - PanWriter, a basic writing program with an almost empty screen $\rightarrow$ distraction free writing
+    - PanWriter, a basic writing program with an almost empty screen<br>
+      $\rightarrow$ distraction free writing
     - Joplin, a note taking program with cloud connectivity and encryption
-    - man online services: Github, Gitlab, Stackoverflow, Matrix
+    - many online services: Github, Gitlab, Stackoverflow, Matrix
+]
 
 ---
 
@@ -142,11 +166,14 @@ conventions. To start a markdown document, open any text editor and start writin
 ---
 
 ## More Software
-
-https://softwarerecs.stackexchange.com/questions/5746/markdown-editor-for-windows-with-live-rendering-in-the-editing-pane-not-in-a-se
-
+<br><br><br>
+.bigfont[
+https://softwarerecs.stackexchange.com/q/5746
+]
 
 ... and some other sites.
+
+---
 
 ### Let's use RStudio ...
 
@@ -367,6 +394,7 @@ voluptua.
 
 ## Tables
 
+Source code:
 .center[
 ```
 | Right | Left | Default | Center |
@@ -376,17 +404,19 @@ voluptua.
 ```
 ]
 
+HTML Output:
+
 | Right | Left | Default | Center |
 |------:|:-----|---------|:------:|
 |    12 | 34   |   56    |   78   |
 | this  | is   |   a     | table  |
 
-Tables are nicely formatted in paper style if converted to pdfs.
+PDF output:
 
-For bigger or more complex tables:
+* Style similar to a scientific paper.
 
-* create the table in Excel or LibreOffice and add markdown formatting, or
-* use **R** and `kable` to create the table from data.
+**Bigger or more complex tables:** create the table in Excel or LibreOffice and 
+add markdown formatting,<br> or use **R** and `kable` to create the table from data.
 
 ---
 
@@ -416,12 +446,12 @@ RStudio can also collaborate with Zotero directly.
 
 ## Mathematical Formulae
 
-Many markdown converters support a subset of the LaTeX formula syntax
+Many markdown converters support a subset of the **LaTeX** [formula syntax](https://en.wikibooks.org/wiki/LaTeX/Mathematics)
 
 #### Inline formula
 
-`$s_x = \frac{\sum_{i=1}^{N} (x_i - \bar{x})^2}{N-1}$`
-$s_x = \frac{\sum_{i=1}^{N} (x_i - \bar{x})^2}{N-1}$
+`$s_x = \frac{\sum_{i=1}^{N} (x_i - \bar{x})^2}{N-1}$` 
+$\quad \rightarrow \qquad s_x = \frac{\sum_{i=1}^{N} (x_i - \bar{x})^2}{N-1}$
 
 #### Display formula
 
@@ -464,20 +494,19 @@ $$\rm 6CO_2 + 6H_2O \rightarrow C_6H_{12}O_6 + 6O_2 \quad \Delta H^0 = +2870 kJ 
 ```
 ---
 
-# R Markdown
+# RMarkdown
 
-R Markdown is an extension of Markdown from RStudio. It allows to embed 
-R code to produce tables, data analyses and figures.
+**RMarkdown:** Markdown extension with embedded R. Document data analyses with code, tables and figures.
 
-```{r diag-markdown2, echo=FALSE, fig.height=5, out.width="100%"}
+```{r diag-markdown2, echo=FALSE, fig.height=5.5, out.width="100%"}
 grViz("digraph pandoc {
          graph [rankdir = 'LR']
            node [shape = 'box', penwidth=1, fontname = 'Helvetica', 
                 color='dodgerblue', style='filled', fontcolor='#006ab2' fillcolor='wheat']
-             RMarkdown Markdown HTML PDF Word
+             RMarkdown Markdown HTML PDF Tex Word
       
            node [shape = cds, style='filled', fontsize=18, fontcolor='tomato', fillcolor='wheat']
-             knitr pandoc
+             knitr pandoc pdflatex
       
            node [shape = oval, penwidth=0.5, style='cds' fixedsize=22
                  fontsize=10 fontcolor='#93107d' style='filled', fillcolor='wheat']
@@ -488,7 +517,8 @@ grViz("digraph pandoc {
              R_Output -> Markdown
              knitr -> {R_Output R_figs}
              {R_figs} -> {pandoc}
-             pandoc -> {HTML PDF Word}
+             pandoc -> {HTML Word Tex}
+             Tex -> pdflatex -> PDF
            edge [minlen=4 penwidth=1]
              {figs bib csl} -> pandoc
 }")
@@ -496,7 +526,7 @@ grViz("digraph pandoc {
 
 ---
 
-## Creation of Markdown Documents
+## Creation of RMarkdown Documents
 
 You can create a RMarkdown template from the File menu in RStudio. Then make your
 changes and click the **Knit** button. Then, a document will be generated that 
@@ -517,7 +547,7 @@ summary(iris)
 
 ---
 
-## Tables
+## Tables from R
 
 This looks of course rather technical. If you want to include real tables, you 
 can create the table in R and then format it with `knitr::kable`:
@@ -564,14 +594,15 @@ the figure size is adjusted and an option `echo = FALSE` was added to prevent
 printing of the R code that generated the plot.
 
 ````
-```{r iris_sepal3, fig.width=5, fig.height=5, echo=FALSE}`r ''`
+```{r iris_sepal3, fig.width=3, fig.height=3, echo=FALSE}`r ''`
 plot(Sepal.Width ~ Sepal.Length, data=iris, pch=16, col=Species)
 ```
 ````
 
-The plot is then shown without the code:
+Shows the plot without the code:
 
-```{r iris_sepal3, fig.width=5, fig.height=5, echo=FALSE, fig.align="center"}
+```{r iris_sepal3, fig.width=4, fig.height=4, echo=FALSE, fig.align="center"}
+par(mar=c(3,3,1,1))
 plot(Sepal.Width ~ Sepal.Length, data=iris, pch=16, col=Species)
 ```
 
