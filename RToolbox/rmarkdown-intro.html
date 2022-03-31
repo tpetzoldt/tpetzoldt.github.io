@@ -4,10 +4,14 @@
     <title>Distraction-free writing with (R)Markdown</title>
     <meta charset="utf-8" />
     <meta name="author" content="Thomas Petzoldt" />
-    <meta name="date" content="2022-03-29" />
-    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <meta name="date" content="2022-03-31" />
+    <script src="libs/header-attrs-2.13.3/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/useR-fonts.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-webcam-0.0.1/webcam.js"></script>
+    <script id="xaringanExtra-webcam-options" type="application/json">{"width":"200","height":"200","margin":"1em"}</script>
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
     <script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
     <script src="libs/viz-1.8.2/viz.js"></script>
     <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
@@ -33,7 +37,7 @@ background-size: cover
 
 #### Thomas Petzoldt
 
-.small[Version 2022-03-29, source code freely available from https://github.com/tpetzoldt/tpetzoldt.github.io/)]
+.small[Version 2022-03-31, source code freely available from https://github.com/tpetzoldt/tpetzoldt.github.io/)]
 
 
 --- 
@@ -45,7 +49,16 @@ Verbatim code embedding:
 https://themockup.blog/posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations/
 --&gt;
 
+&lt;!--- Setup -------------------------------------------------------------------&gt;
 
+
+
+
+
+
+&lt;!-- citations work differently with xaringan compared to @Markdown / --&gt;
+
+&lt;!--- End of Setup ------------------------------------------------------------&gt;
 
 ---
 
@@ -171,8 +184,8 @@ text conversion and formatting options:
 * One of the most popular **pandoc** that is also built-in in **Rstudio**.
 
 
-<div id="htmlwidget-6092596607d370df3d92" style="width:100%;height:288px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6092596607d370df3d92">{"x":{"diagram":"digraph pandoc {\n         graph [rankdir = \"LR\"]\n           node [shape = \"box\", penwidth=1, fontname = \"Helvetica\", \n                color=\"dodgerblue\", style=\"filled\", fontcolor=\"#006ab2\" fillcolor=\"wheat\"]\n                Markdown HTML PDF Word\n           node [shape = cds, style=\"filled\", fontsize=18, fontcolor=\"tomato\", fillcolor=\"wheat\"]\n             pandoc\n           node [shape = oval, penwidth=0.5, style=\"cds\" fixedsize=20 \n                 fontsize=10 fontcolor=\"#93107d\" style=\"filled\", fillcolor=\"wheat\"]\n             figs bib\n           edge [penwidth=1.5]\n             Markdown -> pandoc\n             {figs bib} -> {pandoc}\n             pandoc -> {HTML PDF Word}\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c48eaa6468ddb1fdf013" style="width:100%;height:288px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c48eaa6468ddb1fdf013">{"x":{"diagram":"digraph pandoc {\n         graph [rankdir = \"LR\"]\n           node [shape = \"box\", penwidth=1, fontname = \"Helvetica\", \n                color=\"dodgerblue\", style=\"filled\", fontcolor=\"#006ab2\" fillcolor=\"wheat\"]\n                Markdown HTML PDF Word\n           node [shape = cds, style=\"filled\", fontsize=18, fontcolor=\"tomato\", fillcolor=\"wheat\"]\n             pandoc\n           node [shape = oval, penwidth=0.5, style=\"cds\" fixedsize=20 \n                 fontsize=10 fontcolor=\"#93107d\" style=\"filled\", fillcolor=\"wheat\"]\n             figs bib\n           edge [penwidth=1.5]\n             Markdown -> pandoc\n             {figs bib} -> {pandoc}\n             pandoc -> {HTML PDF Word}\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 
 The pandoc utility converts markdown text in HTML for web pages, pdf for printing, or Word for further editing.
@@ -202,9 +215,6 @@ https://pandoc.org/
 * Can be done with R's tinytex package:
 
 
-```r
-install.packages("tinytex")
-```
 
 ... configuration may need some trial and error.
 
@@ -244,8 +254,8 @@ install.packages("tinytex")
 R Markdown is an extension of Markdown from RStudio. It allows to embed 
 R code to produce tables, data analyses and figures.
 
-<div id="htmlwidget-22c0ab7abbc2d1a7c99c" style="width:100%;height:360px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-22c0ab7abbc2d1a7c99c">{"x":{"diagram":"digraph pandoc {\n         graph [rankdir = \"LR\"]\n           node [shape = \"box\", penwidth=1, fontname = \"Helvetica\", \n                color=\"dodgerblue\", style=\"filled\", fontcolor=\"#006ab2\" fillcolor=\"wheat\"]\n             RMarkdown Markdown HTML PDF Word\n      \n           node [shape = cds, style=\"filled\", fontsize=18, fontcolor=\"tomato\", fillcolor=\"wheat\"]\n             knitr pandoc\n      \n           node [shape = oval, penwidth=0.5, style=\"cds\" fixedsize=22\n                 fontsize=10 fontcolor=\"#93107d\" style=\"filled\", fillcolor=\"wheat\"]\n             R_Output figs R_figs bib csl\n      \n           edge [penwidth=1.5]\n             RMarkdown -> knitr -> Markdown -> pandoc\n             R_Output -> Markdown\n             knitr -> {R_Output R_figs}\n             {R_figs} -> {pandoc}\n             pandoc -> {HTML PDF Word}\n           edge [minlen=4 penwidth=1]\n             {figs bib csl} -> pandoc\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c3a497f23b04eac3b385" style="width:100%;height:360px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c3a497f23b04eac3b385">{"x":{"diagram":"digraph pandoc {\n         graph [rankdir = \"LR\"]\n           node [shape = \"box\", penwidth=1, fontname = \"Helvetica\", \n                color=\"dodgerblue\", style=\"filled\", fontcolor=\"#006ab2\" fillcolor=\"wheat\"]\n             RMarkdown Markdown HTML PDF Word\n      \n           node [shape = cds, style=\"filled\", fontsize=18, fontcolor=\"tomato\", fillcolor=\"wheat\"]\n             knitr pandoc\n      \n           node [shape = oval, penwidth=0.5, style=\"cds\" fixedsize=22\n                 fontsize=10 fontcolor=\"#93107d\" style=\"filled\", fillcolor=\"wheat\"]\n             R_Output figs R_figs bib csl\n      \n           edge [penwidth=1.5]\n             RMarkdown -> knitr -> Markdown -> pandoc\n             R_Output -> Markdown\n             knitr -> {R_Output R_figs}\n             {R_figs} -> {pandoc}\n             pandoc -> {HTML PDF Word}\n           edge [minlen=4 penwidth=1]\n             {figs bib csl} -> pandoc\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -264,10 +274,6 @@ summary(iris)
 ````
 
 To show both, the code and the output
-
-```r
-summary(iris)
-```
 
 ```
 ##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
@@ -299,19 +305,47 @@ knitr::kable(iris[1:4, ])
 ```
 ````
 
-
-```r
-knitr::kable(iris[1:4, ])
-```
-
-
-
-| Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species |
-|------------:|-----------:|------------:|-----------:|:-------|
-|          5.1|         3.5|          1.4|         0.2|setosa  |
-|          4.9|         3.0|          1.4|         0.2|setosa  |
-|          4.7|         3.2|          1.3|         0.2|setosa  |
-|          4.6|         3.1|          1.5|         0.2|setosa  |
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; Sepal.Length &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Sepal.Width &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Petal.Length &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; Petal.Width &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4.9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4.7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3.1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
 
 The `kable` function has several functions for configuring table layout, see 
@@ -329,11 +363,6 @@ plot(Sepal.Width ~ Sepal.Length, data=iris, pch=16, col=Species)
 ```
 ````
 
-
-
-```r
-plot(Sepal.Width ~ Sepal.Length, data=iris, pch=16, col=Species)
-```
 
 &lt;img src="rmarkdown-intro_files/figure-html/iris_sepal2-1.png" style="display: block; margin: auto;" /&gt;
 

@@ -59,9 +59,46 @@ Verbatim code embedding:
 https://themockup.blog/posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations/
 -->
 
+<!--- Setup ------------------------------------------------------------------->
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE, fig.width=14, 
+                      fig.height=6, dev.args = list(pointsize=20))
+#library("dplyr")
+#library("tidyr")
+library("kableExtra")
+library("DiagrammeR")
+mypar <- list(las = 1, cex.lab = 1.4, cex.axis=1.4, lwd = 2)
 ```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library("xaringanthemer")
+style_mono_light(
+  title_slide_text_color = "#00305d",
+  link_color = "#006ab2"#,
+  #white_color = "#FFFFFF"
+)
+```
+
+```{r xaringanExtra, include=FALSE, warnint=FALSE}
+#library("xaringanExtra")
+xaringanExtra::use_webcam()
+xaringanExtra::use_tile_view()
+#xaringanExtra::use_scribble()
+#xaringanExtra::use_freezeframe()
+#xaringanExtra::use_progress_bar(color = "#0051BA", location = "top")
+```
+
+<!-- citations work differently with xaringan compared to @Markdown / -->
+```{r, load_refs, include=FALSE, cache=FALSE}
+library("RefManageR")
+BibOptions(check.entries = FALSE,
+           bib.style = "authoryear",
+           cite.style = "authoryear",
+           style = "markdown",
+           dashed = FALSE)
+bib <- ReadBib("./bib.bib", check = FALSE)
+```
+<!--- End of Setup ------------------------------------------------------------>
 
 ---
 
