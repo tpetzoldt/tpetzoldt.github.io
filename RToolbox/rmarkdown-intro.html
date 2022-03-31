@@ -111,7 +111,7 @@ https://softwarerecs.stackexchange.com/questions/5746/markdown-editor-for-window
 ### Let's use RStudio ...
 
 .center[
-![RStudio](fig/rstudio-small.png)
+![RStudio](fig/new_rmarkdown-small.png)
 ]
 
 ---
@@ -181,8 +181,8 @@ YAML: yet another markup language. A format coming from the python world.
 * One of the most popular **pandoc** that is also built-in in **Rstudio**.
 
 
-<div id="htmlwidget-3718c5fc385df8b3804e" style="width:100%;height:288px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3718c5fc385df8b3804e">{"x":{"diagram":"digraph pandoc {\n         graph [rankdir = \"LR\"]\n           node [shape = \"box\", penwidth=1, fontname = \"Helvetica\", \n                color=\"dodgerblue\", style=\"filled\", fontcolor=\"#006ab2\" fillcolor=\"wheat\"]\n                Markdown HTML PDF Word\n           node [shape = cds, style=\"filled\", fontsize=18, fontcolor=\"tomato\", fillcolor=\"wheat\"]\n             pandoc\n           node [shape = oval, penwidth=0.5, style=\"cds\" fixedsize=20 \n                 fontsize=10 fontcolor=\"#93107d\" style=\"filled\", fillcolor=\"wheat\"]\n             figs bib\n           edge [penwidth=1.5]\n             Markdown -> pandoc\n             {figs bib} -> {pandoc}\n             pandoc -> {HTML PDF Word}\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-a1ca069ed6f7210cbb2b" style="width:100%;height:288px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a1ca069ed6f7210cbb2b">{"x":{"diagram":"digraph pandoc {\n         graph [rankdir = \"LR\"]\n           node [shape = \"box\", penwidth=1, fontname = \"Helvetica\", \n                color=\"dodgerblue\", style=\"filled\", fontcolor=\"#006ab2\" fillcolor=\"wheat\"]\n                Markdown HTML PDF Word\n           node [shape = cds, style=\"filled\", fontsize=18, fontcolor=\"tomato\", fillcolor=\"wheat\"]\n             pandoc\n           node [shape = oval, penwidth=0.5, style=\"cds\" fixedsize=20 \n                 fontsize=10 fontcolor=\"#93107d\" style=\"filled\", fillcolor=\"wheat\"]\n             figs bib\n           edge [penwidth=1.5]\n             Markdown -> pandoc\n             {figs bib} -> {pandoc}\n             pandoc -> {HTML PDF Word}\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 
 The pandoc utility converts markdown text in HTML for web pages, pdf for printing, or Word for further editing.
@@ -391,8 +391,8 @@ $$\rm 6CO_2 + 6H_2O \rightarrow C_6H_{12}O_6 + 6O_2 \quad \Delta H^0 = +2870 kJ 
 R Markdown is an extension of Markdown from RStudio. It allows to embed 
 R code to produce tables, data analyses and figures.
 
-<div id="htmlwidget-d789a11d3133a53d9f60" style="width:100%;height:360px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d789a11d3133a53d9f60">{"x":{"diagram":"digraph pandoc {\n         graph [rankdir = \"LR\"]\n           node [shape = \"box\", penwidth=1, fontname = \"Helvetica\", \n                color=\"dodgerblue\", style=\"filled\", fontcolor=\"#006ab2\" fillcolor=\"wheat\"]\n             RMarkdown Markdown HTML PDF Word\n      \n           node [shape = cds, style=\"filled\", fontsize=18, fontcolor=\"tomato\", fillcolor=\"wheat\"]\n             knitr pandoc\n      \n           node [shape = oval, penwidth=0.5, style=\"cds\" fixedsize=22\n                 fontsize=10 fontcolor=\"#93107d\" style=\"filled\", fillcolor=\"wheat\"]\n             R_Output figs R_figs bib csl\n      \n           edge [penwidth=1.5]\n             RMarkdown -> knitr -> Markdown -> pandoc\n             R_Output -> Markdown\n             knitr -> {R_Output R_figs}\n             {R_figs} -> {pandoc}\n             pandoc -> {HTML PDF Word}\n           edge [minlen=4 penwidth=1]\n             {figs bib csl} -> pandoc\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-4b5c0f504281716ceeb7" style="width:100%;height:360px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4b5c0f504281716ceeb7">{"x":{"diagram":"digraph pandoc {\n         graph [rankdir = \"LR\"]\n           node [shape = \"box\", penwidth=1, fontname = \"Helvetica\", \n                color=\"dodgerblue\", style=\"filled\", fontcolor=\"#006ab2\" fillcolor=\"wheat\"]\n             RMarkdown Markdown HTML PDF Word\n      \n           node [shape = cds, style=\"filled\", fontsize=18, fontcolor=\"tomato\", fillcolor=\"wheat\"]\n             knitr pandoc\n      \n           node [shape = oval, penwidth=0.5, style=\"cds\" fixedsize=22\n                 fontsize=10 fontcolor=\"#93107d\" style=\"filled\", fillcolor=\"wheat\"]\n             R_Output figs R_figs bib csl\n      \n           edge [penwidth=1.5]\n             RMarkdown -> knitr -> Markdown -> pandoc\n             R_Output -> Markdown\n             knitr -> {R_Output R_figs}\n             {R_figs} -> {pandoc}\n             pandoc -> {HTML PDF Word}\n           edge [minlen=4 penwidth=1]\n             {figs bib csl} -> pandoc\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -529,8 +529,8 @@ The plot is then shown without the code:
 
 ... can be created with the **DiagrammeR** package that supports the [graphviz](https://graphviz.org/) language.
 
-<div id="htmlwidget-3f4ed9ee556d6d3e2f97" style="width:100%;height:288px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3f4ed9ee556d6d3e2f97">{"x":{"diagram":"digraph pandoc {\n         graph [rankdir = LR]\n           node [shape = \"box\"]\n                Markdown HTML PDF Word\n           node [shape = cds]\n             pandoc\n           node [shape = oval]\n             figs bib\n           edge [penwidth=2]\n             Markdown -> pandoc\n             {figs bib} -> {pandoc}\n             pandoc -> {HTML PDF Word}\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-4fbb5403d8517e58e1e3" style="width:100%;height:288px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4fbb5403d8517e58e1e3">{"x":{"diagram":"digraph pandoc {\n         graph [rankdir = LR]\n           node [shape = \"box\"]\n                Markdown HTML PDF Word\n           node [shape = cds]\n             pandoc\n           node [shape = oval]\n             figs bib\n           edge [penwidth=2]\n             Markdown -> pandoc\n             {figs bib} -> {pandoc}\n             pandoc -> {HTML PDF Word}\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 #### R code
 
@@ -557,7 +557,7 @@ https://graphviz.org/
 
 ## Distraction free?
 
-&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;
+&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;
 .center[
 (RMarkdown) is a nice playground, but I recommend to concentrate on the simple things.
 

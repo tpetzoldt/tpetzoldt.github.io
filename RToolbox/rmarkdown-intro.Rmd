@@ -151,7 +151,7 @@ https://softwarerecs.stackexchange.com/questions/5746/markdown-editor-for-window
 ### Let's use RStudio ...
 
 .center[
-![RStudio](fig/rstudio-small.png)
+![RStudio](fig/new_rmarkdown-small.png)
 ]
 
 ---
