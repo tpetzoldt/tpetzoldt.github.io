@@ -193,7 +193,7 @@ text conversion and formatting options:
 ```
     ---
     title: "Test"
-    author: "Thomas Petzoldt"
+    author: "Who wrote this"
     date: '2022-03-28'
     output: html_document
     ---
@@ -201,19 +201,16 @@ text conversion and formatting options:
     # First Section
 
     Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-    eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-    voluptua.
+    eirmod tempor invidunt ut labore et dolore magna aliquyam erat.
     
     At vero eos et accusam et justo duo dolores et ea rebum.
     
-    
     # Second Section
-    
      
     Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum 
     dolor sit amet. 
 ```
-
+YAML: yet another markup language. A format coming from the python world.
 ---
 
 
@@ -278,18 +275,93 @@ install.packages("tinytex")
 
 ---
 
-## Weblinks
+## Section Titles
 
+Section titles can be formatted with hashtags or by underlining:
+
+```
+# A Section
+
+## A subsection
+```
+
+or:
+
+```
+A Section
+=========
+
+A Subsection
+------------
+```
+
+Automatic numberig can optionally be enabled in the YAML header:
+
+```
+---
+html_document:
+    toc: yes
+    number_sections: true
+---
+```
 
 ---
 
+## Weblinks
+
+### Simple weblinks
+
+Weblinks starting with `https://`or `http://` are automatically activated: https://rmarkdown.rstudio.com
+
+### Formatted weblinks
+`[further reading](https://rmarkdown.rstudio.com)`
+
+is then formatted as: [further reading](https://rmarkdown.rstudio.com)
+
+### Example
+
+`The [*Markdown Wikipedia page*](https://de.wikipedia.org/wiki/Markdown) contains examples.`
+
+
+The [*Markdown Wikipedia page*](https://de.wikipedia.org/wiki/Markdown) contains examples.
+---
+
 ## Images
+
+Images are similar to weblinks, but with a leading `!`
+
+`![figure title](mushrooms.jpg)`
+
+.center[
+![figure title](fig/mushrooms.jpg)
+]
 
 
 ---
 
 ## Verbatim Text
 
+Verbatim text can be created with several methods:
+
+1. Inline: enclose text within single backticks `` `verbatim text` `` $\rightarrow$ `verbatim text`
+1. Indentation by 4 spaces
+1. Use so-called fencing with ` ``` ` before and after a tect or code block.
+
+````
+```
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+voluptua.
+```
+````
+
+appears as:
+
+```
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
+voluptua.
+```
 
 ---
 
@@ -423,9 +495,12 @@ plot(Sepal.Width ~ Sepal.Length, data=iris, pch=16, col=Species)
 
 ## Further reading
 
-For more details on using  R Markdown see <http://rmarkdown.rstudio.com>.
+Start with the [rmarkdown cheat sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/rmarkdown.pdf):
 
-The [Rmarkdown cheat sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/rmarkdown.pdf) can serve as a reference.
+[![rmarkdown cheat sheet](fig/rmarkdown-cheatsheet-01-small.png)](https://raw.githubusercontent.com/rstudio/cheatsheets/main/rmarkdown.pdf)
+
+
+For more details, see <http://rmarkdown.rstudio.com>.
 
 ---
 ## References
