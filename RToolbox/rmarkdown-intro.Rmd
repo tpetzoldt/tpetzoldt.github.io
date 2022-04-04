@@ -80,6 +80,7 @@ style_mono_light(
 ```
 
 ```{r xaringanExtra, include=FALSE, warnint=FALSE}
+# devtools::install_github("gadenbuie/xaringanExtra")
 #library("xaringanExtra")
 xaringanExtra::use_webcam()
 xaringanExtra::use_tile_view()
