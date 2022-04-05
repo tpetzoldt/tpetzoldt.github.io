@@ -61,10 +61,11 @@ https://themockup.blog/posts/2021-08-27-displaying-verbatim-code-chunks-in-xarin
 
 <!--- Setup ------------------------------------------------------------------->
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, fig.width=14, 
+knitr::opts_chunk$set(echo = TRUE, fig.width=14, 
                       fig.height=6, dev.args = list(pointsize=20))
-#library("dplyr")
-#library("tidyr")
+library("dplyr")
+library("tidyr")
+library("lubridate")
 library("kableExtra")
 library("DiagrammeR")
 mypar <- list(las = 1, cex.lab = 1.4, cex.axis=1.4, lwd = 2)
@@ -106,11 +107,68 @@ bib <- ReadBib("./bib.bib", check = FALSE)
 
 ---
 
+## An introductory example
+
+Download the file [leaves.csv](https://raw.githubusercontent.com/tpetzoldt/datasets/main/data/leaves.csv), save it to a working directory and then read it with
+`read.csv`:
+
+
+```{r eval=FALSE}
+leaves <- read.csv("leaves.csv") 
+```
+
+```{r include=FALSE}
+filename <- "https://raw.githubusercontent.com/tpetzoldt/datasets/main/data/leaves.csv"
+leaves <- read.csv(filename) 
+```
+
+As a first step, it is always a good idea to have a look at the data
+
+```{r}
+knitr::kable(head(leaves))
+```
+
+## Summary statistics for the groups
+
+```{r}
+library("dplyr")
+leaves %>% group_by(group) %>%
+  summarize(mean=mean(length), sd=sd(length), min=min(length), max=max(length))
+```
+
+## Long data formats
+
+```{r}
+library("tidyr")
+leaves %>% pivot_longer(c("length", "width", "stalk"))
+```
+
+
+```{r}
+leaves %>% 
+  pivot_longer(c("length", "width", "stalk")) %>%
+  group_by(group, name) %>%
+  summarize(mean=mean(value), sd=sd(value), min=min(value), max=max(value))
+```
+
+
+---
+
 ## Classical styles
 
-* intermediate variables
+### intermediate variables
 
-* nested parentheses
+
+```{r}
+dat2 <-  pivot_longer(leaves, c("length", "width", "stalk"))
+dat3 <-  group_by(dat2, group, name)
+dat4 <-  summarize(dat3, mean=mean(value), sd=sd(value),
+                   min=min(value), max=max(value))
+dat4
+```
+
+
+### Nested parentheses
 
 ---
 
