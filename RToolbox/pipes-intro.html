@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Pipelines in R - A Small Introduction</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Thomas Petzoldt" />
+    <meta name="date" content="2022-04-06" />
+    <script src="libs/header-attrs-2.13.3/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/useR-fonts.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-webcam-0.0.1/webcam.js"></script>
+    <script id="xaringanExtra-webcam-options" type="application/json">{"width":"200","height":"200","margin":"1em"}</script>
+    <link href="libs/tile-view-0.2.6/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view-0.2.6/tile-view.js"></script>
+    <script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+    <script src="libs/viz-1.8.2/viz.js"></script>
+    <link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+    <script src="libs/grViz-binding-1.0.8/grViz.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="tp_xaringan_scrollable.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+class: center, middle, title-slide
+
+&lt;!--
+background-image: url("fig/water_tud_r_oer_by.png")
+--&gt;
+background-image: url("fig/pipeline01-highkey.png")
+
+background-size: cover
+
+
+&lt;!-- Own title slide / --&gt;
+
+# Pipelines in R - A Small Introduction
+
+#### Thomas Petzoldt
+
+.small[Version 2022-04-06, source code freely available from https://github.com/tpetzoldt/tpetzoldt.github.io/)]
+
+
+--- 
+
+Use cursor keys for navigation, press .red["O"] for a slide .red[O]verview
+
+&lt;!--
+Verbatim code embedding:
+https://themockup.blog/posts/2021-08-27-displaying-verbatim-code-chunks-in-xaringan-presentations/
+--&gt;
+
+&lt;!--- Setup -------------------------------------------------------------------&gt;
+
+
+
+
+
+
+&lt;!-- citations work differently with xaringan compared to @Markdown / --&gt;
+
+&lt;!--- End of Setup ------------------------------------------------------------&gt;
+
+---
+
+## Preface
+
+The examples contained herein require installation and loading of several R 
+packages:
+
+
+```r
+library("dplyr")
+library("tidyr")
+library("lubridate")
+library("knitr")
+library("readxl")
+library("ggplot2")
+```
+
+The examples were tested with **R** 4.1.3 and **RStudio** 2022.02.0.
+
+---
+## An introductory example
+
+The data file `leaves.csv` contains two samples of Maple (*Acer platanoides*) leaves, collected and measured by two groups of students. Group **HSE** had the freedom to collect an individual leaf from a tree close to the institute, while group **HYB** got a random sample from the supervisor. The basic hypotheses was, that sampling bias may affect statistical parameters, especially mean and variance.
+
+Download the file [leaves.csv](https://raw.githubusercontent.com/tpetzoldt/datasets/main/data/leaves.csv), save it to a working directory and then read it with
+`read.csv`:
+
+
+
+```r
+leaves &lt;- read.csv("leaves.csv") 
+```
+
+
+
+As a first step, it is always a good idea to have a look at the data:
+
+.pull-left[
+
+```r
+head(leaves)
+```
+
+```
+##   group no length width stalk
+## 1   HSE  1     83    87    74
+## 2   HSE  2    130   153   105
+## 3   HSE  3    140   148   135
+## 4   HSE  4    102   110    94
+## 5   HSE  5    190   151    89
+## 6   HSE  6    225   139    91
+```
+]
+.pull-right[
+  ![:scale 55%](fig/leaves_measures.png)
+]
+
+---
+
+## A boxplot
+
+
+```r
+boxplot(width ~ group, data=leaves)
+```
+
+![](pipes-intro_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+---
+## Summary statistics
+
+
+```r
+summary(leaves)
+```
+
+```
+##     group                 no             length           width      
+##  Length:126         Min.   :  1.00   Min.   : 37.00   Min.   : 44.0  
+##  Class :character   1st Qu.: 32.25   1st Qu.: 72.00   1st Qu.: 96.0  
+##  Mode  :character   Median : 63.50   Median : 90.00   Median :118.5  
+##                     Mean   : 63.50   Mean   : 95.83   Mean   :117.4  
+##                     3rd Qu.: 94.75   3rd Qu.:102.00   3rd Qu.:138.5  
+##                     Max.   :126.00   Max.   :250.00   Max.   :199.0  
+##      stalk       
+##  Min.   : 29.00  
+##  1st Qu.: 62.00  
+##  Median : 82.00  
+##  Mean   : 81.89  
+##  3rd Qu.:101.00  
+##  Max.   :175.00
+```
+
+---
+## Summary statistics per group
+
+
+```r
+aggregate(cbind(length, width, stalk) ~ group, mean, data=leaves)
+```
+
+```
+##   group    length    width     stalk
+## 1   HSE 137.82857 139.0286 102.02857
+## 2   HYB  79.67033 109.1319  74.14286
+```
+
+```r
+aggregate(cbind(length, width, stalk) ~ group, sd, data=leaves)
+```
+
+```
+##   group   length    width    stalk
+## 1   HSE 47.99356 26.07285 26.47917
+## 2   HYB 19.93771 30.90423 25.24087
+```
+
+```r
+aggregate(cbind(length, width, stalk) ~ group, min, data=leaves)
+```
+
+```
+##   group length width stalk
+## 1   HSE     83    87    52
+## 2   HYB     37    44    29
+```
+
+```r
+aggregate(cbind(length, width, stalk) ~ group, max, data=leaves)
+```
+
+```
+##   group length width stalk
+## 1   HSE    250   195   175
+## 2   HYB    124   199   144
+```
+
+---
+## More streamlined 
+
+.pull-left[
+Package **dplyr** contains two very handy functions:
+]
+.pull-right[
+* `group_by`
+* `summarize`
+]
+
+#### Classical approach 1: separate code lines
+
+
+```r
+library(dplyr)
+leaves_grouped &lt;- group_by(leaves, group)
+summarize(leaves_grouped, mean=mean(width), sd=sd(width), 
+                          min=min(width), max=max(width))
+```
+
+`\(\ominus\)` needs a temporary variable: `leaves_grouped`
+
+#### Classical approach 2: enclose in parentheses
+
+
+```r
+summarize(group_by(leaves, group), 
+        mean=mean(width), sd=sd(width), min=min(width), max=max(width))
+```
+
+`\(\oplus\)` no temporary variables necessary &lt;br&gt;
+`\(\ominus\)` nested parentheses
+
+---
+.pull-left[
+## The pipeline operator **.red[`%&gt;%`]**
+]
+
+
+.pull-right[
+![:scale 90%](fig/pipeline-long.jpg)
+]
+
+
+#### The output from the first function is piped to the next
+
+
+```r
+group_by(leaves, group) %&gt;%
+summarize(mean = mean(width), sd = sd(width), 
+          min = min(width), max = max(width))
+```
+
+#### Or, even more streamlined: pipe data from start
+
+
+
+```r
+leaves %&gt;%
+  group_by(group) %&gt;%
+  summarize(mean = mean(width), sd = sd(width), 
+            min = min(width), max = max(width))
+```
+
+```
+## # A tibble: 2 x 5
+##   group  mean    sd   min   max
+##   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
+## 1 HSE    139.  26.1    87   195
+## 2 HYB    109.  30.9    44   199
+```
+
+The pipeline operator **.red[`%&gt;%`]** transfers (.red["pipes"]) the output of one function to the first argument of the next function.
+
+---
+### Classical functional style
+
+
+
+```r
+group_by(leaves, group)
+```
+
+
+<div id="htmlwidget-be56a905e7217fbdbaa6" style="width:1008px;height:144px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-be56a905e7217fbdbaa6">{"x":{"diagram":"digraph functional {\n         graph [rankdir = \"LR\", bgcolor=\"none\"]\n           node [shape = box, penwidth=2, fontname = \"Helvetica\"]\n             \"input\", \"output\"\n           node [shape = \"oval\"]\n             \"function(arg1, arg2, ...)\"\n           edge [penwidth=1.5]\n              output -> \"function(arg1, arg2, ...)\"[dir=back]\n           edge [penwidth=0.7, tailport = \"e\", headport = \"n\", constraint = false, color=\"tomato\"]\n              \"input\" -> \"function(arg1, arg2, ...)\"\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+
+
+### Pipeline style
+
+
+
+```r
+leaves %&gt;% group_by(group)
+```
+
+
+<div id="htmlwidget-e8d30df0395b579149f4" style="width:1008px;height:108px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e8d30df0395b579149f4">{"x":{"diagram":"digraph pipes {\n         graph [rankdir = \"LR\", bgcolor=\"none\"]\n           node [shape = box, penwidth=2, fontname = \"Helvetica\"]\n             \"input\", \"output\"\n           node [shape = \"oval\"]\n             \"function(arg2, ...)\"\n           node [shape=none]\n             \"\\%>\\%\"\n           edge [penwidth=1.5]\n              input -> \"\\%>\\%\" -> \"function(arg2, ...)\" -> output\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+
+## Summary statistics for all variables
+
+### Copy and paste ?
+
+
+```r
+leaves %&gt;%
+  group_by(group) %&gt;%
+  summarize(mean_l=mean(width), sd_l=sd(width), min_l=min(width), max_l=max(width),
+            mean_w=mean(width), sd_w=sd(width), min_w=min(width), max_w=max(width),
+            mean_s=mean(width), sd_s=sd(width), min_s=min(width), max_s=max(width)
+  )
+```
+
+
+# No!
+
+
+---
+
+## Use long data formats
+
+* Use long format!
+* Put data from all 3 variables (`length, width, stalk`) in one column: `value`
+* Identifier column for the variables: `name`
+
+.pull-left[
+#### Wide format
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; group &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; no &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; length &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; width &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; stalk &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 83 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 87 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 74 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 130 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 153 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 105 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 140 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 148 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 135 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 102 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 110 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 94 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 190 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 151 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 89 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 225 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 139 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 91 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 195 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 165 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 76 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 216 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 135 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 113 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 250 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 195 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 119 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 152 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 168 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 158 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+.pull-right[
+#### Long format
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; group &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; no &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; name &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; value &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; length &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 83 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; width &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 87 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; stalk &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 74 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; length &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 130 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; width &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 153 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; stalk &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 105 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; length &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 140 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; width &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 148 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; stalk &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 135 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; length &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 102 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; width &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 110 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; stalk &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 94 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; length &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 190 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; width &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 151 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; stalk &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 89 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; length &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 225 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; width &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 139 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; stalk &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 91 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; length &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 195 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; width &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 165 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; stalk &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 76 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; length &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 216 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; width &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 135 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; stalk &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 113 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; length &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 250 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; width &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 195 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; stalk &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 119 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; length &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 152 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; width &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 168 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; HSE &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; stalk &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 158 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+
+---
+## Long data format with `pivot_longer`
+
+
+```r
+leaves %&gt;% pivot_longer(c("length", "width", "stalk"))
+```
+
+```
+## # A tibble: 378 x 4
+##    group    no name   value
+##    &lt;chr&gt; &lt;int&gt; &lt;chr&gt;  &lt;int&gt;
+##  1 HSE       1 length    83
+##  2 HSE       1 width     87
+##  3 HSE       1 stalk     74
+##  4 HSE       2 length   130
+##  5 HSE       2 width    153
+##  6 HSE       2 stalk    105
+##  7 HSE       3 length   140
+##  8 HSE       3 width    148
+##  9 HSE       3 stalk    135
+## 10 HSE       4 length   102
+## # ... with 368 more rows
+```
+
+### Now calculate summary statistics for all groups and variables
+
+
+```r
+leaves %&gt;% 
+  pivot_longer(c("length", "width", "stalk")) %&gt;%
+  group_by(group, name) %&gt;%
+  summarize(mean=mean(value), sd=sd(value), min=min(value), max=max(value))
+```
+
+```
+## `summarise()` has grouped output by 'group'. You can override using the
+## `.groups` argument.
+```
+
+```
+## # A tibble: 6 x 6
+## # Groups:   group [2]
+##   group name    mean    sd   min   max
+##   &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt;
+## 1 HSE   length 138.   48.0    83   250
+## 2 HSE   stalk  102.   26.5    52   175
+## 3 HSE   width  139.   26.1    87   195
+## 4 HYB   length  79.7  19.9    37   124
+## 5 HYB   stalk   74.1  25.2    29   144
+## 6 HYB   width  109.   30.9    44   199
+```
+
+---
+## Assignment
+
+* In the examples before, the output of the pipelines was always directly printed to the 
+screen (or the slide). 
+* If we need the result in a later operation, we can assign it to a variable as usual with `&lt;-`
+
+
+```r
+totals &lt;- 
+  leaves %&gt;% 
+  pivot_longer(c("length", "width", "stalk")) %&gt;%
+  group_by(group, name) %&gt;%
+  summarize(mean=mean(value), sd=sd(value), min=min(value), max=max(value))
+```
+
+Don't get confused! The pipe starts with `leaves` in the second code line and the 
+result of the **complete pipeline** is then assigned to `totals` at the end.
+It follows the convention, that the result of an equation is usually assigned to the left.
+
+More logical, but in practice less common is the following consequent left to 
+the right notation with `-&gt;`
+
+
+```r
+leaves %&gt;% 
+  pivot_longer(c("length", "width", "stalk")) %&gt;%
+  group_by(group, name) %&gt;%
+  summarize(mean=mean(value), sd=sd(value), min=min(value), max=max(value)) -&gt;
+  totals
+```
+
+### Indentation
+
+* The examples above show essentially **one** "single line of code" per example.
+* To improve readability, code lines should not be longer than 80 characters.
+* Line breaks can be at any position, as long as the code line is not complete.
+* One good way is to make a newline after `&lt;-` and `%&gt;%` and use 2 characters 
+for indentation.
+
+
+---
+## Clementine orange data set
+
+.center[
+![:scale 40%](fig/caliper.jpg)
+]
+
+* A data of samples of clementine oranges, measured, weighed and 
+consumed in a statistic course.
+* The excel file has two tables, one long table with the **fruits** and another (**brands**) with some meta data.
+
+
+
+
+.pull-left[
+#### fruits
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; year &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; brand &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; weight &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; width &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; height &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 107 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 61.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 54.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 100 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 65.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 55.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 89 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 58.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 99 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 62.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 52.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 99 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 64.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 58.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 96 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 63.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 59.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 100 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 54.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 54.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 89 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 58.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 86 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 66.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 92 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 102 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 92 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 32.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 96 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 90 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 32.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EP &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 88 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 58.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 53.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EP &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 56.95 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.55 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EP &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 59.10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.51 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EP &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 56.49 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.07 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EP &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 59.09 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44.76 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EP &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 98 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 61.42 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.58 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+]
+.pull-right[
+#### brands
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; year &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; brand &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; shop &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; type &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; kilogram &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; price &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EP &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Gold &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.49 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; LB &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Lidl &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.49 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; LO &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Lidl &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Bio &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.49 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NX &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Netto &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Box &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.30 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NP &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Netto &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Premium &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.29 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NB &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Netto &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.49 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; NC &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Netto &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.49 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+---
+## Database operations
+
+### Read directly from spreadsheet file
+
+
+```r
+brands  &lt;- read_excel("data/clementines_2019.xlsx", "Brands")
+fruits  &lt;- read_excel("data/clementines_2019.xlsx", "Fruits") 
+```
+
+
+### Database join
+
+* and then easily **join** the two tables to bring the information together. 
+* For the database function **`left_join`**, the (larger) main table is at the left.
+
+&lt;!-- chunk two times, bugfix to suppress joining output --&gt;
+
+```r
+fruits2 &lt;- left_join(fruits, brands)
+```
+
+
+
+
+* The two tables have two columns in common, `year` and `brand`, that are automatically detected.
+* The key fields can also be explicitly specified or renamed, see [left_join](https://dplyr.tidyverse.org/reference/mutate-joins.html) in the manual.
+
+
+```r
+head(fruits2, 20) %&gt;% kable()
+```
+
+&lt;table&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:right;"&gt; no &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; year &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; brand &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; weight &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; width &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; height &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; taste &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; shop &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; type &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; quality &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; kilogram &lt;/th&gt;
+   &lt;th style="text-align:right;"&gt; price &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 107 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 61.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 54.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 100 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 65.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 55.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 89 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 58.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 49.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 99 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 62.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 52.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 99 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 64.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 58.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 96 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 63.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 59.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 100 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 54.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 54.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 89 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 58.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 86 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 66.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 92 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 102 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 48.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 33.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 12 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 92 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 43.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 32.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 14 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 96 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 41.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 31.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 15 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EB &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 90 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 32.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Basic &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.50 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2.99 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EP &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 88 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 58.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 53.00 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Gold &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Premium &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.49 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EP &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 81 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 56.95 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.55 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 8 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Gold &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Premium &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.49 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EP &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 59.10 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.51 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Gold &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Premium &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.49 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EP &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 80 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 56.49 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 47.07 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 9 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Gold &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Premium &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.49 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 5 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EP &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 59.09 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 44.76 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Gold &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Premium &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.49 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:right;"&gt; 6 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2019 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; EP &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 98 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 61.42 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 50.58 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 7 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Edeka &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Gold &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Premium &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0.75 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1.49 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+
+---
+## Exercise
+
+* calculate summary statistics for a single data column (e.g. `weight`)
+* re-organize the tables with `pivot_longer` so that all measurements are in one column
+* calculate summary statistics for all measurements
+
+
+---
+
+## `select` and `filter`
+
+* `select`: select columns
+* `filter`: filters rows
+
+
+```r
+fruits2 %&gt;%
+  select(brand, shop, type, weight, width) %&gt;%
+  filter(shop %in% c("Edeka", "Lidl"))
+```
+
+```
+## # A tibble: 44 x 5
+##    brand shop  type  weight width
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;
+##  1 EB    Edeka Basic    107  61  
+##  2 EB    Edeka Basic    100  65  
+##  3 EB    Edeka Basic     89  58  
+##  4 EB    Edeka Basic     99  62  
+##  5 EB    Edeka Basic     99  64  
+##  6 EB    Edeka Basic     96  63  
+##  7 EB    Edeka Basic    100  54  
+##  8 EB    Edeka Basic     89  58.5
+##  9 EB    Edeka Basic     86  66  
+## 10 EB    Edeka Basic     92  43  
+## # ... with 34 more rows
+```
+
+---
+## `mutate`: transform columns and add new ones
+
+Transform a variable, e.g. weight by `\(x^{1/3}\)` into a theoretical mean diameter
+
+
+```r
+fruits2 &lt;- 
+  fruits2 %&gt;%
+  mutate(L_mean = weight^(1/3))
+```
+
+and visualize it with a classical `boxplot` function (so-called "base graphics")
+
+
+```r
+boxplot(L_mean ~ brand, data=fruits2)
+```
+
+![](pipes-intro_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
+We can also include this in a pipe, if we use `ggplot`:
+
+
+```r
+fruits2 %&gt;%
+  mutate(L_mean = weight^(1/3)) %&gt;%
+  ggplot(aes(brand, L_mean)) + geom_boxplot()
+```
+
+![](pipes-intro_files/figure-html/unnamed-chunk-31-1.png)&lt;!-- --&gt;
+
+
+
+---
+## Another `mutate`: example
+
+Let's compare the measured weight of our fruits with a "theoretical volume" 
+calculated from length and height using the formula of an ellipsoid. This is of 
+course an approximation:
+
+$$
+V = 4/3 \pi \cdot \rm (length/2)^2 \cdot height/2
+$$
+
+```r
+fruits &lt;-
+  fruits %&gt;%
+  mutate(V = 0.001 * 4/3 * pi * (width/2)^2 * height/2, index = weight / V)
+```
+
+---
+## Plotting with `ggplot`
+
+The next plots try to vizualize the dependency between the weight and the estimated volume.
+
+### All data together
+
+
+```r
+library(ggplot2)
+fruits %&gt;% ggplot(aes(weight, index)) + geom_point()
+```
+
+![](pipes-intro_files/figure-html/unnamed-chunk-33-1.png)&lt;!-- --&gt;
+---
+## Color coded points
+
+
+```r
+library(ggplot2)
+fruits %&gt;% ggplot(aes(weight, index, color=brand)) + geom_point()
+```
+
+![](pipes-intro_files/figure-html/unnamed-chunk-34-1.png)&lt;!-- --&gt;
+
+
+
+---
+## Categorial split (faceting) and regression line
+
+
+```r
+fruits %&gt;% 
+  ggplot(aes(weight, V)) + 
+  geom_point() + 
+  geom_smooth(method=lm, se=FALSE) + 
+  facet_wrap( ~ brand)
+```
+
+```
+## `geom_smooth()` using formula 'y ~ x'
+```
+
+![](pipes-intro_files/figure-html/unnamed-chunk-35-1.png)&lt;!-- --&gt;
+---
+## Modify font size
+
+
+```r
+fruits %&gt;% 
+  ggplot(aes(weight, V)) + 
+  geom_point() + 
+  geom_smooth(method=lm, se=FALSE) + 
+  facet_wrap( ~ brand) +
+  theme(text = element_text(size=24))
+```
+
+```
+## `geom_smooth()` using formula 'y ~ x'
+```
+
+![](pipes-intro_files/figure-html/unnamed-chunk-36-1.png)&lt;!-- --&gt;
+* `theme`s allow to configure "almost everything" ...
+
+---
+## dplyr pipes and native pipes
+
+* Pipes from package **dplyr**: `%&gt;%` (also called **magrittr**-style pipes)
+* Native pipes since R version 4.1: `|&gt;` have some advantages, but are still less popular
+* Native and dplyr pipes are mostly compatible, but not by 100%.
+
+
+---
+## Further reading
+
+Start with the [dplyr cheat sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf):
+
+
+
+
+For more details, see &lt;https://dplyr.tidyverse.org/&gt;.
+
+---
+
+## Acknowledgement
+
+&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;
+
+These slides were created with [R](https://www.r-project.org), [RStudio](https://rstudio.com), [rmarkdown](https://rmarkdown.rstudio.com/), [knitr](https://CRAN.R-project.org/package=knitr) and [xaringan](https://github.com/yihui/xaringan).
+
+
+
+
+---
+
+
+## References
+
+
+&lt;a name=bib-RCore2022&gt;&lt;/a&gt;[R Core Team](#cite-RCore2022) (2022). _R: A
+Language and Environment for Statistical Computing_. R Foundation for
+Statistical Computing. Vienna, Austria. URL:
+[https://www.R-project.org/](https://www.R-project.org/).
+
+&lt;a name=bib-RStudio&gt;&lt;/a&gt;[RStudio Team](#cite-RStudio) (2021). _RStudio:
+Integrated Development Environment for R_. RStudio, PBC. Boston, MA.
+URL: [http://www.rstudio.com/](http://www.rstudio.com/).
+
+&lt;a name=bib-R-knitr&gt;&lt;/a&gt;[Xie, Y.](#cite-R-knitr) (2015b). _Dynamic
+Documents with R and knitr_. 2nd. ISBN 978-1498716963. Boca Raton,
+Florida: Chapman and Hall/CRC. URL:
+[https://yihui.org/knitr/](https://yihui.org/knitr/).
+
+&lt;a name=bib-xaringan&gt;&lt;/a&gt;[Xie, Y.](#cite-xaringan) (2021). _xaringan:
+Presentation Ninja_. R package version 0.22. URL:
+[https://CRAN.R-project.org/package=xaringan](https://CRAN.R-project.org/package=xaringan).
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="tp_xaringan.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"self_contained": false,
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

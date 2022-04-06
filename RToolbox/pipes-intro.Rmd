@@ -415,37 +415,41 @@ head(fruits, 20) %>% select(year, brand, weight, width, height) %>% kable()
 ```{r echo=FALSE}
 head(brands, 10)  %>% select(year, brand, shop, type, kilogram, price) %>% kable()
 ```
-
 ]
 
 ---
-
 ## Database operations
 
-#### Read directly from spreadsheet file
+### Read directly from spreadsheet file
 
 ```{r}
 brands  <- read_excel("data/clementines_2019.xlsx", "Brands")
 fruits  <- read_excel("data/clementines_2019.xlsx", "Fruits") 
 ```
 
-#### Database join
 
-* and then easily **join*`** the two tables to bring the information together. 
+### Database join
+
+* and then easily **join** the two tables to bring the information together. 
 * For the database function **`left_join`**, the (larger) main table is at the left.
 
-```{r}
+<!-- chunk two times, bugfix to suppress joining output -->
+```{r eval=FALSE}
 fruits2 <- left_join(fruits, brands)
 ```
 
-* The two tables have two columns in common, `year` and `brand`, that are automatically detected.
-* The key fields can also be explicitly specified or renamed, see [`left_join`](https://dplyr.tidyverse.org/reference/mutate-joins.html) in the manual.
+```{r include=FALSE}
+fruits2 <- left_join(fruits, brands)
+```
 
-#### Result: a joined table
+
+* The two tables have two columns in common, `year` and `brand`, that are automatically detected.
+* The key fields can also be explicitly specified or renamed, see [left_join](https://dplyr.tidyverse.org/reference/mutate-joins.html) in the manual.
 
 ```{r}
-fruits2
+head(fruits2, 20) %>% kable()
 ```
+
 
 ---
 ## Exercise
@@ -459,8 +463,8 @@ fruits2
 
 ## `select` and `filter`
 
-* `select`, select columns
-* `filter`, filters rows
+* `select`: select columns
+* `filter`: filters rows
 
 ```{r}
 fruits2 %>%
@@ -468,13 +472,38 @@ fruits2 %>%
   filter(shop %in% c("Edeka", "Lidl"))
 ```
 
+---
+## `mutate`: transform columns and add new ones
+
+Transform a variable, e.g. weight by $x^{1/3}$ into a theoretical mean diameter
+
+```{r}
+fruits2 <- 
+  fruits2 %>%
+  mutate(L_mean = weight^(1/3))
+```
+
+and visualize it with a classical `boxplot` function (so-called "base graphics")
+
+```{r}
+boxplot(L_mean ~ brand, data=fruits2)
+```
+We can also include this in a pipe, if we use `ggplot`:
+
+```{r}
+fruits2 %>%
+  mutate(L_mean = weight^(1/3)) %>%
+  ggplot(aes(brand, L_mean)) + geom_boxplot()
+```
+
 
 
 ---
-## `mutate`
+## Another `mutate`: example
 
-Now let's compare the measured weight of our fruits with a "theoretical weight" 
-calculated from length and height using the formula of an ellipsoid
+Let's compare the measured weight of our fruits with a "theoretical volume" 
+calculated from length and height using the formula of an ellipsoid. This is of 
+course an approximation:
 
 $$
 V = 4/3 \pi \cdot \rm (length/2)^2 \cdot height/2
@@ -486,33 +515,48 @@ fruits <-
 ```
 
 ---
+## Plotting with `ggplot`
+
+The next plots try to vizualize the dependency between the weight and the estimated volume.
+
+### All data together
 
 ```{r}
 library(ggplot2)
 fruits %>% ggplot(aes(weight, index)) + geom_point()
 ```
-
 ---
+## Color coded points
 
 ```{r}
-fruits %>% ggplot(aes(V, weight)) + geom_point() + geom_smooth(method=lm, se=FALSE) + facet_wrap(~brand)
+library(ggplot2)
+fruits %>% ggplot(aes(weight, index, color=brand)) + geom_point()
 ```
 
 
----
-## `filter` and `select`
-
 
 ---
-## `pivot_longer` and `pivot_wider`
+## Categorial split (faceting) and regression line
 
+```{r}
+fruits %>% 
+  ggplot(aes(weight, V)) + 
+  geom_point() + 
+  geom_smooth(method=lm, se=FALSE) + 
+  facet_wrap( ~ brand)
+```
 ---
-## `group_by` and `summarize`
+## Modify font size
 
----
-## `<tidy-select>`
-
-* only a few examples
+```{r}
+fruits %>% 
+  ggplot(aes(weight, V)) + 
+  geom_point() + 
+  geom_smooth(method=lm, se=FALSE) + 
+  facet_wrap( ~ brand) +
+  theme(text = element_text(size=24))
+```
+* `theme`s allow to configure "almost everything" ...
 
 ---
 ## dplyr pipes and native pipes
@@ -534,8 +578,10 @@ For more details, see <https://dplyr.tidyverse.org/>.
 
 ---
 
-## Acknowledgemt
+## Acknowledgement
+
 <br></br><br></br><br></br>
+
 These slides were created with [R](https://www.r-project.org), [RStudio](https://rstudio.com), [rmarkdown](https://rmarkdown.rstudio.com/), [knitr](https://CRAN.R-project.org/package=knitr) and [xaringan](https://github.com/yihui/xaringan).
 
 `r NoCite(bib, "xaringan")`
