@@ -329,84 +329,62 @@ leaves %>%
   summarize(mean=mean(value), sd=sd(value), min=min(value), max=max(value))
 ```
 
-
 ---
+## Clementine orange data set
 
-## Classical styles
+![](fig/caliper.jpg)
 
-### intermediate variables
+The data set consists of samples of clementine oranges, measured, weighed and 
+consumed in a statistic course.
 
+The data set consists of two tables, one with a long table of the fruits and another one (brands) with some meta data:
 
 ```{r}
-dat2 <-  pivot_longer(leaves, c("length", "width", "stalk"))
-dat3 <-  group_by(dat2, group, name)
-dat4 <-  summarize(dat3, mean=mean(value), sd=sd(value),
-                   min=min(value), max=max(value))
-dat4
+library("readxl")
+brands  <- read_excel("data/clementines_2019.xlsx", "Brands")
+fruits  <- read_excel("data/clementines_2019.xlsx", "Fruits") 
+```
+
+---
+## Database join
+
+```{r}
+fruits2 <- left_join(fruits, brands)
+boxplot(weight ~ brand, data=fruits2)
 ```
 
 
-### Nested parentheses
-
----
-
-## Packages
-
-* dplyr:
-* tidyr:
-* lubridate:
-* ggplot:
-
----
-
-## dplyr pipes and native pipes
-
-* Pipes from package **dplyr**: `%>%` (also called **magrittr**-style pipes)
-* Native pipes since R version 4.1: `|>` have some advantages, but are still less popular
-* Native and dplyr pipes are mostly compatible, but not by 100%.
-
----
 
 ## `mutate`
 
+Now let's compare the measured weight of our fruits with a "theoretical weight" 
+calculated from length and height using the formula of an ellipsoid
+
+$$
+V = 4/3 \pi \cdot \rm (length/2)^2 \cdot height/2
+$$
 ```{r}
-library(readxl)
-library(dplyr)
-
-## read data directly from an Excel table
-fruits  <- read_excel("data/clementines_2019.xlsx", "Fruits")
-
-## boxplot and summary statistics
-boxplot(weight ~ brand, data=fruits)
-
-## an example of "modern R" with package dplyr and the pipe operator
-## extend this to calculate also min, max and median
-summary_stats <-
-  fruits %>% group_by(brand) %>%
-    summarize(mean = mean(weight),
-              sd   = sd(weight),
-              cv   = sd(weight)/mean(weight),
-              n    = length(weight))
+fruits <-
+  fruits %>%
+  mutate(V = 0.001 * 4/3 * pi * (width/2)^2 * height/2, index = weight / V)
 ```
 
+---
+
+```{r}
+library(ggplot2)
+fruits %>% ggplot(aes(weight, index)) + geom_point()
+```
+
+---
+
+```{r}
+fruits %>% ggplot(aes(V, weight)) + geom_point() + geom_smooth(method=lm, se=FALSE) + facet_wrap(~brand)
+```
 
 
 ---
 ## `filter` and `select`
-
-
----
-## Database operations
-
-* `left_join`
-
-```{r}
-## read another table with the meta data
-brands  <- read_excel("data/clementines_2019.xlsx", "Brands")
-
-## database operation: join tables together
-alldata <- left_join(fruits, brands)
-```
 
 
 ---
@@ -419,6 +397,14 @@ alldata <- left_join(fruits, brands)
 ## `<tidy-select>`
 
 * only a few examples
+
+---
+## dplyr pipes and native pipes
+
+* Pipes from package **dplyr**: `%>%` (also called **magrittr**-style pipes)
+* Native pipes since R version 4.1: `|>` have some advantages, but are still less popular
+* Native and dplyr pipes are mostly compatible, but not by 100%.
+
 
 ---
 ## Further reading
