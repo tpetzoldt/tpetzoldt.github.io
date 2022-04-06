@@ -106,7 +106,26 @@ bib <- ReadBib("./bib.bib", check = FALSE)
 
 ---
 
+## Preface
+
+The examples contained herein require installation and loading of several R 
+packages:
+
+```{r}
+library("dplyr")
+library("tidyr")
+library("lubridate")
+library("knitr")
+library("readxl")
+library("ggplot2")
+```
+
+The examples were tested with **R** 4.1.3 and **RStudio** 2022.02.0.
+
+---
 ## An introductory example
+
+The data file `leaves.csv` contains two samples of Maple (*Acer platanoides*) leaves, collected and measured by two groups of students. Group **HSE** had the freedom to collect an individual leaf from a tree close to the institute, while group **HYB** got a random sample from the supervisor. The basic hypotheses was, that sampling bias may affect statistical parameters, especially mean and variance.
 
 Download the file [leaves.csv](https://raw.githubusercontent.com/tpetzoldt/datasets/main/data/leaves.csv), save it to a working directory and then read it with
 `read.csv`:
@@ -125,10 +144,9 @@ As a first step, it is always a good idea to have a look at the data:
 
 .pull-left[
 ```{r}
-knitr::kable(head(leaves))
+head(leaves)
 ```
 ]
-
 .pull-right[
   ![:scale 55%](fig/leaves_measures.png)
 ]
@@ -192,7 +210,7 @@ $\ominus$ nested parentheses
 
 ---
 .pull-left[
-## Alternative: Pipeline
+## The pipeline operator **.red[`%>%`]**
 ]
 
 
@@ -200,26 +218,26 @@ $\ominus$ nested parentheses
 ![:scale 90%](fig/pipeline-long.jpg)
 ]
 
-Output of one function is used as<br> "implicit first argument" of the next function.
-#### Data only in first function call
+
+#### The output from the first function is piped to the next
 
 ```{r, eval=FALSE}
 group_by(leaves, group) %>%
-summarize(mean=mean(width), sd=sd(width), 
-          min=min(width), max=max(width))
+summarize(mean = mean(width), sd = sd(width), 
+          min = min(width), max = max(width))
 ```
 
-#### Or, even more streamlined
+#### Or, even more streamlined: pipe data from start
 
 
 ```{r}
 leaves %>%
   group_by(group) %>%
-  summarize(mean=mean(width), sd=sd(width), 
-            min=min(width), max=max(width))
+  summarize(mean = mean(width), sd = sd(width), 
+            min = min(width), max = max(width))
 ```
 
-
+The pipeline operator **.red[`%>%`]** transfers (.red["pipes"]) the output of one function to the first argument of the next function.
 
 ---
 ### Classical functional style
@@ -281,7 +299,7 @@ leaves %>%
   summarize(mean_l=mean(width), sd_l=sd(width), min_l=min(width), max_l=max(width),
             mean_w=mean(width), sd_w=sd(width), min_w=min(width), max_w=max(width),
             mean_s=mean(width), sd_s=sd(width), min_s=min(width), max_s=max(width)
-            )
+  )
 ```
 
 
@@ -316,7 +334,6 @@ leaves %>% pivot_longer(c("length", "width", "stalk")) %>% head(30) %>% knitr::k
 ## Long data format with `pivot_longer`
 
 ```{r}
-library("tidyr")
 leaves %>% pivot_longer(c("length", "width", "stalk"))
 ```
 
@@ -330,31 +347,130 @@ leaves %>%
 ```
 
 ---
+## Assignment
+
+* In the examples before, the output of the pipelines was always directly printed to the 
+screen (or the slide). 
+* If we need the result in a later operation, we can assign it to a variable as usual with `<-`
+
+```{r eval=FALSE}
+totals <- 
+  leaves %>% 
+  pivot_longer(c("length", "width", "stalk")) %>%
+  group_by(group, name) %>%
+  summarize(mean=mean(value), sd=sd(value), min=min(value), max=max(value))
+```
+
+Don't get confused! The pipe starts with `leaves` in the second code line and the 
+result of the **complete pipeline** is then assigned to `totals` at the end.
+It follows the convention, that the result of an equation is usually assigned to the left.
+
+More logical, but in practice less common is the following consequent left to 
+the right notation with `->`
+
+```{r eval=FALSE}
+leaves %>% 
+  pivot_longer(c("length", "width", "stalk")) %>%
+  group_by(group, name) %>%
+  summarize(mean=mean(value), sd=sd(value), min=min(value), max=max(value)) ->
+  totals
+```
+
+### Indentation
+
+* The examples above show essentially **one** "single line of code" per example.
+* To improve readability, code lines should not be longer than 80 characters.
+* Line breaks can be at any position, as long as the code line is not complete.
+* One good way is to make a newline after `<-` and `%>%` and use 2 characters 
+for indentation.
+
+
+---
 ## Clementine orange data set
 
-![](fig/caliper.jpg)
+.center[
+![:scale 40%](fig/caliper.jpg)
+]
 
-The data set consists of samples of clementine oranges, measured, weighed and 
+* A data of samples of clementine oranges, measured, weighed and 
 consumed in a statistic course.
+* The excel file has two tables, one long table with the **fruits** and another (**brands**) with some meta data.
 
-The data set consists of two tables, one with a long table of the fruits and another one (brands) with some meta data:
-
-```{r}
-library("readxl")
+```{r echo=FALSE}
 brands  <- read_excel("data/clementines_2019.xlsx", "Brands")
 fruits  <- read_excel("data/clementines_2019.xlsx", "Fruits") 
 ```
 
+
+.pull-left[
+#### fruits
+```{r echo=FALSE}
+head(fruits, 20) %>% select(year, brand, weight, width, height) %>% kable()
+
+```
+
+]
+.pull-right[
+#### brands
+```{r echo=FALSE}
+head(brands, 10)  %>% select(year, brand, shop, type, kilogram, price) %>% kable()
+```
+
+]
+
 ---
-## Database join
+
+## Database operations
+
+#### Read directly from spreadsheet file
+
+```{r}
+brands  <- read_excel("data/clementines_2019.xlsx", "Brands")
+fruits  <- read_excel("data/clementines_2019.xlsx", "Fruits") 
+```
+
+#### Database join
+
+* and then easily **join*`** the two tables to bring the information together. 
+* For the database function **`left_join`**, the (larger) main table is at the left.
 
 ```{r}
 fruits2 <- left_join(fruits, brands)
-boxplot(weight ~ brand, data=fruits2)
+```
+
+* The two tables have two columns in common, `year` and `brand`, that are automatically detected.
+* The key fields can also be explicitly specified or renamed, see [`left_join`](https://dplyr.tidyverse.org/reference/mutate-joins.html) in the manual.
+
+#### Result: a joined table
+
+```{r}
+fruits2
+```
+
+---
+## Exercise
+
+* calculate summary statistics for a single data column (e.g. `weight`)
+* re-organize the tables with `pivot_longer` so that all measurements are in one column
+* calculate summary statistics for all measurements
+
+
+---
+
+## `select` and `filter`
+
+* `select`, select columns
+* `filter`, filters rows
+
+```{r}
+fruits2 %>%
+  select(brand, shop, type, weight, width) %>%
+  filter(shop %in% c("Edeka", "Lidl"))
 ```
 
 
 
+---
 ## `mutate`
 
 Now let's compare the measured weight of our fruits with a "theoretical weight" 
