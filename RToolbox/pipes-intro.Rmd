@@ -1,5 +1,5 @@
 ---
-title: "Pipes in R"
+title: "Pipelines in R - A Small Introduction"
 author: "Thomas Petzoldt"
 date: "`r Sys.Date()`"
 output:
@@ -36,14 +36,17 @@ always_allow_html: true
 
 class: center, middle, title-slide
 
+<!--
 background-image: url("fig/water_tud_r_oer_by.png")
+-->
+background-image: url("fig/pipeline01-highkey.png")
 
 background-size: cover
 
 
 <!-- Own title slide / -->
 
-# A Small Introduction to Pipes in R
+# Pipelines in R - A Small Introduction
 
 #### Thomas Petzoldt
 
@@ -103,10 +106,6 @@ bib <- ReadBib("./bib.bib", check = FALSE)
 
 ---
 
-## Pipes ...
-
----
-
 ## An introductory example
 
 Download the file [leaves.csv](https://raw.githubusercontent.com/tpetzoldt/datasets/main/data/leaves.csv), save it to a working directory and then read it with
@@ -122,27 +121,206 @@ filename <- "https://raw.githubusercontent.com/tpetzoldt/datasets/main/data/leav
 leaves <- read.csv(filename) 
 ```
 
-As a first step, it is always a good idea to have a look at the data
+As a first step, it is always a good idea to have a look at the data:
 
+.pull-left[
 ```{r}
 knitr::kable(head(leaves))
 ```
+]
 
-## Summary statistics for the groups
+.pull-right[
+  ![:scale 55%](fig/leaves_measures.png)
+]
+
+---
+
+## A boxplot
 
 ```{r}
-library("dplyr")
-leaves %>% group_by(group) %>%
-  summarize(mean=mean(length), sd=sd(length), min=min(length), max=max(length))
+boxplot(width ~ group, data=leaves)
 ```
 
-## Long data formats
+---
+## Summary statistics
+
+```{r}
+summary(leaves)
+```
+
+---
+## Summary statistics per group
+
+```{r}
+aggregate(cbind(length, width, stalk) ~ group, mean, data=leaves)
+aggregate(cbind(length, width, stalk) ~ group, sd, data=leaves)
+aggregate(cbind(length, width, stalk) ~ group, min, data=leaves)
+aggregate(cbind(length, width, stalk) ~ group, max, data=leaves)
+```
+
+---
+## More streamlined 
+
+.pull-left[
+Package **dplyr** contains two very handy functions:
+]
+.pull-right[
+* `group_by`
+* `summarize`
+]
+
+#### Classical approach 1: separate code lines
+
+```{r, eval=FALSE}
+library(dplyr)
+leaves_grouped <- group_by(leaves, group)
+summarize(leaves_grouped, mean=mean(width), sd=sd(width), 
+                          min=min(width), max=max(width))
+```
+
+$\ominus$ needs a temporary variable: `leaves_grouped`
+
+#### Classical approach 2: enclose in parentheses
+
+```{r, eval=FALSE}
+summarize(group_by(leaves, group), 
+        mean=mean(width), sd=sd(width), min=min(width), max=max(width))
+```
+
+$\oplus$ no temporary variables necessary <br>
+$\ominus$ nested parentheses
+
+---
+.pull-left[
+## Alternative: Pipeline
+]
+
+
+.pull-right[
+![:scale 90%](fig/pipeline-long.jpg)
+]
+
+Output of one function is used as<br> "implicit first argument" of the next function.
+#### Data only in first function call
+
+```{r, eval=FALSE}
+group_by(leaves, group) %>%
+summarize(mean=mean(width), sd=sd(width), 
+          min=min(width), max=max(width))
+```
+
+#### Or, even more streamlined
+
+
+```{r}
+leaves %>%
+  group_by(group) %>%
+  summarize(mean=mean(width), sd=sd(width), 
+            min=min(width), max=max(width))
+```
+
+
+
+---
+### Classical functional style
+
+
+```{r, eval=FALSE}
+group_by(leaves, group)
+```  
+
+
+```{r diag-functional, echo=FALSE, fig.height=2}
+grViz("digraph functional {
+         graph [rankdir = 'LR', bgcolor='none']
+           node [shape = box, penwidth=2, fontname = 'Helvetica']
+             'input', 'output'
+           node [shape = 'oval']
+             'function(arg1, arg2, ...)'
+           edge [penwidth=1.5]
+              output -> 'function(arg1, arg2, ...)'[dir=back]
+           edge [penwidth=0.7, tailport = 'e', headport = 'n', constraint = false, color='tomato']
+              'input' -> 'function(arg1, arg2, ...)'
+}")
+```
+
+
+### Pipeline style
+
+
+```{r, eval=FALSE}
+leaves %>% group_by(group)
+```  
+
+
+```{r diag-pipeline, echo=FALSE, fig.height=1.5}
+grViz("digraph pipes {
+         graph [rankdir = 'LR', bgcolor='none']
+           node [shape = box, penwidth=2, fontname = 'Helvetica']
+             'input', 'output'
+           node [shape = 'oval']
+             'function(arg2, ...)'
+           node [shape=none]
+             '\\%>\\%'
+           edge [penwidth=1.5]
+              input -> '\\%>\\%' -> 'function(arg2, ...)' -> output
+}")
+```
+
+
+---
+
+
+## Summary statistics for all variables
+
+### Copy and paste ?
+
+```{r, eval=FALSE}
+leaves %>%
+  group_by(group) %>%
+  summarize(mean_l=mean(width), sd_l=sd(width), min_l=min(width), max_l=max(width),
+            mean_w=mean(width), sd_w=sd(width), min_w=min(width), max_w=max(width),
+            mean_s=mean(width), sd_s=sd(width), min_s=min(width), max_s=max(width)
+            )
+```
+
+
+# No!
+
+
+---
+
+## Use long data formats
+
+* Use long format!
+* Put data from all 3 variables (`length, width, stalk`) in one column: `value`
+* Identifier column for the variables: `name`
+
+.pull-left[
+#### Wide format
+```{r echo=FALSE}
+leaves %>% head(10) %>% knitr::kable()
+```
+]
+
+.pull-right[
+#### Long format
+```{r echo=FALSE}
+library("tidyr")
+leaves %>% pivot_longer(c("length", "width", "stalk")) %>% head(30) %>% knitr::kable()
+```
+]
+
+
+---
+## Long data format with `pivot_longer`
 
 ```{r}
 library("tidyr")
 leaves %>% pivot_longer(c("length", "width", "stalk"))
 ```
 
+### Now calculate summary statistics for all groups and variables
 
 ```{r}
 leaves %>% 
