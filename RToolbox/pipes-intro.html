@@ -285,8 +285,8 @@ group_by(leaves, group)
 ```
 
 
-<div id="htmlwidget-89a9cd225b1d4aefeddf" style="width:1008px;height:144px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-89a9cd225b1d4aefeddf">{"x":{"diagram":"digraph functional {\n         graph [rankdir = \"LR\", bgcolor=\"none\"]\n           node [shape = box, penwidth=2, fontname = \"Helvetica\"]\n             \"input\", \"output\"\n           node [shape = \"oval\"]\n             \"function(arg1, arg2, ...)\"\n           edge [penwidth=1.5]\n              output -> \"function(arg1, arg2, ...)\"[dir=back]\n           edge [penwidth=0.7, tailport = \"e\", headport = \"n\", constraint = false, color=\"tomato\"]\n              \"input\" -> \"function(arg1, arg2, ...)\"\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-297497767cc6a83283b7" style="width:1008px;height:144px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-297497767cc6a83283b7">{"x":{"diagram":"digraph functional {\n         graph [rankdir = \"LR\", bgcolor=\"none\"]\n           node [shape = box, penwidth=2, fontname = \"Helvetica\"]\n             \"input\", \"output\"\n           node [shape = \"oval\"]\n             \"function(arg1, arg2, ...)\"\n           edge [penwidth=1.5]\n              output -> \"function(arg1, arg2, ...)\"[dir=back]\n           edge [penwidth=0.7, tailport = \"e\", headport = \"n\", constraint = false, color=\"tomato\"]\n              \"input\" -> \"function(arg1, arg2, ...)\"\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 
 ### Pipeline style
@@ -298,8 +298,8 @@ leaves %&gt;% group_by(group)
 ```
 
 
-<div id="htmlwidget-85814ce5733c06799bde" style="width:1008px;height:108px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-85814ce5733c06799bde">{"x":{"diagram":"digraph pipes {\n         graph [rankdir = \"LR\", bgcolor=\"none\"]\n           node [shape = box, penwidth=2, fontname = \"Helvetica\"]\n             \"input\", \"output\"\n           node [shape = \"oval\"]\n             \"function(arg2, ...)\"\n           node [shape=none]\n             \"\\%>\\%\"\n           edge [penwidth=1.5]\n              input -> \"\\%>\\%\" -> \"function(arg2, ...)\" -> output\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-9481caa8f977a9b27930" style="width:1008px;height:108px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-9481caa8f977a9b27930">{"x":{"diagram":"digraph pipes {\n         graph [rankdir = \"LR\", bgcolor=\"none\"]\n           node [shape = box, penwidth=2, fontname = \"Helvetica\"]\n             \"input\", \"output\"\n           node [shape = \"oval\"]\n             \"function(arg2, ...)\"\n           node [shape=none]\n             \"\\%>\\%\"\n           edge [penwidth=1.5]\n              input -> \"\\%>\\%\" -> \"function(arg2, ...)\" -> output\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 
 ---
@@ -1470,8 +1470,10 @@ For more details, see
 * "Welcome to tidyverse: &lt;https://dplyr.tidyverse.org/&gt;.
 * "ggplot Elegant Graphics for Data Analysis: &lt;https://ggplot2-book.org/&gt;
 * "R for Data Science": &lt;https://r4ds.had.co.nz/&gt;
+* Hadley Wickham's homepage: &lt;https://hadley.nz/&gt;
 
 ... or buy the printed books: "R for Data Science" &lt;a name=cite-datascience&gt;&lt;/a&gt;([Wickham and Grolemund, 2016](https://r4ds.had.co.nz/)) or "ggplot Elegant Graphics for Data Analysis" &lt;a name=cite-ggplot&gt;&lt;/a&gt;([Wickham, 2016](https://ggplot2.tidyverse.org))
+
 
 
 ---
@@ -1481,6 +1483,8 @@ For more details, see
 &lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;
 
 These slides were created with [R](https://www.r-project.org), [RStudio](https://rstudio.com), [rmarkdown](https://rmarkdown.rstudio.com/), [knitr](https://CRAN.R-project.org/package=knitr) and [xaringan](https://github.com/yihui/xaringan).
+
+
 
 
 
