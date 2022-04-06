@@ -556,6 +556,7 @@ fruits %>%
   facet_wrap( ~ brand) +
   theme(text = element_text(size=24))
 ```
+
 * `theme`s allow to configure "almost everything" ...
 
 ---
@@ -569,12 +570,16 @@ fruits %>%
 ---
 ## Further reading
 
-Start with the [dplyr cheat sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf):
+Start with the [dplyr cheat sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf) etc.
 
+For more details, see 
 
+* "Welcome to tidyverse: <https://dplyr.tidyverse.org/>.
+* "ggplot Elegant Graphics for Data Analysis: <https://ggplot2-book.org/>
+* "R for Data Science": <https://r4ds.had.co.nz/>
 
+... or buy the printed books: "R for Data Science" `r Citep(bib, "datascience")` or "ggplot Elegant Graphics for Data Analysis" `r Citep(bib, "ggplot")`
 
-For more details, see <https://dplyr.tidyverse.org/>.
 
 ---
 
@@ -585,7 +590,7 @@ For more details, see <https://dplyr.tidyverse.org/>.
 These slides were created with [R](https://www.r-project.org), [RStudio](https://rstudio.com), [rmarkdown](https://rmarkdown.rstudio.com/), [knitr](https://CRAN.R-project.org/package=knitr) and [xaringan](https://github.com/yihui/xaringan).
 
 `r NoCite(bib, "xaringan")`
-`r NoCite(bib, c("RCore2022", "RStudio", "R-knitr"))`
+`r NoCite(bib, c("RCore2022", "RStudio", "R-knitr", "ggplot", "tidyverse"))`
 
 ---
 

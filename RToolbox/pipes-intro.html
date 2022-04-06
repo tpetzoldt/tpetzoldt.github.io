@@ -4,7 +4,7 @@
     <title>Pipelines in R - A Small Introduction</title>
     <meta charset="utf-8" />
     <meta name="author" content="Thomas Petzoldt" />
-    <meta name="date" content="2022-04-06" />
+    <meta name="date" content="2022-04-07" />
     <script src="libs/header-attrs-2.13.3/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/useR-fonts.css" rel="stylesheet" />
@@ -40,7 +40,7 @@ background-size: cover
 
 #### Thomas Petzoldt
 
-.small[Version 2022-04-06, source code freely available from https://github.com/tpetzoldt/tpetzoldt.github.io/)]
+.small[Version 2022-04-07, source code freely available from https://github.com/tpetzoldt/tpetzoldt.github.io/)]
 
 
 --- 
@@ -285,8 +285,8 @@ group_by(leaves, group)
 ```
 
 
-<div id="htmlwidget-be56a905e7217fbdbaa6" style="width:1008px;height:144px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-be56a905e7217fbdbaa6">{"x":{"diagram":"digraph functional {\n         graph [rankdir = \"LR\", bgcolor=\"none\"]\n           node [shape = box, penwidth=2, fontname = \"Helvetica\"]\n             \"input\", \"output\"\n           node [shape = \"oval\"]\n             \"function(arg1, arg2, ...)\"\n           edge [penwidth=1.5]\n              output -> \"function(arg1, arg2, ...)\"[dir=back]\n           edge [penwidth=0.7, tailport = \"e\", headport = \"n\", constraint = false, color=\"tomato\"]\n              \"input\" -> \"function(arg1, arg2, ...)\"\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-89a9cd225b1d4aefeddf" style="width:1008px;height:144px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-89a9cd225b1d4aefeddf">{"x":{"diagram":"digraph functional {\n         graph [rankdir = \"LR\", bgcolor=\"none\"]\n           node [shape = box, penwidth=2, fontname = \"Helvetica\"]\n             \"input\", \"output\"\n           node [shape = \"oval\"]\n             \"function(arg1, arg2, ...)\"\n           edge [penwidth=1.5]\n              output -> \"function(arg1, arg2, ...)\"[dir=back]\n           edge [penwidth=0.7, tailport = \"e\", headport = \"n\", constraint = false, color=\"tomato\"]\n              \"input\" -> \"function(arg1, arg2, ...)\"\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 
 ### Pipeline style
@@ -298,8 +298,8 @@ leaves %&gt;% group_by(group)
 ```
 
 
-<div id="htmlwidget-e8d30df0395b579149f4" style="width:1008px;height:108px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e8d30df0395b579149f4">{"x":{"diagram":"digraph pipes {\n         graph [rankdir = \"LR\", bgcolor=\"none\"]\n           node [shape = box, penwidth=2, fontname = \"Helvetica\"]\n             \"input\", \"output\"\n           node [shape = \"oval\"]\n             \"function(arg2, ...)\"\n           node [shape=none]\n             \"\\%>\\%\"\n           edge [penwidth=1.5]\n              input -> \"\\%>\\%\" -> \"function(arg2, ...)\" -> output\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-85814ce5733c06799bde" style="width:1008px;height:108px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-85814ce5733c06799bde">{"x":{"diagram":"digraph pipes {\n         graph [rankdir = \"LR\", bgcolor=\"none\"]\n           node [shape = box, penwidth=2, fontname = \"Helvetica\"]\n             \"input\", \"output\"\n           node [shape = \"oval\"]\n             \"function(arg2, ...)\"\n           node [shape=none]\n             \"\\%>\\%\"\n           edge [penwidth=1.5]\n              input -> \"\\%>\\%\" -> \"function(arg2, ...)\" -> output\n}","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 
 
 ---
@@ -1449,6 +1449,7 @@ fruits %&gt;%
 ```
 
 ![](pipes-intro_files/figure-html/unnamed-chunk-36-1.png)&lt;!-- --&gt;
+
 * `theme`s allow to configure "almost everything" ...
 
 ---
@@ -1462,12 +1463,16 @@ fruits %&gt;%
 ---
 ## Further reading
 
-Start with the [dplyr cheat sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf):
+Start with the [dplyr cheat sheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/data-transformation.pdf) etc.
 
+For more details, see 
 
+* "Welcome to tidyverse: &lt;https://dplyr.tidyverse.org/&gt;.
+* "ggplot Elegant Graphics for Data Analysis: &lt;https://ggplot2-book.org/&gt;
+* "R for Data Science": &lt;https://r4ds.had.co.nz/&gt;
 
+... or buy the printed books: "R for Data Science" &lt;a name=cite-datascience&gt;&lt;/a&gt;([Wickham and Grolemund, 2016](https://r4ds.had.co.nz/)) or "ggplot Elegant Graphics for Data Analysis" &lt;a name=cite-ggplot&gt;&lt;/a&gt;([Wickham, 2016](https://ggplot2.tidyverse.org))
 
-For more details, see &lt;https://dplyr.tidyverse.org/&gt;.
 
 ---
 
@@ -1494,6 +1499,21 @@ Statistical Computing. Vienna, Austria. URL:
 &lt;a name=bib-RStudio&gt;&lt;/a&gt;[RStudio Team](#cite-RStudio) (2021). _RStudio:
 Integrated Development Environment for R_. RStudio, PBC. Boston, MA.
 URL: [http://www.rstudio.com/](http://www.rstudio.com/).
+
+&lt;a name=bib-ggplot&gt;&lt;/a&gt;[Wickham, H.](#cite-ggplot) (2016). _ggplot2:
+Elegant Graphics for Data Analysis_. Springer-Verlag New York. ISBN:
+978-3-319-24277-4. URL:
+[https://ggplot2.tidyverse.org](https://ggplot2.tidyverse.org).
+
+&lt;a name=bib-tidyverse&gt;&lt;/a&gt;[Wickham, H., M. Averick, J. Bryan, et
+al.](#cite-tidyverse) (2019). "Welcome to the tidyverse". In: _Journal
+of Open Source Software_ 4.43, p. 1686. DOI:
+[10.21105/joss.01686](https://doi.org/10.21105%2Fjoss.01686).
+
+&lt;a name=bib-datascience&gt;&lt;/a&gt;[Wickham, H. and G.
+Grolemund](#cite-datascience) (2016). _R for data science: import,
+tidy, transform, visualize, and model data_. O'Reilly Media, Inc. URL:
+[https://r4ds.had.co.nz/](https://r4ds.had.co.nz/).
 
 &lt;a name=bib-R-knitr&gt;&lt;/a&gt;[Xie, Y.](#cite-R-knitr) (2015b). _Dynamic
 Documents with R and knitr_. 2nd. ISBN 978-1498716963. Boca Raton,
