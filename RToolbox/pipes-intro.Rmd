@@ -64,7 +64,7 @@ https://themockup.blog/posts/2021-08-27-displaying-verbatim-code-chunks-in-xarin
 
 <!--- Setup ------------------------------------------------------------------->
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, fig.width=14, 
+knitr::opts_chunk$set(echo = TRUE, fig.width=14, plot=TRUE,
                       fig.height=6, dev.args = list(pointsize=20))
 library("dplyr")
 library("tidyr")
@@ -375,6 +375,9 @@ leaves %>%
   summarize(mean=mean(value), sd=sd(value), min=min(value), max=max(value)) ->
   totals
 ```
+Amelia McNamara used this style in her keynote talk at the 2020 use!R conference about [Speaking R](https://youtu.be/ckW9sSdIVAc).
+
+https://youtu.be/ckW9sSdIVAc
 
 ### Indentation
 
@@ -394,7 +397,7 @@ for indentation.
 
 * A data of samples of clementine oranges, measured, weighed and 
 consumed in a statistic course.
-* The excel file has two tables, one long table with the **fruits** and another (**brands**) with some meta data.
+* The excel file has two tables, one long table with the **fruits** and another (**brands**) with some meta data. It can be downloaded from [here](https://github.com/tpetzoldt/tpetzoldt.github.io/raw/master/RToolbox/data/clementines_2019.xlsx).
 
 ```{r echo=FALSE}
 brands  <- read_excel("data/clementines_2019.xlsx", "Brands")
@@ -406,7 +409,6 @@ fruits  <- read_excel("data/clementines_2019.xlsx", "Fruits")
 #### fruits
 ```{r echo=FALSE}
 head(fruits, 20) %>% select(year, brand, weight, width, height) %>% kable()
-
 ```
 
 ]
@@ -483,11 +485,16 @@ fruits2 <-
   mutate(L_mean = weight^(1/3))
 ```
 
-and visualize it with a classical `boxplot` function (so-called "base graphics")
+#### Base graphics with formula syntax
+
+* a classical `boxplot` with so-called "base graphics"
 
 ```{r}
 boxplot(L_mean ~ brand, data=fruits2)
 ```
+
+#### "tidyverse"-style with pipes and `ggplot`
+
 We can also include this in a pipe, if we use `ggplot`:
 
 ```{r}
@@ -756,7 +763,7 @@ The multiplication with $60 \cdot 60 \cdot 24$ converts $\rm m^3 s^{-1}$ in $\rm
 ---
 ## Exercises
 
-1. Repeat the same for other tim periods (years).
+1. Repeat the same for other time periods (years).
 2. Which year was the wettest, which one the driest year in total? Find a year with dry spring and wet summer.
 3. Identify some (e.g. 3 or 5) large floods in the historical time series and plot it together.
 4. Modify the commands so that the hydrological year is shown. Note that the German 
