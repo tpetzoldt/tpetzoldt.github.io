@@ -559,11 +559,217 @@ fruits %>%
 
 * `theme`s allow to configure "almost everything" ...
 
----
-## dplyr pipes and native pipes
 
-* Pipes from package **dplyr**: `%>%` (also called **magrittr**-style pipes)
-* Native pipes since R version 4.1: `|>` have some advantages, but are still less popular
+---
+## Discharge of the Elbe River
+
+.center[
+![](fig/elbe.jpg)
+<br>
+Elbe River in Dresden 2006-04-01
+]
+
+
+---
+## Read data to R
+
+The example file [elbe.csv](https://raw.githubusercontent.com/tpetzoldt/datasets/main/data/elbe.csv)
+contains daily discharge of the Elbe River in $\mathrm{m^3 s^{-1}}$ from gauging station 
+Dresden, river km 55.6. The data are from the Federal Waterways and Shipping 
+Administration (WSV) and where provided by the Federal Institute for Hydrology (BfG).
+
+
+We can skip downloading and read the file directly from its internet location:
+
+```{r}
+elbe <- read.csv("https://raw.githubusercontent.com/tpetzoldt/datasets/main/data/elbe.csv")
+```
+
+
+
+The third column "validated" indicate whether the values were finally approved by WSV and BfG. Data of the 19th century are particularly uncertain. Please consult the file [elbe_info.txt](https://raw.githubusercontent.com/tpetzoldt/datasets/main/data/elbe_info.txt) for details.
+
+
+---
+## Date and time conversion
+
+Now, let's extend the **elbe** data frame by adding information about
+the day, month, year and day of year. Here function `mutate` adds additional columns. 
+Note also that the day of year function in the date and time package **lubridate**
+is named `yday`. Details about date and time conversion can be found in the [lubridate cheatsheet](https://raw.githubusercontent.com/rstudio/cheatsheets/main/lubridate.pdf).
+
+
+```{r}
+library(lubridate) # a tidyverse package for dates
+elbe <- mutate(elbe,
+               date  = as.POSIXct(date),
+               day   = day(date), 
+               month = month(date), 
+               year  = year(date), 
+               doy   = yday(date))
+```
+
+If we work with **RStudio**, may have a look at the "Global Environment" pane and 
+inspect the data structure of the `elbe` data frame.
+
+```{r echo=FALSE}
+kable(elbe)
+```
+
+
+---
+## Annual summary statistics
+
+```{r}
+## calculate annual mean, minimum, maximum
+totals <- elbe %>%
+  group_by(year) %>%
+  summarize(mean = mean(discharge), 
+            min = min(discharge), 
+            max = max(discharge))
+head(totals)
+```
+
+**Exercise:** Use the above method to compute monthly average discharge mean values and sums.
+
+---
+## More about pivot tables 
+
+I a section before, we already used `pivot_longer` to reorganize data. Now we do the opposite and
+convert a data base table (long data format) into a cross-table
+(wide data format) and vice versa.
+
+R provides several function pais for this abd tge syntax changed several times
+in the last years, so you may see functions like `melt` and `cast` or `gather` and `spread` doing more or less the same, but with different syntax. Recently the two functions `pivot_wider` and
+`pivot_longer` were recommended for this purpose.
+
+Its first argument is a data base table, the other arguments define
+the structure of the desired crosstable.
+
+Here `id_cols` is the name of a column in a long table that will become the rows, 
+`names_from` indicates where the names of the columns are taken from and
+`values_from` the column with the values for the cross table. If more than
+one value is possible for a row x column combination, an optional `values_fn`
+can be given. 
+
+---
+## Crosstable with one column per year
+
+```{r, recast,eval=FALSE,fig=FALSE}
+elbe_wide <-  elbe %>%
+  pivot_wider(id_cols = doy, 
+              names_from = year, 
+              values_from = discharge, 
+              values_fn = mean)
+elbe_wide
+```
+**Exercises** 
+
+* Copy the necessary code snippets from above to a fresh R script and create the
+`elbe_wide` crosstable.
+* Then create a crosstable for monthly max. discharge over all years.
+
+<!--
+pivot_wider(elbe, 
+            id_cols = month, 
+            names_from = year, 
+            values_from = discharge, 
+            values_fn = max)
+
+/ -->
+
+---
+## Back-conversion of a crosstable into a data base table
+
+The inverse case is also possible, e.g. the conversion of a cross table
+into a data base table.  It can be done with the function `pivot_longer`. 
+The column of the `id.vars` variable(s) will become identifier(s) downwards.
+
+```{r, eval=FALSE,fig=FALSE}
+pivot_longer(elbe_wide, names_to="year", cols=as.character(1989:2019))
+```
+
+**Exercise**
+
+Try it yourself.
+
+---
+## Minimum-Maximum plot with summarize and ggplot2
+
+
+```{r}
+elbe %>% 
+  mutate(doy = yday(date)) %>%
+  group_by(doy) %>%
+  summarize(max = max(discharge), 
+            mean = mean(discharge), 
+            min = min(discharge)) %>%
+  pivot_longer(cols = c("min", "mean", "max"), 
+               names_to = "statistic", 
+               values_to = "discharge") %>%
+  ggplot(aes(doy, discharge, color = statistic)) + geom_line()
+
+```
+
+**Exercise**
+
+* Read the code above and try to understand it.
+* Add a dry and a wet year. You may ask the supervisor for the trick.
+
+---
+## Cumulative sums
+
+Annual cumulative sum plots are a hydrological standard tool used by 
+reservoir managers. We can use the **R** function `cumsum`, that by successive 
+cumulation converts a sequence of:
+
+$x_1, x_2, x_3, x_4, \dots$ 
+
+into
+
+$(x_1), (x_1+x_2), (x_1+x_2+x_3), (x_1+x_2+x_3+x_4), \dots$
+
+```{r}
+x <- c(1, 3, 2, 6, 4, 2, 3)
+cumsum(x)
+```
+
+---
+## Cumulative sums of the Elbe River
+
+Cummulative sums allow to detect easily dry and wet years, and also dry 
+and wet periods within years.
+
+If we just use `cumsum`, we get a cumulative sum for all years:
+
+```{r}
+elbe %>% 
+  mutate(doy = yday(date), year = year(date)) %>%
+  filter(year %in% 2000:2010) %>%
+  group_by(year = factor(year)) %>%
+  mutate(cum_discharge = cumsum(discharge) * 60*60*24) %>%
+  ggplot(aes(doy, cum_discharge, color = year)) + geom_line()
+```
+
+The multiplication with $60 \cdot 60 \cdot 24$ converts $\rm m^3 s^{-1}$ in $\rm m^3 d^{-1}$.
+
+---
+## Exercises
+
+1. Repeat the same for other tim periods (years).
+2. Which year was the wettest, which one the driest year in total? Find a year with dry spring and wet summer.
+3. Identify some (e.g. 3 or 5) large floods in the historical time series and plot it together.
+4. Modify the commands so that the hydrological year is shown. Note that the German 
+hydrological year goes from    1st November to 31st October of the following year.
+Other countries have different regulations.
+
+
+
+---
+## Outlook: dplyr pipes and native pipes
+
+* Pipes from package **dplyr**: "`%>%`" (also called **magrittr**-style pipes).
+* Native pipes since R version 4.1: "`|>`" have some advantages, but are still less popular.
 * Native and dplyr pipes are mostly compatible, but not by 100%.
 
 
