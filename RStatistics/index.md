@@ -28,5 +28,10 @@ Comments and suggestions are welcome.
 7. [Multivariate Statistics I](https://tpetzoldt.github.io/RStatistics/multivar-3d.html)
 8. [Multivariate Statistics II](https://tpetzoldt.github.io/RStatistics/multivar-lakes.html)
 
+### Practical Toolbox
 
-**Copyright and original author:** [tpetzoldt](https://github.com/tpetzoldt), 2021-11-02
+* [Pipelines in R - A small introduction](https://tpetzoldt.github.io/RToolbox/pipes-intro)
+* [A small introduction to (R)Markdown](https://tpetzoldt.github.io/RToolbox/rmarkdown-intro.html)
+
+
+**Copyright and original author:** [tpetzoldt](https://github.com/tpetzoldt), 2022-09-07
