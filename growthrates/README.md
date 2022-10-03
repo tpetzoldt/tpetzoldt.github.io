@@ -1,7 +1,8 @@
 ## Documentation and examples of R package `growthrates`
 
-* [documentation](doc)
-* [examples](examples)
+* [Introduction](doc/Introduction.html)
+* [User-defined models](doc/User_models.html)
+* [examples](examples/)
 
 2022-10-03
 
