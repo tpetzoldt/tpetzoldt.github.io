@@ -3,15 +3,15 @@ title: "An Introductory R Session"
 author: "Thomas Petzoldt"
 date: '2021-11-02'
 output:
-  pdf_document:
-    toc: no
-    number_sections: true
   html_document:
     toc: yes
     number_sections: true
     toc_float:
       collapsed: no
       smooth_scroll: yes
+  pdf_document:
+    toc: no
+    number_sections: true
 bibliography: bib.bib
 ---
 
@@ -265,7 +265,7 @@ q()
 ```
 
 Sometimes and depending of the configuration, **R** asks whether the
-"**R** workspace" should be saved to the hard disk. This may
+"**R** workspace" should be saved to the disk. This may
 be useful for continuing work at a later time, but has the risk to
 clutter the workspace and to get irreproducible results at a later
 session, so it is recommended to say "No" for now, except if you
@@ -279,8 +279,8 @@ needed.
 
 Now, we will see how to use **R** as a function plotter by drawing
 sine or cosine functions within an interval between 0 to 10. First,
-we create a table of values for `x` and `y` and in order
-to get a smooth curve, it is reasonable to choose a small step size. As
+we create two vectors with `x` and `y`. To obtain 
+a smooth curve, it is reasonable to choose a small step size. As
 a rule of thumb I always recommend to use about 100...400 small steps
 as a good compromise between smoothness and memory requirements, so
 let's set the step size to 0.1:
@@ -291,9 +291,9 @@ y <- sin(x)
 plot(x, y)
 ```
 
-Instead of plotting points, it is of course also possible to draw
+Instead of plotting points, we can also draw
 cotinuous lines.  This is indicated by supplying an optional argument
-`type="l"`.  **Please note**, that the symbol used here for
+`type = "l"`.  **Please note**, that the symbol used here for
 `type` is the **small letter "L"** for "line" and not
 the -- in printing very similar -- numeral "1" (one)!
 
@@ -334,7 +334,7 @@ plot(x, y, xlim = c(-10, 10), ylim = c(-2, 2),
 
 ## Code formatting and line breaks
 
-The above example is a rather long command and may not fit on a single
+The above example shows a rather long command that may not fit on a single
 line.  In such cases, **R** displays a `+` (plus sign) to
 indicate that a command must be continued, e.g. because a closing
 parenthesis or a closing quote is still missing. Such a `+` at
@@ -347,8 +347,9 @@ to write several commands on one line, separated by a semi-colon
 "`;`". This is unseful in some cases, but as a general rule it is better to
 
 * write each command to a separate line
-* avoid long lines with more than about 60 characters
+* avoid long lines with more than about 80 characters
 * use proper indentation, e.g. 2 characters per indentation level
+* use spacing to improve readability of the code, e.g. before and after the assignment operator ` <- `.
 
 Finally, a number (or hash) symbol `#` means that a complete line or the
 part of the line that follows `#` is a comment and should be
@@ -481,16 +482,43 @@ with different data sets.
 
 In addition to vectors, **R** contains several other classes of objects
 for saving data, e.g. `matrix`, `array`, `list` or `data.frame`.
-Both, "base **R**" and contributed packages contain many more classes. It is also possible to
-define user-defined classes.
+Both, "base **R**" and contributed packages contain many more classes. 
+It is also possible to define user-defined classes.
 
-All objects have the two built-in attributes `mode` (data type)
-and `length` (number of data in the object).  Under specific
-circumstances some of these data types can be converted into each
-other, e.g. by using functions like `as.matrix`,
-`as.data.frame` etc.
+Under certain circumstances some of data types can be converted into each
+other, e.g. by using functions like `as.matrix`, `as.vector`, 
+`as.data.frame` and so on.
+
+
+## Numeric and character vectors
+
+All data objects have the two built-in attributes `mode` (data type)
+and `length` (number of data in the object).
 
 Modes can be "numeric" for calculations or "character" for text elements. 
+
+```{r eval=FALSE}
+x <- c(1, 3, 4, 5)       # numeric
+a <- c("hello", "world") # character
+```
+
+The following is also a character variable, because the numbers are given in quotes. It is then not possible to do calculations
+
+```{r eval=FALSE}
+x <- c("1", "3", "4", "5")  #character
+sum(x)
+
+Error in sum(x) : invalid 'type' (character) of argument
+```
+So it is necessary to convert the character to numeric first
+
+```{r eval=TRUE}
+y <- as.numeric(x)
+sum(y)
+```
+
+## Factors
+
 A special kind of mode is `factor`. This is, statistically speaking, a nominal variable
 that appears like characters (e.g. "control", "treatment A", "treatment B" ...),
 but its **levels** are internally encoded as integer. 
@@ -510,16 +538,63 @@ This type of factor coding is not specific to R and appears also in other
 statistics packages. Attributes of objects can be accessed and changed with functions
 `attributes` and `attr`, classes with `class`:
 
+## Matrices and arrays
+
+A matrix is a two-dimensional data structure that can be used for matrix algebra. To create a matrix, we can first create a one-dimensional vector and then reformat it as two-dimensional matrix with `nrow` rows and `ncol`columns:
+
 ```{r}
-attributes(f)
-attr(f, "class")
-class(f)
+x <- 1:20
+x
+
+y <- matrix(x, nrow = 5, ncol = 4)
+y
 ```
 
-The different classes allow specific operations, e.g. set operations with lists, 
-matrix algebra with numeric matrices or text operations with character data.
-In the following we focus on tables (in **R** called `data.frame`), the typical 
-input format for statistical anlyses.
+We see that the matrix is filled rowwise. We can also convert it back to a vector:
+
+```{r}
+as.vector(y) # flattens the matrix to a vector
+```
+
+An `array` extends the matrix concept to more than two dimensions:
+
+```{r, eval=FALSE}
+x <- array(1:24, dim=c(3, 4, 2))
+```
+
+Vectors, matrices and arrays have an important limitation: they can only contain one data type (mode), either numeric or character. So, if a single element is of type character, the whole matrix will be of mode character.
+
+## Lists
+
+The most flexible data type of **R** is the list. It can contain arbitrary data
+of different modes. Lists can be nested to form a tree-like structure:
+
+```{r, eval=FALSE}
+l <- list(x = 1:3, y = c(1,2,3,4), a = "hello", L = list(x = 1, y = 2))
+```
+
+Lists are extremely powerful und flexible and may be discussed later.
+
+## Data frames
+
+The typical data structure for data analysis in **R** is the so-called `data.frame`. 
+It can contain both, columns with numeric data and columns of mode character.
+Some packages use ando extended versions of data frames, a so called `tibble`s.
+
+A data frame can be constructed from scratch directly in the **R** code 
+or read from a file or the internet. As an example, students were asked in 
+different years for their favorite number from one to 9. 
+The results can be put in a data frame like follows:
+
+```{r}
+favnum <- data.frame(
+  favorite = 1:9,
+  obs2019  = c(1, 1, 6, 2, 2,  5,  8, 6, 3),
+  obs2020  = c(1, 2, 8, 1, 2,  2, 20, 2, 4),
+  obs2021  = c(2, 6, 8, 1, 6,  4, 13, 2, 4),
+  obs2022  = c(2, 3, 7, 8, 2, 10, 12, 6, 1)
+) 
+```
 
 
 # Entering Data
@@ -530,15 +605,17 @@ Import/Export](https://cran.r-project.org/doc/manuals/r-release/R-data.html)
 and we want to show only a selection here:
 
 
-1. direct input in the **R** code,
-2. input from the clipboard,
-3. input from a text file.
+1. direct input in the **R** code (see example above)
+2. input from a text file
+3. input from a spreadsheet file (LibreOffice or Excel)
+4. input from a text file on the internet
+5. input from a data base
 
 
-Other methods are direct data base access, import of data from other
+Furthermore, it is possible to import of data from other
 statistics packages like SPSS, SAS or Stata
 (`library(foreign)`), reading of GIS-Shapefiles
-(`library(shapefiles)`), and even sound files or pictures.
+(`library(shapefiles)`), and to read even sound files or pictures.
 
 ## Direct input
 
@@ -570,14 +647,11 @@ A
 We see that a matrix is not much different from a vector, formatted into rows and columns.
 
 
-## Copy and Paste from the Clipboard
+## Read data from a text file
 
-**R** is able to read data directly from the clipboard that were pasted
-from an editor or a spreadsheet program like Excel or
-LibreOffice. Let's for example create a spreadsheet table from the
-following example that contains some data from a lake area in
+**R** has very flexible functions to read data from text files. 
+Let's for example use a table that contains some data from a lake area in
 north-eastern Germany (Table 1).
-
 
 
 **Table 1:** Morphometrical and chemical properties of selected lakes
@@ -587,102 +661,89 @@ Haussee; z=mean depth (m), t=theoretical retention time (a),
 P=phosphorus concentration ($\mathrm{\mu g L^{-1}}$), N=nitrogen concentration ($\mathrm{mg L{^-1}}$),
 Chl=chlorophyll concentration ($\mathrm{\mu g L^{-1}}$), PP=annual primary production
 ($\mathrm{g C m^{-2} a^{-1}}$), SD = secchi depth (m)). The data are an adapted 
-and simplified "toy version" taken from @Casper1985 and @Koschel1985.
+and simplified "toy version" taken from @Casper1985 and @Koschel1985. 
+
+```{r, eval=TRUE, echo=FALSE, include=TRUE}
+lakes <- read.csv("lakes.csv")
+kable(lakes)
+```
+
+The data can be downloaded from https://github.com/tpetzoldt/datasets/tree/main/data
 
 
 ```{r, eval=TRUE, echo=FALSE, include=TRUE}
-dat <- read.csv("data/lakes.csv")
-kable(dat)
+lakes <- read.csv("lakes.csv")
+kable(lakes)
 ```
 
 
-We now select the data and copy them to the clipboard (right mouse,
-copy), then we change to **R** and retrieve the content of the
-clipboard with the following command line:
+### Set working directory
 
-```{r eval=FALSE, fig=FALSE, echo=TRUE, keep.source=TRUE}
-dat <- read.table("clipboard", header = TRUE)
+
+**R** needs to know where to find the data on your computer. One way is to 
+provide the full path to the data set, e.g. if it is `c:/users/<username>/documents`, then
+
+```{r eval=FALSE}
+lakes <- read.csv("c:/users/julia/documents/lakes.csv")
 ```
 
-The character argument `"clipboard"` is the file name for the
-data source, `header=TRUE` tells us that the first line contains
-the variable names. In some countries that have the comma and not the
-dot as a decimal separator, an additional argument `dec = ","`
-may be required.
+This can be cumbersome and error-prone, so the preferred method is to set 
+the **working directory** of **R** to the data directory. This can be done 
+in **RStudio** like follows:
 
-Now, the data are saved in the data frame `dat`
-and it is possible to access them as usual:
-
-```{r eval=FALSE, fig=FALSE, echo=TRUE, keep.source=TRUE}
-dat
-summary(dat)
-boxplot(dat[-1])
-```
-
-Here `summary` shows a quick overview and `boxplot` creates a boxplot for all 
-columns except the first, that contains no numbers.
-
-## Read from a textfile
-
-Reading from the clipboard sounds attractive, but it has a big
-disadvantage because it needs several manual steps and cannot be
-automated.  Therefore, it is much better to first save the data to a
-text file on the hard disk before using read table. In the same way it
-is also possible to read text files directly from the internet.
-
-
-## Set working directory
-
-Sometimes, it is necessary to know the full path to the data set, but
-it preferred to set the **working directory** of **R** to the data
-directory. This can be done in **RStudio** like follows:
-
-1. Locate the folder in the "Files" pane
+1. Locate the folder with the data in the "Files" pane
 2. Select "More"
 3. Select "Set As Working Directory"
 
 ![](img/set-working-directory.png)
 **Figure2:** Setting the working directory in **RStudio**
 
-After this, data can be retrieved directly from the **working directory ** (e.g. `read.csv("hall.csv")`) or from a sub-folder relative to it:
+After this, data can be retrieved directly from the **working directory **:
 
-```{r eval=FALSE, fig=FALSE, echo=TRUE, keep.source=TRUE}
-mydata <- read.table("data/hall.txt", header=TRUE)
+```{r eval=TRUE}
+lakes <- read.csv("lakes.csv", header=TRUE)
 ```
+
+We may also consider to create a sub-folder `data` of the working direktory and put the data in.
+Then we could use for example:
+
+```{r eval=FALSE}
+lakes <- read.csv("data/lakes.csv", header=TRUE)
+```
+
 
 Note also that we use always the ordinary slash "/" and not the backslash "\\", even
-on Windows. It is also possible to use a file browser dialog box to locate and select a data file:
+on Windows. 
 
-```{r eval=FALSE, fig=FALSE, echo=TRUE, keep.source=TRUE}
-mydata <- read.csv(file.choose(), header=TRUE)
-```
 
-However, this has, again, the disadvantage that it cannot be automated.
+In some countries that have the comma and not the
+dot as a decimal separator and then for example a semicolon as column separator, 
+additional arguments `dec = ","`, `sep=";"` may be required. The details are found 
+on the `read.table` help page.
+
+## Read data from the internet
 
 If the data are available on an internet server, it can be read
 directly from there:
 
 ```{r eval=FALSE, fig=FALSE, echo=TRUE, keep.source=TRUE}
-mydata <- read.csv("https://raw.githubusercontent.com/tpetzoldt/datasets/main/data/hall.csv", 
-                   header=TRUE)
+lakes <- read.csv("https://raw.githubusercontent.com/tpetzoldt/datasets/main/data/lakes.csv", 
+                 header=TRUE)
 ```
 
-Now, we are ready to inspect the content of this new variable `mydata`:
+Now, as the data are saved in the data frame `lakes` it is possible to access them as usual:
 
 ```{r eval=FALSE, fig=FALSE, echo=TRUE, keep.source=TRUE}
-View(mydata)
+lakes
+summary(lakes)
+boxplot(lakes[-1])
 ```
 
-In **RStudio** `View` can also be invoked by clicking to `mydata` in
-the environment window.
+Here `summary` shows a quick overview and `boxplot` creates a boxplot for all 
+columns except the first, that contains no numbers.
 
-Function `View` opens a table view, because `mydata` is a
-data frame. The data set `hall.txt` contains growth curves from
-an experiment with Daphnia (water flea) that were taken from a figure of a publication
-@Hall1964, where body length was mesured in dependence on time (`day`),
-temperature (`temp`) and food concentration (`food`), that was measured in
-a historical turbidity unit "Klett"), but this does not matter
-for our example.
+Now, we are ready to inspect the content of this new variable `lakes`. If we use 
+**RStudio** a `View` can be invoked by clicking to `lakes` in the environment window.
 
 
 ## "Import Dataset" in RStudio
@@ -697,37 +758,53 @@ the "Import Dataset From Text (readr)" assistant:
 
 1. From the menu select: File -- Import DataSet -- From CSV.
 2. Select the requested file and select suitable options like the name of the variable the data are to be assigned to, the delimiter character (comma or Tab) and whether the first row of the file contains variable names.
-3. Hint: The Code Preview contains the commands that the wizard created. If you copy these commands to the
- script pane, you can re-read the data several times without going back to the menu system.
-
 
 ![](img/rstudio-import-readr.png)
 
 Import Dataset From Text (readr) assistant of **RStudio**.
 
-Hint: Do not forget to set a **Name** for the resulting data frame
-(e.g. `dat`), otherwise **R** uses the file name.
+Hint: In the exmple above, the name of the data frame is identical to the file name, i.e. "lakes". If we want to name it differently (e.g.: `dat`), we must not forget to change this setting.
+
+Note also that the Code Preview contains the commands that the wizard created. 
+If we copy these commands to the script pane, you can re-read the data several 
+times without going back to the menu system:
+
+```{r}
+library(readr)
+lakes <- read_csv("D:/DATA/lakes.csv")
+View(lakes)
+```
 
 
 # Working with Dataframes
 
+## Display the content of the data frame
+
+The easiest way is to just enter the name of the data frame to the **R** console, e.g.:
+
+```{r}
+lakes
+```
+
+or to click to the name of the data frame in the "Environment" explorer of **RStudio**.
+This executes then `View(lakes)`, so that the data are shown.
+
 For large tables it is often not very useful to display the full
-content, so it is much better to use the function `str`
-(structure) or the "Environment" explorer of **RStudio** that gives a compact 
-overview over type, size and content of a variable:
+content with `View`, so it may be better to use the function `str`
+(structure) that gives a compact overview over type, size and content of a variable:
 
 ```{r eval=FALSE, fig=FALSE, echo=TRUE, keep.source=TRUE}
 str(mydata)
 ```
 
-This function is universal and also suitable for complicated
+The `str` function is universal and also suitable for complicated
 object types like lists. Of course, there are many more possibilities
 for inspecting the content of a variable:
 
 ```{r eval=FALSE, fig=FALSE, echo=TRUE, keep.source=TRUE}
-names(mydata)
-mode(mydata)
-length(mydata)
+names(lakes)
+mode(lakes)
+length(lakes)
 ```
 
 and sometimes even:
