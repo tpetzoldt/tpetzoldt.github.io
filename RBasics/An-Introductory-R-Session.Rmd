@@ -17,6 +17,9 @@ bibliography: bib.bib
 
 ```{r setup, include=FALSE}
 library("knitr")
+library("dplyr")
+library("ggplot2")
+library("readr")
 knitr::opts_chunk$set(echo = TRUE, eval=FALSE, comment="")
 ```
 
@@ -671,12 +674,6 @@ kable(lakes)
 The data can be downloaded from https://github.com/tpetzoldt/datasets/tree/main/data
 
 
-```{r, eval=TRUE, echo=FALSE, include=TRUE}
-lakes <- read.csv("lakes.csv")
-kable(lakes)
-```
-
-
 ### Set working directory
 
 
@@ -727,8 +724,7 @@ If the data are available on an internet server, it can be read
 directly from there:
 
 ```{r eval=FALSE, fig=FALSE, echo=TRUE, keep.source=TRUE}
-lakes <- read.csv("https://raw.githubusercontent.com/tpetzoldt/datasets/main/data/lakes.csv", 
-                 header=TRUE)
+lakes <- read.csv("https://raw.githubusercontent.com/tpetzoldt/datasets/main/data/lakes.csv")
 ```
 
 Now, as the data are saved in the data frame `lakes` it is possible to access them as usual:
@@ -810,7 +806,7 @@ length(lakes)
 and sometimes even:
 
 ```{r eval=FALSE, fig=FALSE, echo=TRUE, keep.source=TRUE}
-plot(mydata)
+plot(lakes)
 ```
 
 ## Access single columns with $
@@ -820,20 +816,22 @@ Single columns of a data frame can be accessed by using indices (with
 and the `$`) operator:
 
 ```{r eval=FALSE, fig=FALSE, echo=TRUE, keep.source=TRUE}
-mean(mydata[,4])
-mean(mydata$leng)
-mean(mydata[,"leng"])
-mean(mydata[["leng"]])
-plot(mydata$day, mydata$leng)
+mean(lakes[,2])
+mean(lakes$z)
+mean(lakes[,"z"])
+mean(lakes[["z"]])
+plot(lakes$z, lakes$t)
 ```
+where `z` is the mean depth of the lakes and `t` the so-called mean residence time.
 
-Note the difference of the output of the `[]` and the `[[]]`-
+We should also nitice the subtle difference of the output of the `[]` and the `[[]]`-
 version.  The difference is as follows: single brackets return a data
 frame with one column, but double square brackets return the content
-of the column, i.e. a vector.
+of the column as a vector without the caption.
 
-The `$`-style can be abbreviated using the `attach` and `detach`-functions,
-but this "prehistoric relict" is strongly discouraged, as it can lead to data 
+**Warning:** In some older books, the `$`-style is sometimes abbreviated using 
+the `attach` and `detach`-functions.
+This "prehistoric relict" is strongly discouraged, as it can lead to data 
 inconsistency and strange errors. If you find it somewhere where it is still 
 used, then it is a good idea to use `detach` repeatedly until an error message 
 confirms us that there is nothing else that can be detached. Finally: never use 
@@ -843,30 +841,32 @@ Instead, it is much better to use another function `width`, that opens
 the data frame only temporarily:
 
 ```{r eval=FALSE, fig=FALSE, echo=TRUE, keep.source=TRUE}
-with(mydata, plot(day, leng))
-```
-
-Here we can also use curly brackets to combine a series of statements:
-
-```{r eval=FALSE, fig=FALSE, echo=TRUE, keep.source=TRUE}
-with(mydata, {
-  print(mean(leng))
-  print(sd(leng))
-})
+with(lakes, plot(z, t))
 ```
 
 ## Subsets and logical indices
 
-A very powerful feature of **R** is the use of logical vectors as
-"indices", with similar results like data base queries. A
-prerequisite for this is that all vectors have the same length.
+In the following, we use another data set that we read directly from the internet:
 
-```{r eval=FALSE, fig=FALSE, echo=TRUE, keep.source=TRUE}
-par(mfrow=c(1, 2))
-with(mydata, {
-  plot(day[temp == 20], leng[temp == 20])
-  plot(day[temp == 20 & food == 16], leng[temp == 20 & food == 16])
-})
+```{r eval=TRUE}
+fruits <- read.csv("https://raw.githubusercontent.com/tpetzoldt/datasets/main/data/clementines.csv")
+```
+
+It contains weight, width and height measurements of two brands of Clementine fruits.
+After loading the data, we look at it with `View(fruits)` or the Environment explorer of **Rstudio**
+
+
+A very powerful feature of **R** is the use of logical vectors as
+"indices", with similar results like data base queries. As an example, we can show 
+the weight of all fruits of brand "A" with
+
+```{r eval=TRUE}
+fruits[fruits$brand == "A", c("brand", "weight")]
+```
+Here the first indext in the square brackets indicates the subset of rows that we want and the second argument the columns. If we want to see all columns, we leave the argument after the comma empty:
+
+```{r eval=TRUE}
+fruits[fruits$brand == "A", ]
 ```
 
 A logical comparison requires always a double "`==`".
@@ -878,93 +878,82 @@ A subset of a data frame can also be extracted with the
 `subset` function:
 
 ```{r eval=FALSE, fig=FALSE, echo=TRUE, keep.source=TRUE}
-twentydegrees <- subset(mydata, mydata$temp == 20)
-View(twentydegrees)
+brand_B <- subset(fruits, brand == "B")
+brand_B
 ```
 
 Like in the example before, the condition argument allows also logical
 expressions with `&` (and) and `|` (or).
 
-At the end of this section we show how to convert a data frame into a
-matrix and how to access single elements in matrix-like manner:
-
-```{r eval=TRUE, fig=FALSE, echo=TRUE, keep.source=TRUE}
-mydata   <- read.csv("data/hall.csv")
-mymatrix <- as.matrix(mydata)
-```
+We can also access single elements in matrix-like manner. 
 
 The element from the 2nd row and the 4th column can be selected with:
 
 ```{r fig=FALSE, echo=TRUE, keep.source=TRUE}
-mymatrix[2, 4]
+fruits[2, 4]
 ```
 
 the complete 5th row with:
 
 ```{r fig=FALSE, echo=TRUE, keep.source=TRUE}
-mymatrix[5, ]
+fruits[5, ]
 ```
 
-and rows 5:10 of the 4th column (`leng`) with:
+and rows 5:10 of the 4th column (`weight`) with:
 
 ```{r fig=FALSE, echo=TRUE, keep.source=TRUE}
-mymatrix[5:10, 4]
+fruits[5:10, 4]
 ```
 
 
 Additional methods for working with matrices, data frames and lists can
 be found in **R** textbooks or in the official **R** documentation.
 
+# Outlook
 
-## Mean values of factor combinations
+## Pipelines and summaries
 
 The last examples are intended to demonstrate how powerful a single
-line can be in **R**.  Function `aggregate` can be used to compute
-statistics (e.g. mean values) depending on given criteria. The first
-argument of the function is a data frame containing numeric data, the
-second argument a list (or data frame) of criteria (as factors) and
-the third argument a function that will be applied to all possible
-factor combinations, e.g., `mean`, `median`, `sd`,
-`max` etc.
+line can be in **R**. How to analyse data sets evolved over the history of **R**, so there is for example a function `aggregate` to compute statistics (e.g. mean values) depending on given criteria.
 
-```{r eval=FALSE, fig=FALSE, echo=TRUE, keep.source=TRUE}
-aggregate(mydata, list(food = mydata$food, temp = mydata$temp), mean)
+This works well and is still used, but the modern methods are more compact and 
+easier to understand. Here let's introduce a modern concept first, that is called
+"pipelining". The idea is, that the result of a function is directly pipelined to 
+another function, so instead of writing:
+
+```{r}
+brand_B <- subset(fruits, brand == "B")
+columns_B <- brand_B[c("weight", "width", "height")]
+means_B <- colMeans(columns_B)
+means_B
 ```
 
-or, because it is not meaningful here to calculate mean values
-for temperature, food concentration and time:
+we can directly write:
 
-```{r eval=FALSE, fig=FALSE, echo=TRUE, keep.source=TRUE}
-aggregate(list(leng = mydata$leng),
-          list(food = mydata$food, temp = mydata$temp), mean)
+```{r}
+library("dplyr")
+fruits |> filter(brand == "B") |> select(weight, width, height) |> colMeans()
 ```
 
-## Categorial plots
+Here we load an add-on package *dplyr* first, that contains a lot of helpful functions 
+for data management, for example `filter` that selects rows and `select` that selects columns.
+The pipeline operator `|>` pipes then the data set `fruits`to the `filter`- function and subsequently to the next. The "native pipeline operator" `|>` was introduced with **R** 4.1. As an alternative
+we can also use the `%>%` pipeline operator, that is loaded by the **dplyr** package. 
+Its function would be identical in this case.
 
-Categorical boxplots can be obtained by using the so-called
-"formula-interface". The variable at the left hand side is the
-dependent variable, while independent factors used for classification
-are written at the right hand side. The formula is then read "leng
-as a function of food and temp":
+Two other extremely useful **dplyr** functions are `group_by` and `summary`, 
+that allow to calculate arbitrary summary statistics in dependence of grouping variables. 
+If we use the `brand` for grouping, we can summarize all groups simultaneously:
 
-```{r eval=FALSE, fig=FALSE, echo=TRUE, keep.source=TRUE}
-boxplot(leng ~ food + temp, data = mydata)
+```{r}
+fruits |> 
+  group_by(brand) |>
+  summarise(mean(weight), mean(width), mean(height))
 ```
 
-Many, but not all **R** -Functions support this formula interface, details are found 
-in the documentation.
+The `summarize` line above can still be made better, and there plenty of other 
+stunning possibilities, so we will come back to this later.
 
-For categorial xy-plots, the formula syntax is also used in the the **lattice**-package [@Sarkar2008]:
-
-```{r eval=TRUE, fig=TRUE, echo=TRUE, keep.source=TRUE}
-library(lattice)
-xyplot(leng ~ day|temp * food, data = mydata)
-```
-
-Though the lattice package has a rather complex syntax, it is also very
-flexible and powerful, so the time to learn it is worth the effort. 
-Instead of **lattice**, categorial plots can also be obtained with the **ggplot2** 
-package. This will be explained later.
 
 ## Output of Results
 
@@ -974,12 +963,22 @@ LibreOffice, Microsoft Word or Powerpoint) via the Clipboard.
 This is convenient, but cannot be automated. Therefore, it
 is better to use a programmatic approach.
 
-Data frames can be saved as text files with `write.table` or `write.csv`:
+Let's use the example before and store the results in a new data frame `results`:
 
-```{r echo=TRUE,eval=FALSE}
-write.csv(mydata, file="output-data.csv", row.names = FALSE)
+```{r eval=TRUE}
+results <-
+  fruits |> 
+  group_by(brand) |>
+  summarise(mean(weight), mean(width), mean(height))
 ```
 
+Data frames can be saved as text files with `write.table`, `write.csv` or `write_csv`. 
+Here we use `write_csv` (with underscore, not dot) from package **readr**:
+
+```{r echo=TRUE,eval=FALSE}
+library("readr")
+write_csv(results, file="output-data.csv")
+```
 
 In addition to these basic functions **R** has a wealth of
 possibilities to save output and data for later use in reports and
@@ -990,39 +989,43 @@ help, e.g.  `print`, `print.table`, `cat` for text files, and
 HTML-tables while full HTML output is supported by the `R2HTML` or `knitr`
 packages.
 
+## Plots with ggplot2
+
+In addition to the plot functions we used so far, other plot packages exist, for example **lattice** or **ggplot2**. Here a few small examples with the very popular **ggplot2* package:
+
+```{r eval=TRUE, plot=TRUE, fig.height=3}
+library("ggplot2")
+fruits |>
+  ggplot(aes(brand, weight)) + geom_boxplot()
+```
+
+Or a scatterplot to compare weight and width of the fruits
+
+```{r eval=TRUE, plot=TRUE, fig.height=3}
+fruits |> ggplot(aes(weight, width)) + geom_point(aes(color=brand))
+```
+
+where the brand is indicated as color. Another option could be:
+
+```{r eval=TRUE, plot=TRUE, fig.height=3}
+fruits |> ggplot(aes(weight, width)) + 
+  geom_point() + 
+  geom_smooth(method="lm") + 
+  facet_grid(~brand)
+```
+
 
 ## Exercises
 
+**R** contains lots of data sets for exploring its graphical and
+statistical functions and that can be activated by using the
+data function, e.g.  `data(iris)` or `data(cars)`. A description of the
+data set can be found as usual in the help files, e.g. `?iris`, `?cars`.
 
-1. Explore different possibilities to plot the Hall-Data set.  Draw
-  one figure for each temperature level and distinguish food
-  concentration by using different colors, plot symbols or line types.
-  Make use of the annotation options for adding axis labels and main
-  titles.
+Use one of these data sets and try
 
-2. **R** contains lots of data sets for exploring its graphical and
-  statistical functions and that can be activated by using the
-  data function, e.g.  `data(iris)`. Use this data set
-  and find appropriate ways for visualization. A description of the
-  data set can be found as usual in the help file `?iris`.
-
-# Quitting an **R**-Session
-
-
-The **R**-window can be closed as usual with the menu or by entering
-`q()` (quit):
-
-```{r eval=FALSE, fig=FALSE, echo=TRUE, keep.source=TRUE}
-q()
-```
-
-Depending on the configuration, we may now be asked whether we want to
-"Save workspace image" and answering "Yes" would force to save
-all data from the **R**-Workspace into a file `.Rdata`, so that
-all data will be automatically and immediately available in the next
-session, given that **R** is started in the same working
-directory. Alternatively it is also possible to save or restore an
-**R**-Workspace manually into a file (Save Workspace, Load Workspace).
+1. ways to access columns, to select rows and to create subsets
+2. ways for summary statistics and visualization with **R's** base plot functions and optionally with `ggplot`.
 
 # Acknowledgments
 
