@@ -208,9 +208,40 @@ summarize(group_by(leaves, group),
 $\oplus$ no temporary variables necessary <br>
 $\ominus$ nested parentheses
 
+
 ---
 .pull-left[
-## The pipeline operator **.red[`%>%`]**
+## Pipelines
+]
+
+
+.pull-right[
+![:scale 90%](fig/pipeline-long.jpg)
+]
+
+In recent versions of **R** two different pipeline operators are available:
+
+### Magrittr pipeline operator  **.red[`%>%`]**
+
+The **.red[`%>%`]** operator was introduced by the user-contributed 
+**magrittr** package `r Citep(bib, "magrittr")` and then became very popular.
+It is automatically loaded by the **dplyr** package `r Citep(bib, "dplyr")`. 
+
+### Native pipeline operator  **.red[`|>`]**
+
+Since version **4.2.0**, **R** has now a built-in pipeline operator `|>` that 
+according to the help file "is more streamlined".
+
+
+For the examples, currently found in this document, both versions work 
+identically. There are a few differences regarding so-called placeholders, 
+that you may find somewhere else. It will be explained in future versions of the slides.
+
+
+
+---
+.pull-left[
+## Application of **.red[`%>%`]**
 ]
 
 
@@ -303,8 +334,9 @@ leaves %>%
 ```
 
 
-# No!
+# No! Don't do that.
 
+... at least not in excess.
 
 ---
 
