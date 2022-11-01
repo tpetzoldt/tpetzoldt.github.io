@@ -1,7 +1,7 @@
 ---
 title: "An Introductory R Session"
 author: "Thomas Petzoldt"
-date: '2021-11-02'
+date: '2022-11-02'
 output:
   html_document:
     toc: yes
@@ -23,7 +23,7 @@ library("readr")
 knitr::opts_chunk$set(echo = TRUE, eval=FALSE, comment="")
 ```
 
-
+This tutorial is available in [HTML](An-Introductory-R-Session.html) format for screen reading and [PDF](An-Introductory-R-Session.pdf) for printing.
 
 # Introduction
 
