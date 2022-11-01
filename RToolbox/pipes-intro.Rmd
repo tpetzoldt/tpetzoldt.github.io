@@ -233,15 +233,18 @@ Since version **4.2.0**, **R** has now a built-in pipeline operator `|>` that
 according to the help file "is more streamlined".
 
 
-For the examples, currently found in this document, both versions work 
-identically. There are a few differences regarding so-called placeholders, 
-that you may find somewhere else. It will be explained in future versions of the slides.
 
+It is recommended to use a recent version of **R** > 4.2 with native pipes `|>` .
+But, if you still need to use an older **R** version, you can also use `%>%` 
+for the examples in this document.
+
+There are a few differences regarding so-called placeholders, that will be 
+explained in future versions of the slides.
 
 
 ---
 .pull-left[
-## Application of **.red[`%>%`]**
+## Application of **.red[`|>`]**
 ]
 
 
@@ -253,7 +256,7 @@ that you may find somewhere else. It will be explained in future versions of the
 #### The output from the first function is piped to the next
 
 ```{r, eval=FALSE}
-group_by(leaves, group) %>%
+group_by(leaves, group) |>
 summarize(mean = mean(width), sd = sd(width), 
           min = min(width), max = max(width))
 ```
@@ -262,13 +265,13 @@ summarize(mean = mean(width), sd = sd(width),
 
 
 ```{r}
-leaves %>%
-  group_by(group) %>%
+leaves |>
+  group_by(group) |>
   summarize(mean = mean(width), sd = sd(width), 
             min = min(width), max = max(width))
 ```
 
-The pipeline operator **.red[`%>%`]** transfers (.red["pipes"]) the output of one function to the first argument of the next function.
+The pipeline operator **.red[`|>`]** transfers (.red["pipes"]) the output of one function to the first argument of the next function.
 
 ---
 ### Classical functional style
@@ -298,7 +301,7 @@ grViz("digraph functional {
 
 
 ```{r, eval=FALSE}
-leaves %>% group_by(group)
+leaves |> group_by(group)
 ```  
 
 
@@ -310,9 +313,9 @@ grViz("digraph pipes {
            node [shape = 'oval']
              'function(arg2, ...)'
            node [shape=none]
-             '\\%>\\%'
+             '|>'
            edge [penwidth=1.5]
-              input -> '\\%>\\%' -> 'function(arg2, ...)' -> output
+              input -> '|>' -> 'function(arg2, ...)' -> output
 }")
 ```
 
@@ -325,8 +328,8 @@ grViz("digraph pipes {
 ### Copy and paste ?
 
 ```{r, eval=FALSE}
-leaves %>%
-  group_by(group) %>%
+leaves |>
+  group_by(group) |>
   summarize(mean_l=mean(width), sd_l=sd(width), min_l=min(width), max_l=max(width),
             mean_w=mean(width), sd_w=sd(width), min_w=min(width), max_w=max(width),
             mean_s=mean(width), sd_s=sd(width), min_s=min(width), max_s=max(width)
@@ -349,7 +352,7 @@ leaves %>%
 .pull-left[
 #### Wide format
 ```{r echo=FALSE}
-leaves %>% head(10) %>% knitr::kable()
+leaves |> head(10) |> knitr::kable()
 ```
 ]
 
@@ -357,7 +360,7 @@ leaves %>% head(10) %>% knitr::kable()
 #### Long format
 ```{r echo=FALSE}
 library("tidyr")
-leaves %>% pivot_longer(c("length", "width", "stalk")) %>% head(30) %>% knitr::kable()
+leaves |> pivot_longer(c("length", "width", "stalk")) |> head(30) |> knitr::kable()
 ```
 ]
 
@@ -366,15 +369,15 @@ leaves %>% pivot_longer(c("length", "width", "stalk")) %>% head(30) %>% knitr::k
 ## Long data format with `pivot_longer`
 
 ```{r}
-leaves %>% pivot_longer(c("length", "width", "stalk"))
+leaves |> pivot_longer(c("length", "width", "stalk"))
 ```
 
 ### Now calculate summary statistics for all groups and variables
 
 ```{r}
-leaves %>% 
-  pivot_longer(c("length", "width", "stalk")) %>%
-  group_by(group, name) %>%
+leaves |> 
+  pivot_longer(c("length", "width", "stalk")) |>
+  group_by(group, name) |>
   summarize(mean=mean(value), sd=sd(value), min=min(value), max=max(value))
 ```
 
@@ -387,9 +390,9 @@ screen (or the slide).
 
 ```{r eval=FALSE}
 totals <- 
-  leaves %>% 
-  pivot_longer(c("length", "width", "stalk")) %>%
-  group_by(group, name) %>%
+  leaves |> 
+  pivot_longer(c("length", "width", "stalk")) |>
+  group_by(group, name) |>
   summarize(mean=mean(value), sd=sd(value), min=min(value), max=max(value))
 ```
 
@@ -401,9 +404,9 @@ More logical, but in practice less common is the following consequent left to
 the right notation with `->`
 
 ```{r eval=FALSE}
-leaves %>% 
-  pivot_longer(c("length", "width", "stalk")) %>%
-  group_by(group, name) %>%
+leaves |> 
+  pivot_longer(c("length", "width", "stalk")) |>
+  group_by(group, name) |>
   summarize(mean=mean(value), sd=sd(value), min=min(value), max=max(value)) ->
   totals
 ```
@@ -416,7 +419,7 @@ https://youtu.be/ckW9sSdIVAc
 * The examples above show essentially **one** "single line of code" per example.
 * To improve readability, code lines should not be longer than 80 characters.
 * Line breaks can be at any position, as long as the code line is not complete.
-* One good way is to make a newline after `<-` and `%>%` and use 2 characters 
+* One good way is to make a newline after `<-` and `|>` and use 2 characters 
 for indentation.
 
 
@@ -440,14 +443,14 @@ fruits  <- read_excel("data/clementines_2019.xlsx", "Fruits")
 .pull-left[
 #### fruits
 ```{r echo=FALSE}
-head(fruits, 20) %>% select(year, brand, weight, width, height) %>% kable()
+head(fruits, 20) |> select(year, brand, weight, width, height) |> kable()
 ```
 
 ]
 .pull-right[
 #### brands
 ```{r echo=FALSE}
-head(brands, 10)  %>% select(year, brand, shop, type, kilogram, price) %>% kable()
+head(brands, 10)  |> select(year, brand, shop, type, kilogram, price) |> kable()
 ```
 ]
 
@@ -481,7 +484,7 @@ fruits2 <- left_join(fruits, brands)
 * The key fields can also be explicitly specified or renamed, see [left_join](https://dplyr.tidyverse.org/reference/mutate-joins.html) in the manual.
 
 ```{r}
-head(fruits2, 20) %>% kable()
+head(fruits2, 20) |> kable()
 ```
 
 
@@ -501,8 +504,8 @@ head(fruits2, 20) %>% kable()
 * `filter`: filters rows
 
 ```{r}
-fruits2 %>%
-  select(brand, shop, type, weight, width) %>%
+fruits2 |>
+  select(brand, shop, type, weight, width) |>
   filter(shop %in% c("Edeka", "Lidl"))
 ```
 
@@ -513,7 +516,7 @@ Transform a variable, e.g. weight by $x^{1/3}$ into a theoretical mean diameter
 
 ```{r}
 fruits2 <- 
-  fruits2 %>%
+  fruits2 |>
   mutate(L_mean = weight^(1/3))
 ```
 
@@ -530,8 +533,8 @@ boxplot(L_mean ~ brand, data=fruits2)
 We can also include this in a pipe, if we use `ggplot`:
 
 ```{r}
-fruits2 %>%
-  mutate(L_mean = weight^(1/3)) %>%
+fruits2 |>
+  mutate(L_mean = weight^(1/3)) |>
   ggplot(aes(brand, L_mean)) + geom_boxplot()
 ```
 
@@ -549,7 +552,7 @@ V = 4/3 \pi \cdot \rm (length/2)^2 \cdot height/2
 $$
 ```{r}
 fruits <-
-  fruits %>%
+  fruits |>
   mutate(V = 0.001 * 4/3 * pi * (width/2)^2 * height/2, index = weight / V)
 ```
 
@@ -562,14 +565,14 @@ The next plots try to vizualize the dependency between the weight and the estima
 
 ```{r}
 library(ggplot2)
-fruits %>% ggplot(aes(weight, index)) + geom_point()
+fruits |> ggplot(aes(weight, index)) + geom_point()
 ```
 ---
 ## Color coded points
 
 ```{r}
 library(ggplot2)
-fruits %>% ggplot(aes(weight, index, color=brand)) + geom_point()
+fruits |> ggplot(aes(weight, index, color=brand)) + geom_point()
 ```
 
 
@@ -578,7 +581,7 @@ fruits %>% ggplot(aes(weight, index, color=brand)) + geom_point()
 ## Categorial split (faceting) and regression line
 
 ```{r}
-fruits %>% 
+fruits |> 
   ggplot(aes(weight, V)) + 
   geom_point() + 
   geom_smooth(method=lm, se=FALSE) + 
@@ -588,7 +591,7 @@ fruits %>%
 ## Modify font size
 
 ```{r}
-fruits %>% 
+fruits |> 
   ggplot(aes(weight, V)) + 
   geom_point() + 
   geom_smooth(method=lm, se=FALSE) + 
@@ -661,8 +664,8 @@ kable(elbe)
 
 ```{r}
 ## calculate annual mean, minimum, maximum
-totals <- elbe %>%
-  group_by(year) %>%
+totals <- elbe |>
+  group_by(year) |>
   summarize(mean = mean(discharge), 
             min = min(discharge), 
             max = max(discharge))
@@ -695,7 +698,7 @@ can be given.
 ## Crosstable with one column per year
 
 ```{r, recast,eval=FALSE,fig=FALSE}
-elbe_wide <-  elbe %>%
+elbe_wide <-  elbe |>
   pivot_wider(id_cols = doy, 
               names_from = year, 
               values_from = discharge, 
@@ -737,15 +740,15 @@ Try it yourself.
 
 
 ```{r}
-elbe %>% 
-  mutate(doy = yday(date)) %>%
-  group_by(doy) %>%
+elbe |> 
+  mutate(doy = yday(date)) |>
+  group_by(doy) |>
   summarize(max = max(discharge), 
             mean = mean(discharge), 
-            min = min(discharge)) %>%
+            min = min(discharge)) |>
   pivot_longer(cols = c("min", "mean", "max"), 
                names_to = "statistic", 
-               values_to = "discharge") %>%
+               values_to = "discharge") |>
   ggplot(aes(doy, discharge, color = statistic)) + geom_line()
 
 ```
@@ -782,11 +785,11 @@ and wet periods within years.
 If we just use `cumsum`, we get a cumulative sum for all years:
 
 ```{r}
-elbe %>% 
-  mutate(doy = yday(date), year = year(date)) %>%
-  filter(year %in% 2000:2010) %>%
-  group_by(year = factor(year)) %>%
-  mutate(cum_discharge = cumsum(discharge) * 60*60*24) %>%
+elbe |> 
+  mutate(doy = yday(date), year = year(date)) |>
+  filter(year %in% 2000:2010) |>
+  group_by(year = factor(year)) |>
+  mutate(cum_discharge = cumsum(discharge) * 60*60*24) |>
   ggplot(aes(doy, cum_discharge, color = year)) + geom_line()
 ```
 
