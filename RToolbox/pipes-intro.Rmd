@@ -120,7 +120,7 @@ library("readxl")
 library("ggplot2")
 ```
 
-The examples were tested with **R** 4.1.3 and **RStudio** 2022.02.0.
+The examples were tested with **R** 4.2.1 and **RStudio** 2022.07.1.
 
 ---
 ## An introductory example
@@ -229,7 +229,7 @@ It is automatically loaded by the **dplyr** package `r Citep(bib, "dplyr")`.
 
 ### Native pipeline operator  **.red[`|>`]**
 
-Since version **4.2.0**, **R** has now a built-in pipeline operator `|>` that 
+Since version **4.1.0**, **R** has now a built-in pipeline operator `|>` that 
 according to the help file "is more streamlined".
 
 
