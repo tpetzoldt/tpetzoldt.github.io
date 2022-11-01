@@ -5,20 +5,22 @@
 Some Basics of the R Language
 ========================================================
 author: tpetzoldt
-date: 2020-11-05
+date: 2021-11-01
 width: 1024
 height: 768
 font-family: Open Sans
+css: Graphics.css
 
 
 Prerequisites
 ========================================================
 
-- R 4.x is installed<br>
-      https://cloud.r-project.org/
-- Recent version of RStudio is installed<br>
-      https://rstudio.com/products/rstudio/download/#download
-- Install **R** first and **RStudio** second
+1. Install R 4.x from the [CRAN](https://cran.r-project.org) server,<br>
+   e.g. https://cloud.r-project.org/
+2. Install a recent version of RStudio from<br>
+   https://rstudio.com/products/rstudio/download/#download
+
+**Note:** Install **R** first and **RStudio** second
 
 R and RStudio are available for Linux, Windows and MacOS
 
@@ -34,6 +36,35 @@ Goal: Basic intuitive experience with R
 5. Lists
 6. Loops and conditional execution
 7. Further reading
+
+
+R is more convenient with RStudio
+========================================================
+
+![RStudio](img/rstudio.png)
+
+
+R and RStudio
+========================================================
+
+#### Note
+
+* The main engine for computations and graphics is **R**.
+* **Rstudio** is a powerful IDE (integrated development environment) that embeds **R** and provides additional facilities.
+
+#### Citation
+
+If you need to cite the software, then first cite **R** and optionally **RStudio**.
+
+R Core Team (2022). R: A language and environment for statistical computing. R Foundation for Statistical
+Computing, Vienna, Austria. URL https://www.R-project.org/.
+
+RStudio Team (2022). RStudio: Integrated Development Environment for R. RStudio, PBC, Boston, MA URL
+http://www.rstudio.com/.
+
+
+
+
 
 
 Expressions and Assignments
@@ -120,7 +151,8 @@ A short classification of R's language elemnts:
 Objects, constants, variables
 ========================================================
 
-* Everything stored in R's memory is an **object**. Objects are specialized data structures that can be simple or very complex.
+* Everything stored in R's memory is an **object**. Objects are specialized data
+structures that can be simple or very complex.
 * Objects can be constants or variables.
 
 **constants**: 1, 123, 5.6, 5e7, "hello"
@@ -144,7 +176,7 @@ Special characters, except _ and . (underscore and dot) are not allowed.
 International characters (e.g German umlauts &auml;, &ouml;, &uuml;, ...) are possible, but not recommended.
 
 
-Allowed and disallowed variable names
+Allowed and disallowed identifiers
 ========================================================
 
 correct:
@@ -668,18 +700,18 @@ cities
 ```
 
 ```
-               Name    Country Population Latitude Longitude IsCapital
-1  Fürstenfeldbruck    Germany      34033  48.1690   11.2340     FALSE
-2             Dhaka Bangladesh   13000000  23.7500   90.3700      TRUE
-3       Ulaanbaatar   Mongolia    3010000  47.9170  106.8830      TRUE
-4           Shantou      China    5320000  23.3500  116.6700     FALSE
-5           Kampala     Uganda    1659000   0.3310   32.5830      TRUE
-6           Cottbus    Germany     100000  51.7650   14.3280     FALSE
-7           Nairobi      Kenya    3100000   1.2833   36.8167      TRUE
-8             Hanoi    Vietnam    1452055  21.0300  105.8400      TRUE
-9          Bacgiang    Vietnam      53739  21.2800  106.1900     FALSE
-10       Addis Abba   Ethiopia    2823167   9.0300   38.7400      TRUE
-11        Hyderabad      India    3632094  17.4000   78.4800     FALSE
+                  Name    Country Population Latitude Longitude IsCapital
+1  F\xfcrstenfeldbruck    Germany      34033  48.1690   11.2340     FALSE
+2                Dhaka Bangladesh   13000000  23.7500   90.3700      TRUE
+3          Ulaanbaatar   Mongolia    3010000  47.9170  106.8830      TRUE
+4              Shantou      China    5320000  23.3500  116.6700     FALSE
+5              Kampala     Uganda    1659000   0.3310   32.5830      TRUE
+6              Cottbus    Germany     100000  51.7650   14.3280     FALSE
+7              Nairobi      Kenya    3100000   1.2833   36.8167      TRUE
+8                Hanoi    Vietnam    1452055  21.0300  105.8400      TRUE
+9             Bacgiang    Vietnam      53739  21.2800  106.1900     FALSE
+10          Addis Abba   Ethiopia    2823167   9.0300   38.7400      TRUE
+11           Hyderabad      India    3632094  17.4000   78.4800     FALSE
 ```
 
 
@@ -1348,10 +1380,13 @@ This returns a special object, that can be used like a normal vector.
 Further Reading
 ===============
 
+Explore some examples yourselv with [An introductory R session](https://tpetzoldt.github.io/RBasics/An-Introductory-R-Session.html)
+
 Follow-up presentations:
 
 * [Functions everywhere](Functions.html)
 * [Graphics in R](Graphics.html)
+* [Pipelines in R](https://tpetzoldt.github.io/RToolbox/pipes-intro)
 
 More details in the official R manuals, especially in [**An Introduction to R**](https://cran.r-project.org/doc/manuals/r-release/R-intro.html)
 
