@@ -3,15 +3,15 @@ title: "An Introductory R Session"
 author: "Thomas Petzoldt"
 date: '2022-11-02'
 output:
+  pdf_document:
+    toc: no
+    number_sections: true
   html_document:
     toc: yes
     number_sections: true
     toc_float:
       collapsed: no
       smooth_scroll: yes
-  pdf_document:
-    toc: no
-    number_sections: true
 bibliography: bib.bib
 ---
 
@@ -23,7 +23,7 @@ library("readr")
 knitr::opts_chunk$set(echo = TRUE, eval=FALSE, comment="")
 ```
 
-This tutorial is available in [HTML](An-Introductory-R-Session.html) format for screen reading and [PDF](An-Introductory-R-Session.pdf) for printing.
+This tutorial is available in [HTML](https://tpetzoldt.github.io/RBasics/An-Introductory-R-Session.html) format for screen reading and [PDF](An-Introductory-R-Session.pdf) for printing.
 
 # Introduction
 
@@ -38,7 +38,10 @@ Note: please install **R** first before installing **RStudio**.
 You may also consider to watch a Youtube video about **R**, a
 good example for the very beginning is the short video
 "R tutorial - The True Basics of R"
-from DataCamp, see https://youtu.be/SWxoJqTqo08.
+from DataCamp, see https://youtu.be/SWxoJqTqo08. Besides this, 
+[Datacamp](https://www.datacamp.com/) offers 
+excellent **R** tutorials, part of them free of cost. Another useful **R** tutorial 
+can be found at [W3Schools.com](https://www.w3schools.com/r/).
 
 # First Steps
 
@@ -280,6 +283,8 @@ needed.
 
 # Graphics
 
+## R as function plotter
+
 Now, we will see how to use **R** as a function plotter by drawing
 sine or cosine functions within an interval between 0 to 10. First,
 we create two vectors with `x` and `y`. To obtain 
@@ -295,8 +300,10 @@ plot(x, y)
 ```
 
 Instead of plotting points, we can also draw
-cotinuous lines.  This is indicated by supplying an optional argument
-`type = "l"`.  **Please note**, that the symbol used here for
+continuous lines.  This is indicated by supplying an optional argument
+`type = "l"`.  
+
+**Note:** the symbol used here for
 `type` is the **small letter "L"** for "line" and not
 the -- in printing very similar -- numeral "1" (one)!
 
@@ -335,7 +342,7 @@ plot(x, y, xlim = c(-10, 10), ylim = c(-2, 2),
     xlab = "x-Values", ylab = "y-Values", main = "Example Graphics")
 ```
 
-## Code formatting and line breaks
+**Code formatting and line breaks**
 
 The above example shows a rather long command that may not fit on a single
 line.  In such cases, **R** displays a `+` (plus sign) to
@@ -347,14 +354,15 @@ ordinary `>` prompt and must never be typed in manually. If, however, the
 
 In contrast to the long line continuation prompt, it is also possible
 to write several commands on one line, separated by a semi-colon
-"`;`". This is unseful in some cases, but as a general rule it is better to
+"`;`". This is unseful in some cases, but as a general rule it is much better to 
+use the script editor and then to:
 
 * write each command to a separate line
 * avoid long lines with more than about 80 characters
 * use proper indentation, e.g. 2 characters per indentation level
 * use spacing to improve readability of the code, e.g. before and after the assignment operator ` <- `.
 
-Finally, a number (or hash) symbol `#` means that a complete line or the
+Finally, a number symbol (or hash) `#` means that a complete line or the
 part of the line that follows `#` is a comment and should be
 ignored by **R**.
 
@@ -470,7 +478,7 @@ par(mfrow=c(1, 1))
 boxplot(x, y)
 ```
 
-## Exercise
+## Exercises
 
 Repeat this example with new random numbers and
 vary sample size (`n`), mean value (`mean`) and standard
@@ -479,6 +487,8 @@ deviation (`sd`) for random numbers created with `rnorm`, and use different
 pages for an explanation of the functions and its arguments, and create boxplots
 with different data sets.
 
+
+
 \pagebreak
 
 # Basic Data Structures of **R**
@@ -486,7 +496,7 @@ with different data sets.
 In addition to vectors, **R** contains several other classes of objects
 for saving data, e.g. `matrix`, `array`, `list` or `data.frame`.
 Both, "base **R**" and contributed packages contain many more classes. 
-It is also possible to define user-defined classes.
+It is also possible to define own user-defined classes.
 
 Under certain circumstances some of data types can be converted into each
 other, e.g. by using functions like `as.matrix`, `as.vector`, 
@@ -505,15 +515,16 @@ x <- c(1, 3, 4, 5)       # numeric
 a <- c("hello", "world") # character
 ```
 
-The following is also a character variable, because the numbers are given in quotes. It is then not possible to do calculations
+The following is also a character variable, because the numbers are given in 
+quotes. It is then not possible to do calculations:
 
 ```{r eval=FALSE}
-x <- c("1", "3", "4", "5")  #character
+x <- c("1", "3", "4", "5")  # character
 sum(x)
 
 Error in sum(x) : invalid 'type' (character) of argument
 ```
-So it is necessary to convert the character to numeric first
+Here it is necessary to convert the character to numeric first:
 
 ```{r eval=TRUE}
 y <- as.numeric(x)
@@ -537,13 +548,14 @@ as.numeric(as.character(f)) # correct
 as.numeric(levels(f))[f]    # even better
 ```
 
-This type of factor coding is not specific to R and appears also in other
-statistics packages. Attributes of objects can be accessed and changed with functions
-`attributes` and `attr`, classes with `class`:
+Such a factor coding is not specific to **R** and appears also in other
+statistics packages. Then they are sometimes called "dummy variables".
 
 ## Matrices and arrays
 
-A matrix is a two-dimensional data structure that can be used for matrix algebra. To create a matrix, we can first create a one-dimensional vector and then reformat it as two-dimensional matrix with `nrow` rows and `ncol`columns:
+A matrix is a two-dimensional data structure that can be used for matrix algebra. 
+To create a matrix, we can first create a one-dimensional vector and then reformat 
+it as two-dimensional matrix with `nrow` rows and `ncol`columns:
 
 ```{r}
 x <- 1:20
@@ -565,7 +577,16 @@ An `array` extends the matrix concept to more than two dimensions:
 x <- array(1:24, dim=c(3, 4, 2))
 ```
 
-Vectors, matrices and arrays have an important limitation: they can only contain one data type (mode), either numeric or character. So, if a single element is of type character, the whole matrix will be of mode character.
+Vectors, matrices and arrays have an important limitation: they can only contain 
+one data type (mode), either numeric or character. So, if a single element is of 
+type character, the whole matrix will be of mode character and appears in quotes:
+
+```{r}
+x <- c(1, 2, 5, 2, "a")
+mode(x)
+x
+```
+
 
 ## Lists
 
@@ -576,7 +597,8 @@ of different modes. Lists can be nested to form a tree-like structure:
 l <- list(x = 1:3, y = c(1,2,3,4), a = "hello", L = list(x = 1, y = 2))
 ```
 
-Lists are extremely powerful und flexible and may be discussed later.
+Lists are extremely powerful and flexible and may be discussed later. The impatient 
+may have a look at the tutorial of [w3schools.com](https://www.w3schools.com/r/r_lists.asp).
 
 ## Data frames
 
