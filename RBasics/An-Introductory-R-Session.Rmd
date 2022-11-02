@@ -124,7 +124,7 @@ contain different data.  A few character combinations are **reserved
 words** and cannot be used as variables: 
 
 `break`, `for`, `function`,
-  `if`, `in`, `next`, `repeat`, `while` and "`\dots`" (three
+  `if`, `in`, `next`, `repeat`, `while` and "`...`" (three
 dots). 
 
 Other identifiers like `plot` can be re-defined, but
