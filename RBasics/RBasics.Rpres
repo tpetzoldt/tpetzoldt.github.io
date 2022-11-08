@@ -536,11 +536,10 @@ From text (readr)
 ![From text (readr)](img/rstudio-import-readr.png)
 
 
-Save data in an Excel-compatible text format
+Save data to Excel-compatible format
 ========================================================
 
 
-![Data frame in Excel](img/dataframe-excel.png)
 
 English number format (**.** as decimal):
 ```{r}
@@ -552,6 +551,8 @@ German number format (**,** as decimal):
 write.table(cities, "output.csv", row.names = FALSE, sep=";", dec=",")
 ```
 
+![Data frame in Excel](img/dataframe-excel.png)
+
 Lists
 ========================================================
 type: prompt
@@ -560,22 +561,38 @@ Lists
 ========================================================
 
 * most flexible data type in R
+* can contain arbitrary data objects as **elements** of the list
 * allows tree-like  structure
 
-Creation of lists
+**Examples**
 
+* Output of many **R** functions, e.g. return value of `hist`:
+
+```{r}
+L <- hist(rnorm(100), plot=FALSE)
+str(L)
+```
+
+
+Creation of lists
+========================================================
 
 ```{r}
 L1 <- list(a=1:10, b=c(1,2,3), x="hello")
 ```
 
-* lists within lists
-* `str` shows tree-like structure:
-
+**Nested list (lists within a list)**
 ```{r}
 L2 <- list(a=5:7, b=L1)
+```
+
+```{r}
 str(L2)
 ```
+
+`str` shows tree-like structure
+
+
 
 ***
 
@@ -606,7 +623,7 @@ str(unlist(L2, recursive = FALSE))
 ```
 
 
-Lists, vectors and data frames
+Convert lists
 ========================================================
 
 Convert vector to list
@@ -667,7 +684,7 @@ x
 ```
 
 
-Select and reorder data frame columns
+Selection of data frame columns
 ========================================================
 
 ```{r}

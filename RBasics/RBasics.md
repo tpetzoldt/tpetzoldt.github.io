@@ -823,11 +823,10 @@ From text (readr)
 ![From text (readr)](img/rstudio-import-readr.png)
 
 
-Save data in an Excel-compatible text format
+Save data to Excel-compatible format
 ========================================================
 
 
-![Data frame in Excel](img/dataframe-excel.png)
 
 English number format (**.** as decimal):
 
@@ -841,6 +840,8 @@ German number format (**,** as decimal):
 write.table(cities, "output.csv", row.names = FALSE, sep=";", dec=",")
 ```
 
+![Data frame in Excel](img/dataframe-excel.png)
+
 Lists
 ========================================================
 type: prompt
@@ -849,22 +850,47 @@ Lists
 ========================================================
 
 * most flexible data type in R
+* can contain arbitrary data objects as **elements** of the list
 * allows tree-like  structure
 
-Creation of lists
+**Examples**
 
+* Output of many **R** functions, e.g. return value of `hist`:
+
+
+```r
+L <- hist(rnorm(100), plot=FALSE)
+str(L)
+```
+
+```
+List of 6
+ $ breaks  : num [1:12] -2.5 -2 -1.5 -1 -0.5 0 0.5 1 1.5 2 ...
+ $ counts  : int [1:11] 3 5 10 7 22 21 20 7 2 2 ...
+ $ density : num [1:11] 0.06 0.1 0.2 0.14 0.44 0.42 0.4 0.14 0.04 0.04 ...
+ $ mids    : num [1:11] -2.25 -1.75 -1.25 -0.75 -0.25 0.25 0.75 1.25 1.75 2.25 ...
+ $ xname   : chr "rnorm(100)"
+ $ equidist: logi TRUE
+ - attr(*, "class")= chr "histogram"
+```
+
+
+Creation of lists
+========================================================
 
 
 ```r
 L1 <- list(a=1:10, b=c(1,2,3), x="hello")
 ```
 
-* lists within lists
-* `str` shows tree-like structure:
-
+**Nested list (lists within a list)**
 
 ```r
 L2 <- list(a=5:7, b=L1)
+```
+
+
+```r
 str(L2)
 ```
 
@@ -876,6 +902,10 @@ List of 2
   ..$ b: num [1:3] 1 2 3
   ..$ x: chr "hello"
 ```
+
+`str` shows tree-like structure
+
+
 
 ***
 
@@ -958,7 +988,7 @@ List of 6
 ```
 
 
-Lists, vectors and data frames
+Convert lists
 ========================================================
 
 Convert vector to list
@@ -1081,7 +1111,7 @@ a b c d e
 ```
 
 
-Select and reorder data frame columns
+Selection of data frame columns
 ========================================================
 
 
