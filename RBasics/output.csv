@@ -1,10 +1,10 @@
 "Name";"Country";"Population";"Latitude";"Longitude";"IsCapital"
 "Fürstenfeldbruck";"Germany";34033;48,169;11,234;FALSE
-"Dhaka";"Bangladesh";13000000;23,75;90,37;TRUE
+"Dhaka";"Bangladesh";1,3e+07;23,75;90,37;TRUE
 "Ulaanbaatar";"Mongolia";3010000;47,917;106,883;TRUE
 "Shantou";"China";5320000;23,35;116,67;FALSE
 "Kampala";"Uganda";1659000;0,331;32,583;TRUE
-"Cottbus";"Germany";100000;51,765;14,328;FALSE
+"Cottbus";"Germany";1e+05;51,765;14,328;FALSE
 "Nairobi";"Kenya";3100000;1,2833;36,8167;TRUE
 "Hanoi";"Vietnam";1452055;21,03;105,84;TRUE
 "Bacgiang";"Vietnam";53739;21,28;106,19;FALSE
