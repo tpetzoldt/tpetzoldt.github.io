@@ -5,7 +5,7 @@
 Some Basics of the R Language
 ========================================================
 author: tpetzoldt
-date: 2021-11-01
+date: 2022-11-08
 width: 1024
 height: 768
 font-family: Open Sans
@@ -695,7 +695,7 @@ Data frames
 
 
 ```r
-cities <- read.csv("data/cities.csv", header=TRUE)
+cities <- read.csv("data/cities.csv")
 cities
 ```
 
@@ -714,19 +714,102 @@ cities
 11           Hyderabad      India    3632094  17.4000   78.4800     FALSE
 ```
 
+What is a CSV file?
+========================================================
+
+<small>
+* comma separated values.
+* first line contains column names
+* decimal is `dec="."`, column separator is `sep=","`
+</small>
+
+**Problems**
+<small>
+* some countries use `dec=","` and `sep=";"`
+* Excel may export mixed style with `dec="."` and `sep=";"`
+* Some start with comments that need to be `skip`ped.
+</small>
+
+**Example CSV file**
+
+```
+Name,Country,Population,Latitude,Longitude
+Dhaka,Bangladesh,13000000,23.75,90.37
+Ulaanbaatar,Mongolia,3010000,47.917,106.883
+Shantou,China,5320000,23.35,116.67
+Kampala,Uganda,1659000,0.331,32.583
+Cottbus,Germany,100000,51.765,14.328
+Nairobi,Kenya,3100000,1.2833,36.8167
+Hanoi,Vietnam,1452055,21.03,105.84
+Addis Abba,Ethiopia,2823167,9.03,38.74
+Hyderabad,India,3632094,17.4,78.48
+```
+
+The population was taken from Wikipedia some years ago.
+
+
+Different read-Funktions
+========================================================
+
+To make life easier, different `read`-Functions were created. Some are more flexible,
+some more automatic, some faster, some more robust ...
+
+To avoid confusion, we use only the following:
+
+**Base R**
+
+* `read.table()`: this is the most flexible standard function, see help file for details
+* `read.csv()`: default options for standard csv files (with `dec="."` and `sep=`,)
+
+**Tidyverse readr-package**
+
+* `read_delim()`: similar to `read.table()` but more modern, automatic and faster
+* `read_csv()`: similar to `read.csv()` with more automatism, e.g. date detection
+
+
+Recommendation
+========================================================
+
+Most of our course examples are plain CSV files, so we can use `read.csv()` or `read_csv()`.
+
+
+```r
+library("readr")
+cities <- read_csv("data/cities.csv")
+cities
+```
+
+```
+# A tibble: 11 × 6
+   Name                  Country    Population Latitude Longitude IsCapital
+   <chr>                 <chr>           <dbl>    <dbl>     <dbl> <lgl>    
+ 1 "F\xfcrstenfeldbruck" Germany         34033   48.2        11.2 FALSE    
+ 2 "Dhaka"               Bangladesh   13000000   23.8        90.4 TRUE     
+ 3 "Ulaanbaatar"         Mongolia      3010000   47.9       107.  TRUE     
+ 4 "Shantou"             China         5320000   23.4       117.  FALSE    
+ 5 "Kampala"             Uganda        1659000    0.331      32.6 TRUE     
+ 6 "Cottbus"             Germany        100000   51.8        14.3 FALSE    
+ 7 "Nairobi"             Kenya         3100000    1.28       36.8 TRUE     
+ 8 "Hanoi"               Vietnam       1452055   21.0       106.  TRUE     
+ 9 "Bacgiang"            Vietnam         53739   21.3       106.  FALSE    
+10 "Addis Abba"          Ethiopia      2823167    9.03       38.7 TRUE     
+11 "Hyderabad"           India         3632094   17.4        78.5 FALSE    
+```
+
+
 
 Data import assistant
 ========================================================
 
 File --> Import Dataset
 
-Several options are available, depending on **RStudio**'s version.
+Several options are available:
 
 * "From text (base)" uses the classical R functions
 * "From text (readr)" is more modern and uses an add-on package
 * "From Excel" can read Excel files if (and only if) they have a clear tabular structure
 
-**Note:** The examples in this course are best tested with "From text (base)"**!!!**
+
 
 
 From text (base)
@@ -740,11 +823,10 @@ From text (readr)
 ![From text (readr)](img/rstudio-import-readr.png)
 
 
-Save data in an Excel-compatible text format
+Save data to Excel-compatible format
 ========================================================
 
 
-![Data frame in Excel](img/dataframe-excel.png)
 
 English number format (**.** as decimal):
 
@@ -758,6 +840,8 @@ German number format (**,** as decimal):
 write.table(cities, "output.csv", row.names = FALSE, sep=";", dec=",")
 ```
 
+![Data frame in Excel](img/dataframe-excel.png)
+
 Lists
 ========================================================
 type: prompt
@@ -766,22 +850,47 @@ Lists
 ========================================================
 
 * most flexible data type in R
+* can contain arbitrary data objects as **elements** of the list
 * allows tree-like  structure
 
-Creation of lists
+**Examples**
 
+* Output of many **R** functions, e.g. return value of `hist`:
+
+
+```r
+L <- hist(rnorm(100), plot=FALSE)
+str(L)
+```
+
+```
+List of 6
+ $ breaks  : num [1:12] -2.5 -2 -1.5 -1 -0.5 0 0.5 1 1.5 2 ...
+ $ counts  : int [1:11] 3 5 10 7 22 21 20 7 2 2 ...
+ $ density : num [1:11] 0.06 0.1 0.2 0.14 0.44 0.42 0.4 0.14 0.04 0.04 ...
+ $ mids    : num [1:11] -2.25 -1.75 -1.25 -0.75 -0.25 0.25 0.75 1.25 1.75 2.25 ...
+ $ xname   : chr "rnorm(100)"
+ $ equidist: logi TRUE
+ - attr(*, "class")= chr "histogram"
+```
+
+
+Creation of lists
+========================================================
 
 
 ```r
 L1 <- list(a=1:10, b=c(1,2,3), x="hello")
 ```
 
-* lists within lists
-* `str` shows tree-like structure:
-
+**Nested list (lists within a list)**
 
 ```r
 L2 <- list(a=5:7, b=L1)
+```
+
+
+```r
 str(L2)
 ```
 
@@ -793,6 +902,10 @@ List of 2
   ..$ b: num [1:3] 1 2 3
   ..$ x: chr "hello"
 ```
+
+`str` shows tree-like structure
+
+
 
 ***
 
@@ -875,7 +988,7 @@ List of 6
 ```
 
 
-Lists, vectors and data frames
+Convert lists
 ========================================================
 
 Convert vector to list
@@ -998,7 +1111,7 @@ a b c d e
 ```
 
 
-Select and reorder data frame columns
+Selection of data frame columns
 ========================================================
 
 

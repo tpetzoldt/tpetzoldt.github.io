@@ -971,7 +971,7 @@ hljs.initHighlightingOnLoad();
   <div class="slides">
 
 <section data-state="section" data-transition="linear" data-transition-speed="default">
-<h1>Some Basics of the R Language</h1><p>tpetzoldt<br/>2021-11-01</p>
+<h1>Some Basics of the R Language</h1><p>tpetzoldt<br/>2022-11-08</p>
 
 <div class="slideContent" >
 
@@ -1728,19 +1728,87 @@ cities
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
+<h3>What is a CSV file?</h3>
+<div class="slideContent" >
+<p><small></p>
+
+<ul>
+<li>comma separated values.</li>
+<li>first line contains column names</li>
+<li>decimal is <code>dec=&quot;.&quot;</code>, column separator is <code>sep=&quot;,&quot;</code>
+</small></li>
+</ul>
+
+<p><strong>Problems</strong>
+<small></p>
+
+<ul>
+<li>some countries use <code>dec=&quot;,&quot;</code> and <code>sep=&quot;;&quot;</code></li>
+<li>Excel may export mixed style with <code>dec=&quot;.&quot;</code> and <code>sep=&quot;;&quot;</code></li>
+<li>Some start with comments that need to be <code>skip</code>ped.
+</small></li>
+</ul>
+
+<p><strong>Example CSV file</strong></p>
+
+<pre><code>Name,Country,Population,Latitude,Longitude
+Dhaka,Bangladesh,13000000,23.75,90.37
+Ulaanbaatar,Mongolia,3010000,47.917,106.883
+Shantou,China,5320000,23.35,116.67
+Kampala,Uganda,1659000,0.331,32.583
+Cottbus,Germany,100000,51.765,14.328
+Nairobi,Kenya,3100000,1.2833,36.8167
+Hanoi,Vietnam,1452055,21.03,105.84
+Addis Abba,Ethiopia,2823167,9.03,38.74
+Hyderabad,India,3632094,17.4,78.48
+</code></pre>
+
+<p>The population was taken from Wikipedia some years ago.</p>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>Different read-Funktions</h3>
+<div class="slideContent" >
+<p>To make life easier, different <code>read</code>-Functions were created. Some are more flexible,
+some more automatic, some faster, some more robust &hellip;</p>
+
+<p>To avoid confusion, we use only the following:</p>
+
+<p><strong>Base R</strong></p>
+
+<ul>
+<li><code>read.table()</code>: this is the most flexible standard function, see help file for details</li>
+<li><code>read.csv()</code>: default options for standard csv files (with <code>dec=&quot;.&quot;</code> and <code>sep=</code>,)</li>
+</ul>
+
+<p><strong>Tidyverse readr-package</strong></p>
+
+<ul>
+<li><code>read_delim()</code>: similar to <code>read.table()</code> but more modern, automatic and faster</li>
+<li><code>read_csv()</code>: similar to <code>read.csv()</code> with more automatism, e.g. date detection</li>
+</ul>
+
+<p><strong>Recommendation</strong></p>
+
+<p>Most of our course examples are plain CSV files, so we can use <code>read.csv()</code> or <code>read_csv()</code>.</p>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
 <h3>Data import assistant</h3>
 <div class="slideContent" >
 <p>File &ndash;&gt; Import Dataset</p>
 
-<p>Several options are available, depending on <strong>RStudio</strong>&#39;s version.</p>
+<p>Several options are available:</p>
 
 <ul>
 <li>&ldquo;From text (base)&rdquo; uses the classical R functions</li>
 <li>&ldquo;From text (readr)&rdquo; is more modern and uses an add-on package</li>
 <li>&ldquo;From Excel&rdquo; can read Excel files if (and only if) they have a clear tabular structure</li>
 </ul>
-
-<p><strong>Note:</strong> The examples in this course are best tested with &ldquo;From text (base)&rdquo;<strong>!!!</strong></p>
 
 </div>
 
