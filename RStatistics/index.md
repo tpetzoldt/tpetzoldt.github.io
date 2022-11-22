@@ -24,7 +24,7 @@ Comments and suggestions are welcome.
 ### Statistical Applications
 
 5. [ANOVA](https://tpetzoldt.github.io/RStatistics/slides-anova.html)
-6. [Basic nonlinear Regression](https://tpetzoldt.github.io/RStatistics/nonlinear-regression.html)
+6. Basic nonlinear Regression [Slides](https://tpetzoldt.github.io/RStatistics/nonlinear-slides.html), [Lab](https://tpetzoldt.github.io/RStatistics/nonlinear-regression.html)
 7. [Multivariate Statistics I](https://tpetzoldt.github.io/RStatistics/multivar-3d.html)
 8. [Multivariate Statistics II](https://tpetzoldt.github.io/RStatistics/multivar-lakes.html)
 
