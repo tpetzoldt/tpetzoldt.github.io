@@ -1,0 +1,187 @@
+---
+title: "Mikrocontrollerexperimente ohne Programmieren und Löten"
+format: html
+editor: source
+---
+
+# Einführung
+
+Für die folgenden Experimente nutzen wir ein Entwicklungsboard mit einem ESP 8266 Mikrocontroller. Auf den Fotos ist ein "NodeMCU Lua Amica"-Modul zu sehen. Alternativ kann auch ein anderes Board verwendet werden, z.B. ein "Wemos Mini D1". Außerdem benötigen wir einen PC und eventuell ein Tablet oder Smartphone und die Zugangsdaten für ein WLAN.
+
+![NodeMCU Amica Mikrocontroller](amica.jpg){width=40%}
+
+Die Mikrocontroller-Boards mit dem ESP 8266 unterstützen WLAN und können mit Hilfe verschiedener Programmiersprachen programmiert werden. Das geht besonders einfach mit Hilfe der [Arduino-Entwicklungsumgebung](https://arduino.cc) und in einem vereinfachten C++-Dialekt.
+
+Für die folgenden Projekte machen wir es uns noch einfacher und verzichten zunächst aufs Programmieren. Stattdessen laden wir die "Tasmota"-Firmware von Theo Arends auf das Board. Die Software kan frei von https://tasmota.github.io heruntergeladen werden.
+
+Die Installation gelingt am einfachsten mit dem [Web-Installer](https://tasmota.github.io/install/).  Für die unten genannten Experimente benötigen wir die Version **Tasmota Sensors**.
+
+Wenn die Software installiert ist, öffnet sich das Tasmota-Hauptmenü. Hier notieren wir uns zunächst die IP-Adresse (im Beispiel 192.168.178.228). Diese ist wichtig, um später auf das Modul zugzugreifen, z.B. über http://192.168.178.228 . Die Verbindung erfolgt unverschlüsselt über http und nicht https, deshalb steht im unten genannten Bild "Not secure" bzw. "Nicht sicher".
+
+
+![Tasmota Hauptmenü](tasmota-menu.jpg){width=40%}
+
+# Ansteuern von Licht und Ton
+
+## Interne LED ansteuern
+
+In einem ersten Experiment wollten wir die LED direkt auf dem Modul ansteuern. Hierzu verbinden wir das Modul über USB mit dem Computer oder mit einer Powerbank. Anschließend öffnen wir das Hauptmenü im Webbrowser und gehen auf "Configuration" $\rightarrow$ "Configure Module" und wählen **Generic (0)**. Nach "Save" und Restart" finden wir unter "Configuration" $\rightarrow$ "Configure Module" weitere Optionen.
+
+Auf der linken Seite sehen wir zwei Nummerierungen, einmal D3, TX, D4 ... und einmal GPIO0, GPIO1, GPIO2. Wir nutzen im folgenden immer die Nummerierung ganz links, also ohne GPIO. Diese entsprechen dem Aufdruck auf dem Mikrocontroller-Board.
+
+Nun wählen wir für **D4** den Eintrag **Relay** aus. Nach einem Neustart des Moduls können wir die im Board eingebaute LED mit **Toggle** ein und ausschalten.
+
+![Konfiguration von Pin D4 als Schalter (Relay)](configure-module-relais.jpg){width=40%}
+
+## Eigene LED ansteuern
+
+Hierfür setzen wir das Modul auf ein Steckbrett (Breadboard), so wie in der Abbildung gezeigt:
+
+![Ansteuerung einer LED](1-led.jpg){width=80%}
+
+Beim Breadboard finden wir in der Mitte zwei Bereiche, bei denen die Löcher **vertikal** verbunden sind. Sie dienen zum Stecken und Verbinden von Bauelementen. Die Bereiche oben und unten sind die "Stromschienen". Hier sind die Löcher **horizontal** miteinander verbunden.
+
+Im Interesse der Einheitlichkeit legen wir das Breadboard so hin, dass die blauen Linien (-) oben verlaufen und die roten Linien (+) unten. Somit sind die von uns benötigten Pins oben und aufrecht lesbar, die USB-Stromversorung erfolgt von rechts und die Nummerierung beginnt rechts mit eins.
+
+Nun verbinden wir die Bauelemente wie folgt:
+
+* rote Leitung von "3V" auf die obere rote Stromschiene, 
+* blaue Leitung von "GND" (Ground, Masse, Minuspol) zur blauen Stromschiene.
+* LED mit dem kürzeren Bein in die blaue Stromschiene (Masse) und dem längeren Bein (Pluspol) 
+in einen freien Steckplatz im Mittelbereich.
+* Nun verbinden wir den Pin **D4** mit einer Leitung (orange) und einem Widerstand (330 Ohm) mit der LED.
+
+Mit Hilfe von **Toggle** können wir die LED jetzt aus- oder einschalten.
+
+**Wichtig** eine LED darf niemals direkt mit Plus und Minus verbunden werden, sondern immer über einen Widerstand, sonsonsten kann sie durchbrennen. Wie groß der Widerstand sein muss, hängt von der Stromversorgung und der LED ab.
+
+## Anschluss einer zweiten LED
+
+Verbinde nun eine zweite (gelbe) LED mit Pin **D3** und konfiguriere **D3** als Relay Nummer 2.
+
+## Anschluss eines Buzzers
+
+Zum Schluss verbinden wir einen aktiven Buzzer mit Pin **D2**. Hierbei muss der Pluspol (+, bzw. längeres Beinchen) mit dem Mikrocontroller verbunden werden und das kürzere Beinchen mit dem Minuspol. Ein Vorwiderstand ist nicht erforderlich.
+
+![Zwei LEDs und ein Buzzer](2-leds+buzzer.jpg){width=80%}
+
+
+
+![Konfiguration mit zwei LEDs und einem Buzzer](2-leds+buzzer-config.png){width=40%}
+
+## Timer
+
+Die Schaltung kann man auch als Wecker (Timer) nutzen. Hierzu gehen wir im Konfigurationsmenü den Punkt "Timer" und stellen eine Weckzeit ein.
+
+![Einstellung eines Timers](timer.png){width=40%}
+
+Hierbei ist "Output" die Nummer des Relays, also z.B. 1 für die rote, 2 für die gelbe LED und 3 für den Buzzer. Mit Hilfe eines weiteren Timers kann man die LED oder den Buzzer nach einer gewissen Zeit wieder auschalten, z.B. nach 1 Minute.
+
+## Dimmer
+
+Die LEDs lassen sich dimmen. Hierzu wählen wir anstelle von "Relay" die Einstellung "PWM" (Pulsweitenmodulation). Das bedeutet, dass die LEDs nicht mit Dauerstrom versorgt werden sondern mit kurzen Impulsen ganz schnell an- und abgeschaltet werden. Unser Auge ist nicht so schnell, deshalb erscheint uns das Licht gedimmt.
+
+Im folgenden bauen wir den Buzzer und die gelbe LED wieder ab und lassen nur die rote LED übrig. Anschließend konfigurieren wir die rote LED als pulsweitenmodulierten Dimmer.
+
+![Dimmer](pwm.png){width=40%}
+
+Nach einem Neustart des Boards erscheint ein Schieberegler als Dimmer.
+
+## Steuern einer LED-Kette
+
+Anstelle einer einzelnen LED kann man auch eine LED-Kette ansteuern. Wenn man die rote LED durch eine LED-Kette ersetzt bleibt sie allerdings recht dunkel. Das liegt daran, dass die LED-Kette mehr Strom benötigt als eine einzelne LED. Der 330 Ohm-Vorwiderstand begrenzt den Strom zu stark, außerdem kann der Mikrocontroller-PIN **D4** nicht genug Strom liefern.
+
+Zur Lösung des Problems erweitern wir die Schaltung wie folgt:
+
+1. Ersatz des 330 Ohm-Vorwiderstands durch einen kleineren Wert, z.B. 10 Ohm.
+2. Trennung des Stromkreises für die LED-Kette mit einem elektronischen Schalter.
+
+Als elektronischen Schalter könnte man ein Relay verwenden. Noch einfacher, billiger und 
+stromsparender ist ein Transistor, genau gesagt ein Feldeffekttransistor (FET). Der verwendete Typ IRLZ24N besitzt drei Anschlüsse.
+
+![Feldeffekttransistor IRLZ24N, Beschaltung: G, D, S](irlz24n.png){width=20%}
+
+Links befindet sich das "Gate" für die Steuerleitung, in der Mitte der "Drain" an den die LED-Kette angeschlossen werden kann und rechts der "Source"-Anschluss, der mit dem Minuspol verbunden wird.
+
+
+![Steuerung einer LED-Kette mit Feldeffekt-Transistor](led-chain.jpg){width=80%}
+
+Die Beschaltung ist wie folgt:
+
+* grün: vom Mikrocontroller **D4** zum linken Anschluss des FET (Gate)
+* 10 Ohm-Widerstand vom mitleren Anschluss des FET (Drain) zum Minuspol der LET-Kette (blau)
+* Steckbrücke (blau) vom Minuspol der Stromschiene zum rechten Anschluss des FET (Source)
+* Steckbrücke (rot) vom Pluspol der Stromschiene zur LED-Kette
+
+Wenn alles richtig angeschlossen ist, können wir die Lichterkette vom PC oder Handy aus ein und ausschalten, dimmen oder über den Timer steuern.
+
+\pagebreak
+
+# Sensoren
+
+Bei den bisherigen Beispielen ging es darum, Licht und Signale zu steuern. Mit Hilfe der Tasmota-Software ist es auch möglich Sensorsignale auszulesen.
+
+## Messung von Temperatur und Luftfeuchte
+
+Für das erste Experiment benutzen wir einen digitalen Temperatur- und Feuchtesensor vom Typ AM2301, auch als DHT22 bezeichnet. Der Sensor hat 4 Anschlüsse, von denen nur drei benutzt werden:
+
+* Pluspol, Signal, unbenutzt, Minuspol.
+
+Um etwas Ordnung zu bekommen, nutzen wir ab jetzt für kürzere Verbindungen keine Kabel (sogenannte Jumperkabel) mehr, sondern kurze Drahtstücke (Steckbrücken).
+
+![Temperatur- und Feuchtesensor AM 2301](am2301.jpg){width=80%}
+
+In Tasmota konfigurieren wir den entsprechenden Anschluss des Boards (im vorliegenden Fall wieder **D4**) auf "AM2301". Nach einem Neustart werden Temperatur, Feuchte und Taupunkt angezeigt. Falls keine Werte erscheinen, müssen wir die Verkabelung prüfen.
+
+![Anzeige beim AM 2301](am2301-display.png){width=40%}
+
+Der Taupunkt (dew point) ist die Temperatur, bei der der in der Luft enthaltene Wasserdampf kondensiert. Im Beispiel beträgt die relative Luftfeuchte 57.2% bei einer Lufttemperatur von 20.0°C. Wenn man die Luft abkühlt, steigt die relative Luftfeuchte, weil kalte Luft weniger Wasserdampf aufnehmen kann. Bei 11.3°C Lufttemperatur würde sie 100% betragen. 
+
+## Temperatursensor DS18B20
+
+Der DS18B20 ist ebenfalls ein Temperatursensor. Er ist sehr klein und relativ 
+preiswert, außerdem gibt ihn auch mit Verlängerungskabel, so dass man in Flüssigkeiten messen kann.
+
+Beim Anschluss an einen Mikrocontroller sind folgende Dinge zu beachten:
+
+1. Wenn man von vorn auf die runde Seite schaut, dann ist die Anschlussreihenfolge: Pluspol, Signal, Minuspol
+2. Zwischen der Signalleitung und dem Pluspol muss man einen Widerstand einfügen, einen sogenannten "Pull-Up-Widerstand". Dieser beträgt typischerweise 4.7 Kiloohm, bei langen Verbindungskabeln auch weniger.
+3. Man darf keineswegs Plus- und Minuspol vertauschen, sonst wird der Sensor heiß und ist nach wenigen Minuten kaputt!
+
+![Anschluss eines DS18B20](ds18b20.jpg){width=80%}
+
+In der Tasmota-Konfiguration wählt man nun für **D4** die Einstellung "DS18x20" und nach einem Neustart kann man die Temperatur messen, z.B. im Tee. Hierfür kann man den verkabelten DS18B20 verwenden.
+
+## Luftdruck
+
+Zur Messung des Luftdrucks kann man den Sensor BMP180 verwenden. Dieser Sensor ist sehr genau und wird z.B. in Drohnen als Höhenmesser verwendet. Eine Besonderheit ist, dass der Sensor zwei Signalleitungen benötigt. Diese heißen "I2C SDA" und "I2C SCL" und können am Mikrocontroller auch nicht beliebig platziert werden. Im vorliegenden Beispiel nutzen wir die Anschlüsse D2 und D1.
+
+![Luftdruck- und Temperatursensor](bmp180.jpg){width=80%}
+
+
+## Luftdruck und Licht
+
+Der Sensor aus dem vorherigen Beispiel benötigt zwei Signalleitungen statt nur einer. Das erscheint zunächst etwas umständlich aber es hat einen großen Vorteil. Die Anschlussmethode mit den zwei Signalleitungen ist ein sogenannter "Bus", bei dem man mehrere Sensoren oder auch Displays einfach parallel nebeneinander hängen kann. So können wir zum Beispiel einen Lichtsensor BH 1750 hinzufügen, mit dem man das Licht im Zimmer oder im Freien in der Maßeinheit Lux messen kann.
+
+Hierbei bleibt der erste Anschluss vom BH 1750 frei, die anderen haben die selbe Reihenfolge wie beim BMP180.
+
+In der Konfiguration muss man nichts einstellen. Es genügt, das Board einmal neu zu starten und Tasmota erkennt den neuen Sensor automatisch.
+
+![Temperatur, Luftdruck und Licht](2-sensors.jpg){width=80%}
+
+# Ausblick
+
+Mit den vorgestellten Bauteilen kann man noch mehr machen. Man kann die Schaltungen verändern und kombinieren, man kann mit Tasmota Regeln aufstellen oder man kann den Mikrocontroller ohne Tasmota
+direkt in C++ programmieren.
+
+Mehr dazu findet man im Internet, z.B. unter:
+
+[https://tasmota.github.io/docs](https://tasmota.github.io/docs)
+
+oder
+
+[https://arduino.cc](https://arduino.cc)
+
+Viel Spaß!
+
+
