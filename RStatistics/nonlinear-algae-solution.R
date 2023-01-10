@@ -34,18 +34,18 @@ plot(x, yy, pch=16, xlab="time (days)", ylab="algae (Mio cells)")
 lines(x, f(x, r=r, K=max(yy), N0=yy[1]), col="blue")
 
 pstart <- c(r=r, K=max(yy), N0=yy[1])
-aFit   <- nls(yy ~ f(x, r, K,N0), start = pstart, trace=TRUE)
+model_fit   <- nls(yy ~ f(x, r, K,N0), start = pstart, trace=TRUE)
 
 x1 <- seq(0, 25, length = 100)
-lines(x1, predict(aFit, data.frame(x = x1)), col = "red")
+lines(x1, predict(model_fit, data.frame(x = x1)), col = "red")
 legend("topleft",
        legend = c("data", "start", "fitted"),
        col = c("black", "blue", "red"),
        lty = c(0, 1, 1),
        pch = c(16, NA, NA))
 
-summary(aFit)
-(Rsquared <- 1 - var(residuals(aFit))/var(yy))
+summary(model_fit)
+(Rsquared <- 1 - var(residuals(model_fit))/var(yy))
 
 
 

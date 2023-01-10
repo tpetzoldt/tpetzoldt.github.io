@@ -1,7 +1,7 @@
 ---
 title: "Nonlinear Regression"
 author: "Thomas Petzoldt"
-date: '2021-11-22'
+date: '2023-01-10'
 output:
   html_document:
     df_print: paged
@@ -57,15 +57,15 @@ y <- c(1.6, 1.8, 2.1, 2.8, 3.5, 4.1, 5.1, 5.8, 7.1, 9.0)
 plot(x, y)
 
 pstart <- c(a = 1, b = 1)
-aFit <- nls(y ~ a * exp(b * x), start = pstart, trace = TRUE)
+model_fit <- nls(y ~ a * exp(b * x), start = pstart, trace = TRUE)
 x1 <- seq(1, 10, 0.1)
-y1 <- predict(aFit, data.frame(x = x1))
+y1 <- predict(model_fit, data.frame(x = x1))
 lines(x1, y1, col = "red")
 
-summary(aFit, correlation = TRUE)
+summary(model_fit, correlation = TRUE)
 
 ## R squared
-1 - var(residuals(aFit))/var(y)
+1 - var(residuals(model_fit))/var(y)
 ```
 
 ### Regression model as user-defined function
@@ -81,13 +81,13 @@ f <- function(x, a, b) {a * exp(b * x)}
 plot(x, y)
 
 pstart <- c(a = 1, b = 1)
-aFit <- nls(y ~ f(x, a, b), start = pstart)
+model_fit <- nls(y ~ f(x, a, b), start = pstart)
 
 x1 <- seq(1, 10, 0.1)
-y1 <- predict(aFit, data.frame(x = x1))
+y1 <- predict(model_fit, data.frame(x = x1))
 lines(x1, y1, col = "red")
-summary(aFit, correlation = TRUE)
-1 - var(residuals(aFit))/var(y)
+summary(model_fit, correlation = TRUE)
+1 - var(residuals(model_fit))/var(y)
 ```
 
 
@@ -120,12 +120,12 @@ Fitting the Michaelis-Menten function is essentially similar to the former examp
 
 ```{r, fig=FALSE,eval=FALSE}
 pstart <- c(Vm = max(V), K = 5)
-aFit   <- nls(V ~ f(S, Vm, K), start = pstart, trace = TRUE)
+model_fit   <- nls(V ~ f(S, Vm, K), start = pstart, trace = TRUE)
 plot(S, V, xlim = c(0, 25), ylim = c(0, 0.1))
 x1 <- seq(0, 25, length = 100)
-lines(x1, predict(aFit, data.frame(S = x1)), col = "red")
-summary(aFit)
-(Rsquared <- 1 - var(residuals(aFit))/var(V))
+lines(x1, predict(model_fit, data.frame(S = x1)), col = "red")
+summary(model_fit)
+(Rsquared <- 1 - var(residuals(model_fit))/var(V))
 
 ```
 
@@ -135,12 +135,12 @@ summary(aFit)
 
 
 ```{r, fig=FALSE,eval=FALSE}
-aFit <- nls(V ~ SSmicmen(S, Vm, K), trace = TRUE)
+model_fit <- nls(V ~ SSmicmen(S, Vm, K), trace = TRUE)
 plot(S, V, xlim = c(0, 25), ylim = c(0, 0.1))
 x1 <- seq(0, 25, length = 100)
-lines(x1, predict(aFit, data.frame(S = x1)), col = "red")
-summary(aFit)
-(Rsquared <- 1 - var(residuals(aFit))/var(V))
+lines(x1, predict(model_fit, data.frame(S = x1)), col = "red")
+summary(model_fit)
+(Rsquared <- 1 - var(residuals(model_fit))/var(V))
 ```
 
 ## Logistic growth of a cyanobacteria population

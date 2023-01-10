@@ -4,7 +4,7 @@
     <title>Nonlinear Regression with R</title>
     <meta charset="utf-8" />
     <meta name="author" content="Thomas Petzoldt" />
-    <meta name="date" content="2022-11-22" />
+    <meta name="date" content="2023-01-10" />
     <script src="libs/header-attrs-2.18.1/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/useR-fonts.css" rel="stylesheet" />
@@ -33,7 +33,7 @@ background-size: cover
 
 #### Thomas Petzoldt
 
-.small[Version 2022-11-22, Source code available on https://github.com/tpetzoldt]
+.small[Version 2023-01-10, Source code available on https://github.com/tpetzoldt]
 
 
 --- 
@@ -261,13 +261,13 @@ x &lt;- 1:10
 y &lt;- c(1.6, 1.8, 2.1, 2.8, 3.5, 4.1, 5.1, 5.8, 7.1, 9.0)
 plot(x, y)
 pstart &lt;- c(a = 1, b = 1)
-aFit &lt;- nls(y ~ a * exp(b * x), start = pstart)
+model_fit &lt;- nls(y ~ a * exp(b * x), start = pstart)
 
 x1 &lt;- seq(1, 10, 0.1)
-y1 &lt;- predict(aFit, data.frame(x = x1))
+y1 &lt;- predict(model_fit, data.frame(x = x1))
 lines(x1, y1, col = "red")
 
-summary(aFit)
+summary(model_fit)
 ```
 ]
 
@@ -292,7 +292,7 @@ summary(aFit)
 
 
 ```r
-(Rsquared &lt;- 1 - var(residuals(aFit))/var(y))
+(Rsquared &lt;- 1 - var(residuals(model_fit))/var(y))
 ```
 
 ```
@@ -315,13 +315,13 @@ V &lt;-c(0.0998, 0.0948, 0.076, 0.0724, 0.0557,
 f &lt;- function(S, Vm, K) { Vm * S/(K + S) }
 
 pstart &lt;- c(Vm = 0.1, K = 5)
-aFit &lt;- nls(V ~ f(S, Vm, K), start = pstart)
-summary(aFit)
+model_fit &lt;- nls(V ~ f(S, Vm, K), start = pstart)
+summary(model_fit)
 
-(1 - var(residuals(aFit))/var(V)) # nonlinear r²
+(1 - var(residuals(model_fit))/var(V)) # nonlinear r²
 plot(S, V, xlim = c(0, max(S)), ylim = c(0, max(V)))
 x1 &lt;-seq(0, 25, length = 100)
-lines(x1, predict(aFit, data.frame(S = x1)), col = "red")
+lines(x1, predict(model_fit, data.frame(S = x1)), col = "red")
 ```
 ]
 
@@ -367,12 +367,12 @@ S &lt;- c(25, 25, 10, 10, 5, 5, 2.5, 2.5, 1.25, 1.25)
 V &lt;- c(0.0998, 0.0948, 0.076, 0.0724, 0.0557,
        0.0575, 0.0399, 0.0381, 0.017, 0.0253)
 
-aFit &lt;- nls(V ~ SSmicmen(S, Vm, K))
-summary(aFit)
+model_fit &lt;- nls(V ~ SSmicmen(S, Vm, K))
+summary(model_fit)
 
 plot(S, V, xlim = c(0, max(S)), ylim = c(0, max(V)))
 x1 &lt;-seq(0, 25, length = 100)
-lines(x1, predict(aFit, data.frame(S = x1)), col="red")
+lines(x1, predict(model_fit, data.frame(S = x1)), col="red")
 ```
 ]
 
@@ -403,7 +403,7 @@ lines(x1, predict(aFit, data.frame(S = x1)), col="red")
 
 
 ```r
-summary(aFit, correlation=TRUE)
+summary(model_fit, correlation=TRUE)
 ```
 
 ```
@@ -491,7 +491,7 @@ See: https://en.wikipedia.org/wiki/Lineweaver-Burk_plot
 S &lt;-c(25, 25, 10, 10, 5, 5, 2.5, 2.5, 1.25, 1.25)
 V &lt;-c(0.0998, 0.0948, 0.076, 0.0724, 0.0557, 
       0.0575, 0.0399, 0.0381, 0.017, 0.0253)
-aFit&lt;-nls(V ~ SSmicmen(S, Vm, K))
+model_fit&lt;-nls(V ~ SSmicmen(S, Vm, K))
 
 par(mfrow=c(1,2), las=1, lwd=2)
 ## Lineweaver-Burk
@@ -513,7 +513,7 @@ text(0.35, 75, "1/V = 1/vmax + km / vmax * S")
 plot(S, V, xlim = c(0, max(S)),ylim=c(0, max(V)), pch=16, main="No Transformation")
 x1 &lt;-seq(0, 25, length=100)
 lines(x1, Vm_l * x1 / (Km_l + x1), col="red")
-lines(x1, predict(aFit, data.frame(S=x1)), col="blue")
+lines(x1, predict(model_fit, data.frame(S=x1)), col="blue")
 legend("bottomright", legend=c("linearisation", "nonlinear"), 
        box.lwd=1, lwd=2, col=c("red", "blue"))
 text(15, 0.04, "V = S * vmax / (km + S)")

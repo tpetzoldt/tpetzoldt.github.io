@@ -265,7 +265,7 @@ Use statistical principles (random search)
 S <-c(25, 25, 10, 10, 5, 5, 2.5, 2.5, 1.25, 1.25)
 V <-c(0.0998, 0.0948, 0.076, 0.0724, 0.0557, 
       0.0575, 0.0399, 0.0381, 0.017, 0.0253)
-aFit<-nls(V ~ SSmicmen(S, Vm, K))
+model_fit<-nls(V ~ SSmicmen(S, Vm, K))
 
 par(mfrow=c(1,2), las=1, lwd=2)
 ## Lineweaver-Burk
@@ -287,7 +287,7 @@ text(0.35, 75, "1/V = 1/vmax + km / vmax * S")
 plot(S, V, xlim = c(0, max(S)),ylim=c(0, max(V)), pch=16, main="No Transformation")
 x1 <-seq(0, 25, length=100)
 lines(x1, Vm_l * x1 / (Km_l + x1), col="red")
-lines(x1, predict(aFit, data.frame(S=x1)), col="blue")
+lines(x1, predict(model_fit, data.frame(S=x1)), col="blue")
 legend("bottomright", legend=c("linearisation", "nonlinear"), 
        box.lwd=1, lwd=2, col=c("red", "blue"))
 text(15, 0.04, "V = S * vmax / (km + S)")
@@ -323,13 +323,13 @@ x <- 1:10
 y <- c(1.6, 1.8, 2.1, 2.8, 3.5, 4.1, 5.1, 5.8, 7.1, 9.0)
 plot(x, y)
 pstart <- c(a = 1, b = 1)
-aFit <- nls(y ~ a * exp(b * x), start = pstart)
+model_fit <- nls(y ~ a * exp(b * x), start = pstart)
 
 x1 <- seq(1, 10, 0.1)
-y1 <- predict(aFit, data.frame(x = x1))
+y1 <- predict(model_fit, data.frame(x = x1))
 lines(x1, y1, col = "red")
 
-summary(aFit)
+summary(model_fit)
 ```
 ]
 
@@ -337,7 +337,7 @@ summary(aFit)
 ```
 
 ```{r echo=TRUE}
-(Rsquared <- 1 - var(residuals(aFit))/var(y))
+(Rsquared <- 1 - var(residuals(model_fit))/var(y))
 ```
 
 ---
@@ -355,13 +355,13 @@ V <-c(0.0998, 0.0948, 0.076, 0.0724, 0.0557,
 f <- function(S, Vm, K) { Vm * S/(K + S) }
 
 pstart <- c(Vm = 0.1, K = 5)
-aFit <- nls(V ~ f(S, Vm, K), start = pstart)
-summary(aFit)
+model_fit <- nls(V ~ f(S, Vm, K), start = pstart)
+summary(model_fit)
 
-(1 - var(residuals(aFit))/var(V)) # nonlinear r²
+(1 - var(residuals(model_fit))/var(V)) # nonlinear r²
 plot(S, V, xlim = c(0, max(S)), ylim = c(0, max(V)))
 x1 <-seq(0, 25, length = 100)
-lines(x1, predict(aFit, data.frame(S = x1)), col = "red")
+lines(x1, predict(model_fit, data.frame(S = x1)), col = "red")
 ```
 ]
 
@@ -385,12 +385,12 @@ S <- c(25, 25, 10, 10, 5, 5, 2.5, 2.5, 1.25, 1.25)
 V <- c(0.0998, 0.0948, 0.076, 0.0724, 0.0557,
        0.0575, 0.0399, 0.0381, 0.017, 0.0253)
 
-aFit <- nls(V ~ SSmicmen(S, Vm, K))
-summary(aFit)
+model_fit <- nls(V ~ SSmicmen(S, Vm, K))
+summary(model_fit)
 
 plot(S, V, xlim = c(0, max(S)), ylim = c(0, max(V)))
 x1 <-seq(0, 25, length = 100)
-lines(x1, predict(aFit, data.frame(S = x1)), col="red")
+lines(x1, predict(model_fit, data.frame(S = x1)), col="red")
 ```
 ]
 
@@ -403,7 +403,7 @@ lines(x1, predict(aFit, data.frame(S = x1)), col="red")
 ### Correlation of parameters
 
 ```{r echo=TRUE}
-summary(aFit, correlation=TRUE)
+summary(model_fit, correlation=TRUE)
 ```
 
 * high absolute values of correlation indicate non-identifiability of parameters
