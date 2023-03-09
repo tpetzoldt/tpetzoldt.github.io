@@ -169,6 +169,8 @@ summary(leaves)
 ---
 ## Summary statistics per group
 
+**Note:** If you are not interested in this "base **R**" approach, just skip this slide. The modern approach is easier.
+
 ```{r}
 aggregate(cbind(length, width, stalk) ~ group, mean, data=leaves)
 aggregate(cbind(length, width, stalk) ~ group, sd, data=leaves)
@@ -186,6 +188,9 @@ Package **dplyr** contains two very handy functions:
 * `group_by`
 * `summarize`
 ]
+
+These functions can again be applied in a classical way of function calls, or 
+with so-called pipelines, that improve readability further.
 
 #### Classical approach 1: separate code lines
 
@@ -232,8 +237,6 @@ It is automatically loaded by the **dplyr** package `r Citep(bib, "dplyr")`.
 Since version **4.1.0**, **R** has now a built-in pipeline operator `|>` that 
 according to the help file "is more streamlined".
 
-
-
 It is recommended to use a recent version of **R** > 4.2 with native pipes `|>` .
 But, if you still need to use an older **R** version, you can also use `%>%` 
 for the examples in this document.
@@ -271,7 +274,8 @@ leaves |>
             min = min(width), max = max(width))
 ```
 
-The pipeline operator **.red[`|>`]** transfers (.red["pipes"]) the output of one function to the first argument of the next function.
+The pipeline operator **.red[`|>`]** transfers (.red["pipes"]) the output from 
+one function to the first argument of the next function.
 
 ---
 ### Classical functional style
@@ -325,7 +329,11 @@ grViz("digraph pipes {
 
 ## Summary statistics for all variables
 
-### Copy and paste ?
+* The data set contains different measurements of the leaves, `length`, `width` 
+and `stalk` length. 
+* Now lets extend our example from above by extending the `summarize` function.
+
+### Copy and paste
 
 ```{r, eval=FALSE}
 leaves |>
@@ -337,15 +345,27 @@ leaves |>
 ```
 
 
-# No! Don't do that.
+### Is copy and paste a good idea?
 
-... at least not in excess.
+**No**, at least not in excess. Copy and paste can led to errors and there are more compact and elegant ways.
 
 ---
 
-## Use long data formats
+## Tidy your data and use "long" data formats.
 
-* Use long format!
+Long data formats are more database like and more general.
+
+If you are used to working with LibeOffiice or Excel, you will probably prefer 
+"wide" tables that fit well on the computer screen. However, this is not such
+a good idea for data bases and scripted data science.
+
+Most modern data analysis packages like **dplyr** (explained here) and the
+popular **ggplot2** package for graphics  mandatorily require the long format.
+
+---
+
+## Long data format
+
 * Put data from all 3 variables (`length, width, stalk`) in one column: `value`
 * Identifier column for the variables: `name`
 
