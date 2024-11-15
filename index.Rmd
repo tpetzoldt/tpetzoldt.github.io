@@ -23,7 +23,7 @@ This page serves additional documentation of some of my Github and other source 
 | - dynamic models in compiled code | code snippets | | | - [deSolve-compiled](deSolve-compiled/deSolve-compiled.html) |
 | - dynamic models with shiny | code snippets | | | - [deSolve-shiny](deSolve-shiny/deSolve-shiny.html) |
 | - stoichiometry-matrix ODE models with rodeo | code snippets | | | - [deSolve-rodeo](deSolve-rodeo/rodeo-lv3.html) |
-| [Elements of Statistics with R](https://github.com/tpetzoldt/elements) |teaching | alpha  |[tpetzoldt](https://github.com/tpetzoldt/)| [Slides, Tutorials](elements/)|
+| [Elements of Statistics with R](https://github.com/tpetzoldt/elements) |teaching | beta  |[tpetzoldt](https://github.com/tpetzoldt/)| [Slides, Tutorials](elements/) and [Lab Exercises](element-labs/)|
 | [growthlab](https://github.com/tpetzoldt/growthlab) |teaching | alpha  |[tpetzoldt](https://github.com/tpetzoldt)| [Digitally controlled growth experiments](https://tpetzoldt.github.io/growthlab/)|
 | | | | | |
 
